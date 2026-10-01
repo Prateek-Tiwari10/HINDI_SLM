@@ -1,0 +1,144 @@
+# Data pipeline config (Decisions D1–D3). Scripts read values from here only.
+
+hf:
+  user: Prateek-Tiwari10
+  dataset_repo: Prateek-Tiwari10/hindi-lm-data
+  filtered_prefix: work/filtered/
+  final_prefix: final/
+  tokenized_prefix: tokenized/
+
+target:
+  model_params: 60_000_000
+  train_tokens_needed: 1_800_000_000
+  train_tokens_target: 2_100_000_000   # 1.8B + ~15% headroom, after all filtering
+  bytes_per_token_estimate: 9.5        # rough Hindi figure at ~10K vocab; calibrated in Stage 5
+  stage3a_overshoot: 1.25              # keep streaming until 1.25x target, to absorb near-dedup losses
+  quality_filter_trigger_multiple: 2.0 # run Stage 3c only if survivors > 2x target
+  quality_filter_keep_multiple: 1.5    # keep top slice reaching ~1.5x target
+
+sources:
+  # Verified 2026-10-01 against HF metadata (see data/SOURCES.md).
+  wikipedia:
+    hf_repo: wikimedia/wikipedia
+    prefix: 20231101.hi/
+    file_suffix: .parquet
+    format: parquet
+    id_field: id
+    text_field: text
+    priority: 1
+    upsample_train: 2
+    use: all
+  manual:
+    # Course-project crawl, copied read-only from s3/lma_minor/hindi/data/manual
+    hf_repo: Prateek-Tiwari10/hindi-lm-data
+    prefix: raw/manual/
+    file_suffix: .jsonl.zst
+    format: jsonl.zst
+    id_field: url
+    text_field: text
+    priority: 2
+    upsample_train: 1
+    use: all
+  sangraha_verified:
+    hf_repo: ai4bharat/sangraha
+    prefix: verified/hin/
+    file_suffix: .parquet
+    format: parquet
+    id_field: doc_id
+    text_field: text
+    priority: 3
+    upsample_train: 1
+    use: until_target
+  fineweb2:
+    hf_repo: HuggingFaceFW/fineweb-2
+    prefix: data/hin_Deva/train/
+    file_suffix: .parquet
+    format: parquet
+    id_field: id
+    text_field: text
+    priority: 4
+    upsample_train: 1
+    use: only_if_needed
+    enabled: false                      # sampled in Stage 1 for stats; not used in Stage 3 unless enabled
+  excluded:
+    - sangraha_synthetic               # machine-translated; never load (sources.py refuses it)
+
+runtime:
+  work_dir: /tmp/hindi-lm             # scratch disk inside the Kaggle session
+  out_dir: /kaggle/working/out        # reports fetched with `k.sh kernels output`
+  workers: 4                          # Kaggle CPU kernels have 4 cores
+  batch_docs: 500                     # docs per worker task
+
+samples:
+  docs_per_source: 10_000
+  pool_docs: 100_000                  # reservoir-sample 10k from the first 100k docs of random files
+  pool_files: 3
+  seed: 99
+  out_dir: data/raw/samples
+  preview_docs: 3
+  preview_chars: 300
+
+normalize:
+  form: NFC
+  devanagari_range: [0x0900, 0x097F]
+  keep_joiners_between_devanagari: true
+  pipe_to_danda: true
+  convert_devanagari_digits: false
+  max_consecutive_newlines: 2
+
+filters:
+  min_words: 50
+  devanagari_ratio_min: 0.80
+  unique_lines_ratio_min: 0.70
+  symbol_ratio_max: 0.30
+  mean_word_len_min: 2
+  mean_word_len_max: 15
+  boilerplate:
+    min_repeats: 3
+    max_fraction: 0.5                   # "mostly boilerplate" = phrases cover > this share of chars
+    phrases:
+      - "सब्सक्राइब करें"
+      - "cookie"
+      - "लॉग इन करें"
+      - "यह भी पढ़ें"
+      - "copyright"
+  pii:
+    email_token: "<EMAIL>"
+    phone_token: "<PHONE>"
+
+audit:
+  removed_per_stage_per_source: 50
+  chars_shown: 400
+  out_dir: results/filter_audit
+  seed: 1234
+
+pipeline:
+  shard_docs: 200_000
+  done_marker_suffix: ".done"
+
+dedup:
+  hash: xxh64
+  minhash:
+    shingle: word
+    ngram: 5
+    num_perm: 128
+    seed: 42
+    bands: 16
+    rows_per_band: 8
+    threshold: 0.80
+    bytes_per_doc_budget: 512
+  keep_priority: [wikipedia, manual, sangraha_verified, fineweb2]
+  audit_pairs: 20
+
+quality:
+  docs_per_class: 200_000
+  positive_sources: [wikipedia, manual]
+  negative_sources: [sangraha_verified, fineweb2]
+  never_drop: [wikipedia, manual]
+  seed: 7
+
+split:
+  modulus: 10_000
+  train: 0.995
+  val: 0.0025
+  test: 0.0025

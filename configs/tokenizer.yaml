@@ -1,0 +1,91 @@
+# Tokenizer sweep and encoding config (Decision D4). Scripts read values from here only.
+
+hf:
+  tokenizer_repo: Prateek-Tiwari10/hindi-lm-tokenizer
+  dataset_repo: Prateek-Tiwari10/hindi-lm-data
+  sweep_prefix: sweep/                # all 8 .model/.vocab + train info, in the tokenizer repo
+  work_prefix: work/tokenizer/        # tok sample + val docs, in the dataset repo
+
+runtime:
+  work_dir: /tmp/hindi-lm
+  out_dir: /kaggle/working/out
+  threads: 4
+
+sample:
+  target_tokens: 100_000_000
+  target_bytes: 950_000_000           # ~100M tokens at ~9.5 bytes/token
+  split: train
+  upsample: false                     # same source proportions as train, no upsampling
+  max_line_chars: 2000
+  out_path: data/work/tok_sample.txt
+  val_docs: 20_000
+  val_out_path: data/work/val_docs.jsonl.gz
+  seed: 2024
+
+sweep:
+  model_types: [bpe, unigram]
+  vocab_sizes: [8192, 10240, 12288, 16384]
+  out_dir: tokenizer/out
+
+trainer:
+  character_coverage: 0.9995
+  byte_fallback: true
+  split_digits: true
+  normalization_rule_name: identity   # our normalize() already ran; SPM's NFKC would undo NFC
+  pad_id: 0
+  unk_id: 1
+  bos_id: 2
+  eos_id: 3
+  chat_symbols: ["<|system|>", "<|user|>", "<|assistant|>"]
+  num_reserved_symbols: 16            # <|reserved_0|> ... <|reserved_15|>
+  input_sentence_size: 5_000_000
+  shuffle_input_sentence: true
+  max_sentence_length: 16384
+
+metrics:
+  heavy_split_pieces: 4
+  embedding_dim: 512
+  model_params: 60_000_000
+
+morphology:
+  # The 8 stems from the decision log, plus 16 more of the same kind: 8 x 12 = 96
+  # candidates is too few to reach ~200 real words after the frequency filter.
+  stems: ["लड़क", "किताब", "पढ़", "खा", "बात", "घर", "कहान", "सोच",
+          "बच्च", "लिख", "देख", "चल", "सुन", "बोल", "खेल", "समझ",
+          "बैठ", "मिल", "रात", "सड़क", "कपड़", "दोस्त", "शहर", "गा"]
+  suffixes: ["ों", "ियों", "े", "ी", "ा", "ें", "ाएँगे", "ेंगे", "ता", "ती", "ते", "कर"]
+  min_count_in_sample: 20
+  target_words: 200
+  out_path: tokenizer/morph_words.tsv
+
+selection:
+  fertility_gain_threshold: 0.03      # elbow: next size improves fertility by < 3%
+  max_embedding_share: 0.15
+  fallback_vocab: 16384
+  tie_fertility_margin: 0.02          # within 2% -> tie; ties go to Unigram
+  tie_winner: unigram
+  # "Clearly better" on a secondary metric (only used when fertility is within 2%):
+  clear_margin_heavy_split_pp: 1.0    # >= 1 percentage point fewer heavy splits
+  clear_margin_morphology_pp: 5.0     # >= 5 percentage points higher morphology score
+  # If the two algorithms pick different sizes, compare them at the larger one.
+  common_size_rule: larger
+
+examples:                             # same 10 sentences tokenized by every tokenizer
+  - "भारत एक विशाल और विविधताओं से भरा देश है।"
+  - "लड़कियों ने स्कूल में नई किताबें पढ़ीं।"
+  - "हम कल सुबह दिल्ली जाएँगे और शाम तक लौट आएँगे।"
+  - "प्रधानमंत्री ने 2024 में 15 नई योजनाओं की घोषणा की।"
+  - "वैज्ञानिकों ने जलवायु परिवर्तन पर एक नया अध्ययन प्रकाशित किया।"
+  - "क्या आप मुझे रेलवे स्टेशन का रास्ता बता सकते हैं?"
+  - "बच्चे मैदान में क्रिकेट खेल रहे थे।"
+  - "उसने अपनी माँ के लिए स्वादिष्ट खाना बनाया।"
+  - "कंप्यूटर और इंटरनेट ने हमारी ज़िंदगी बदल दी है।"
+  - "गंगा नदी हिमालय से निकलकर बंगाल की खाड़ी में गिरती है।"
+
+encode:
+  dtype: uint16
+  shard_tokens: 500_000_000
+  shuffle_seed: 1337
+  wikipedia_train_repeats: 2
+  encode_batch_docs: 2000
+  min_train_tokens: 1_800_000_000     # D1: STOP if the real train count is below this

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hindi-lm"
+version = "0.1.0"
+description = "A Hindi decoder-only language model trained from scratch."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "datasets",
+    "huggingface_hub>=0.25,<2.0",  # Kaggle's datasets/transformers need <2.0
+    "sentencepiece",
+    "numpy",
+    "pyarrow",
+    "pyyaml",
+    "xxhash",
+    "tqdm",
+    "matplotlib",
+    "fasttext-wheel; python_version < '3.13'",  # no wheels for 3.13+; Kaggle runs 3.11/3.12
+    "pytest",
+    "zstandard",  # manual collection is stored as .jsonl.zst
+]
+
+[tool.setuptools.packages.find]
+include = ["data*", "tokenizer*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

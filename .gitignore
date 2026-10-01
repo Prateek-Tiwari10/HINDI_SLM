@@ -1,0 +1,36 @@
+# Large artifacts live on Hugging Face Hub, never in git
+data/raw/
+data/work/
+*.bin
+*.parquet
+*.jsonl.gz
+
+# Local Kaggle account pinning (points at credentials; never commit)
+.kaggle_account_dir
+
+# Secrets
+.env
+kaggle.json
+access_token*
+
+# Tokenizer training outputs (only the chosen one is committed, explicitly)
+tokenizer/out/
+
+# Kaggle kernel output downloads
+results/kaggle_logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+build/
+dist/
+tokenizer/_hub/
+kaggle/hindi-lm-runner/run.py
+
+# do not inlcude the decision and instrution file in the github repo, at the end of the project we will properly create a report for that same thing 
+.kaggle_account_dir
+CLAUDE_CODE_INSTRUCTIONS_D1_D4.md
+DECISIONS.md
