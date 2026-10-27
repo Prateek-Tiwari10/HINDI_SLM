@@ -21,10 +21,11 @@ dependencies = [
     "fasttext-wheel; python_version < '3.13'",  # no wheels for 3.13+; Kaggle runs 3.11/3.12
     "pytest",
     "zstandard",  # manual collection is stored as .jsonl.zst
+    "torch",  # preinstalled on Kaggle; D5/D6 model and training
 ]
 
 [tool.setuptools.packages.find]
-include = ["data*", "tokenizer*"]
+include = ["data*", "tokenizer*", "model*", "train*", "eval*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
