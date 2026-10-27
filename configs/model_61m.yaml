@@ -1,0 +1,14 @@
+# D5 — LLaMA-style decoder, fixed config. Do not change these numbers.
+vocab_size: 10240          # hi_unigram_10240
+d_model: 640
+n_layers: 12
+n_heads: 10                # head_dim = 64
+n_kv_heads: 5              # GQA: 2 query heads share each K/V head
+ffn_hidden: 1728           # SwiGLU; ~8/3 * d_model, multiple of 64
+max_seq_len: 1024
+rope_theta: 10000.0
+norm_eps: 1.0e-5           # RMSNorm, pre-norm
+tie_embeddings: true       # lm_head.weight is tok_emb.weight
+dropout: 0.0               # single pass over the data
+attn_impl: sdpa            # "manual" is the reference path; training uses sdpa
+expected_params: 61128320  # asserted at build time (54,574,080 non-embedding)
