@@ -34,3 +34,19 @@ kaggle/hindi-lm-runner/run.py
 .kaggle_account_dir
 CLAUDE_CODE_INSTRUCTIONS_D1_D4.md
 DECISIONS.md
+CLAUDE_CODE_INSTRUCTIONS_D5_D6.md
+
+# Model checkpoints and weights (live on HF hindi-lm-checkpoints)
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+checkpoints/
+ckpt/
+
+# Generated Kaggle kernel bundles (built by kaggle/push.sh from run_template.py)
+kaggle/*/run.py
+
+# Local tooling / scratch
+.github/copilot-instructions.md
+TXT
