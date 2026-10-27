@@ -1,0 +1,171 @@
+{
+ "tokenizer": "hi_unigram_8192",
+ "vocab_size": 8192,
+ "dtype": "uint16",
+ "bos_id": 2,
+ "eos_id": 3,
+ "seed": 1337,
+ "config_hash": "1462c5c6d5ef",
+ "data_config_hash": "3d5c2c56ce14",
+ "splits": {
+  "train": {
+   "files": [
+    [
+     "train_000.bin",
+     500000000
+    ],
+    [
+     "train_001.bin",
+     500000000
+    ],
+    [
+     "train_002.bin",
+     500000000
+    ],
+    [
+     "train_003.bin",
+     500000000
+    ],
+    [
+     "train_004.bin",
+     500000000
+    ],
+    [
+     "train_005.bin",
+     332742820
+    ]
+   ],
+   "total_tokens_incl_bos_eos": 2832742820,
+   "docs": 4517509,
+   "per_source": {
+    "once": {
+     "manual": {
+      "docs": 283060,
+      "tokens": 187838169,
+      "bytes": 1661107045
+     },
+     "sangraha_verified": {
+      "docs": 4062323,
+      "tokens": 2499389767,
+      "bytes": 22547579536
+     },
+     "wikipedia": {
+      "docs": 86063,
+      "tokens": 68239933,
+      "bytes": 560615713
+     }
+    },
+    "with_upsampling": {
+     "manual": {
+      "docs": 283060,
+      "tokens": 187838169,
+      "bytes": 1661107045
+     },
+     "sangraha_verified": {
+      "docs": 4062323,
+      "tokens": 2499389767,
+      "bytes": 22547579536
+     },
+     "wikipedia": {
+      "docs": 172126,
+      "tokens": 136479866,
+      "bytes": 1121231426
+     }
+    }
+   }
+  },
+  "val": {
+   "files": [
+    [
+     "val.bin",
+     6860319
+    ]
+   ],
+   "total_tokens_incl_bos_eos": 6860319,
+   "docs": 11157,
+   "per_source": {
+    "once": {
+     "manual": {
+      "docs": 712,
+      "tokens": 470238,
+      "bytes": 4159171
+     },
+     "sangraha_verified": {
+      "docs": 10231,
+      "tokens": 6231024,
+      "bytes": 56203221
+     },
+     "wikipedia": {
+      "docs": 214,
+      "tokens": 136743,
+      "bytes": 1105936
+     }
+    },
+    "with_upsampling": {
+     "manual": {
+      "docs": 712,
+      "tokens": 470238,
+      "bytes": 4159171
+     },
+     "sangraha_verified": {
+      "docs": 10231,
+      "tokens": 6231024,
+      "bytes": 56203221
+     },
+     "wikipedia": {
+      "docs": 214,
+      "tokens": 136743,
+      "bytes": 1105936
+     }
+    }
+   }
+  },
+  "test": {
+   "files": [
+    [
+     "test.bin",
+     7042140
+    ]
+   ],
+   "total_tokens_incl_bos_eos": 7042140,
+   "docs": 11280,
+   "per_source": {
+    "once": {
+     "manual": {
+      "docs": 736,
+      "tokens": 484511,
+      "bytes": 4282783
+     },
+     "sangraha_verified": {
+      "docs": 10322,
+      "tokens": 6329523,
+      "bytes": 57004639
+     },
+     "wikipedia": {
+      "docs": 222,
+      "tokens": 205546,
+      "bytes": 1704598
+     }
+    },
+    "with_upsampling": {
+     "manual": {
+      "docs": 736,
+      "tokens": 484511,
+      "bytes": 4282783
+     },
+     "sangraha_verified": {
+      "docs": 10322,
+      "tokens": 6329523,
+      "bytes": 57004639
+     },
+     "wikipedia": {
+      "docs": 222,
+      "tokens": 205546,
+      "bytes": 1704598
+     }
+    }
+   }
+  }
+ },
+ "bytes_per_token": 8.989
+}

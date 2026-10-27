@@ -1,0 +1,79 @@
+{
+ "rows": [
+  {
+   "name": "ladder_unigram_8192_p05",
+   "model_type": "unigram",
+   "vocab_size": 8192,
+   "fertility": 1.4335,
+   "chars_per_token": 3.5591,
+   "byte_fallback_pct": 1.4247,
+   "heavy_split_pct": 4.2192,
+   "embedding_pct": 6.9905,
+   "morphology_pct": 46.1039,
+   "train_seconds": 377.9,
+   "peak_ram_gb": 9.6,
+   "sample_pct": 4.99,
+   "sample_lines": 1207783
+  },
+  {
+   "name": "ladder_unigram_8192_p15",
+   "model_type": "unigram",
+   "vocab_size": 8192,
+   "fertility": 1.4335,
+   "chars_per_token": 3.559,
+   "byte_fallback_pct": 1.4247,
+   "heavy_split_pct": 4.2175,
+   "embedding_pct": 6.9905,
+   "morphology_pct": 46.7532,
+   "train_seconds": 1221.9,
+   "peak_ram_gb": 28.26,
+   "sample_pct": 14.93,
+   "sample_lines": 3622977
+  },
+  {
+   "name": "ladder_unigram_8192_p30",
+   "model_type": "unigram",
+   "vocab_size": 8192,
+   "fertility": 1.4329,
+   "chars_per_token": 3.5605,
+   "byte_fallback_pct": 1.419,
+   "heavy_split_pct": 4.2095,
+   "embedding_pct": 6.9905,
+   "morphology_pct": 46.7532,
+   "train_seconds": 2813.4,
+   "peak_ram_gb": 88.63,
+   "sample_pct": 29.95,
+   "sample_lines": 7269398
+  }
+ ],
+ "chosen": {
+  "name": "ladder_unigram_8192_p05",
+  "model_type": "unigram",
+  "vocab_size": 8192,
+  "fertility": 1.4335,
+  "chars_per_token": 3.5591,
+  "byte_fallback_pct": 1.4247,
+  "heavy_split_pct": 4.2192,
+  "embedding_pct": 6.9905,
+  "morphology_pct": 46.1039,
+  "train_seconds": 377.9,
+  "peak_ram_gb": 9.6,
+  "sample_pct": 4.99,
+  "sample_lines": 1207783
+ },
+ "skipped": [],
+ "rule": {
+  "model_type": "unigram",
+  "vocab_size": 8192,
+  "fractions": [
+   0.05,
+   0.15,
+   0.3
+  ],
+  "extend_fraction": 0.5,
+  "fertility_tol": 0.005,
+  "heavy_split_tol_pp": 0.1,
+  "ram_per_text_byte": 11.0,
+  "ram_headroom": 0.85
+ }
+}

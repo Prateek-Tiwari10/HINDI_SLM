@@ -1,0 +1,136 @@
+{
+ "runs": {
+  "3e-4": {
+   "halted": null,
+   "lr": 0.0003,
+   "exit_code": 0,
+   "steps_done": 600,
+   "final_val_loss": 3.968941,
+   "final_val_bpb": 0.615962,
+   "final_val_windows": 4468,
+   "val_curve": [
+    [
+     100,
+     5.90777
+    ],
+    [
+     200,
+     4.947905
+    ],
+    [
+     300,
+     4.424684
+    ],
+    [
+     400,
+     4.149874
+    ],
+    [
+     500,
+     4.000435
+    ],
+    [
+     600,
+     3.968941
+    ]
+   ],
+   "final_train_loss": 3.999286,
+   "spikes": [],
+   "scaler_decreases": 0,
+   "min_scale": 65536.0,
+   "max_grad_norm": 3.2689,
+   "tok_per_s_median": 57720.0
+  },
+  "6e-4": {
+   "halted": null,
+   "lr": 0.0006,
+   "exit_code": 0,
+   "steps_done": 600,
+   "final_val_loss": 3.740539,
+   "final_val_bpb": 0.580515,
+   "final_val_windows": 4468,
+   "val_curve": [
+    [
+     100,
+     5.525585
+    ],
+    [
+     200,
+     4.688774
+    ],
+    [
+     300,
+     4.206824
+    ],
+    [
+     400,
+     3.940667
+    ],
+    [
+     500,
+     3.780471
+    ],
+    [
+     600,
+     3.740539
+    ]
+   ],
+   "final_train_loss": 3.768895,
+   "spikes": [],
+   "scaler_decreases": 0,
+   "min_scale": 65536.0,
+   "max_grad_norm": 2.6444,
+   "tok_per_s_median": 57701.0
+  },
+  "1e-3": {
+   "halted": null,
+   "lr": 0.001,
+   "exit_code": 0,
+   "steps_done": 600,
+   "final_val_loss": 3.604807,
+   "final_val_bpb": 0.55945,
+   "final_val_windows": 4468,
+   "val_curve": [
+    [
+     100,
+     5.323049
+    ],
+    [
+     200,
+     4.790484
+    ],
+    [
+     300,
+     4.158273
+    ],
+    [
+     400,
+     3.845533
+    ],
+    [
+     500,
+     3.655786
+    ],
+    [
+     600,
+     3.604807
+    ]
+   ],
+   "final_train_loss": 3.633946,
+   "spikes": [],
+   "scaler_decreases": 0,
+   "min_scale": 65536.0,
+   "max_grad_norm": 1.6801,
+   "tok_per_s_median": 57706.0
+  }
+ },
+ "ranking": [
+  "1e-3",
+  "6e-4",
+  "3e-4"
+ ],
+ "pick": "1e-3",
+ "pick_lr": 0.001,
+ "rule_note": "lowest final val loss",
+ "all_complete": true
+}

@@ -1,0 +1,39 @@
+{
+ "exit_codes": {
+  "A": 0,
+  "B_killed": 1,
+  "B_resumed": 0
+ },
+ "latest_after_kill": "step_000080",
+ "resume_event": {
+  "type": "event",
+  "step": 80,
+  "event": "resume",
+  "from": "step_000080",
+  "total_steps": 120,
+  "train_windows": 1895725,
+  "global_batch_windows": 32,
+  "tokens_per_step": 32768,
+  "micro_batch": 8,
+  "grad_accum": 2,
+  "world": 2,
+  "peak_lr": 0.0006,
+  "n_params": 61128320,
+  "val_bytes_subset": [
+   523776,
+   4898930
+  ],
+  "val_bytes_all": [
+   4570764,
+   42489737
+  ],
+  "torch": "2.11.0+cu128"
+ },
+ "steps_compared": 40,
+ "max_loss_diff_81_120": 0.0,
+ "max_loss_diff_A_vs_B_before_kill_1_95": 0.0,
+ "max_loss_diff_B_before_kill_vs_resumed_81_95": 0.0,
+ "batch_hashes_equal_81_120": true,
+ "pass": true,
+ "hf_resume_test_deleted": true
+}

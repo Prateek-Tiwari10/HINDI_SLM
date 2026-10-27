@@ -1,0 +1,127 @@
+{
+ "funnel": {
+  "manual": {
+   "raw": {
+    "docs": 377324,
+    "bytes": 2589662850
+   },
+   "after_filters": {
+    "docs": 286741,
+    "bytes": 1678224561
+   },
+   "after_exact_dedup": {
+    "docs": 285503,
+    "bytes": 1675737945
+   },
+   "after_near_dedup": {
+    "docs": 284508,
+    "bytes": 1669548999
+   },
+   "after_quality": {
+    "docs": 284508,
+    "bytes": 1669548999
+   },
+   "final": {
+    "docs": 284508,
+    "bytes": 1669548999
+   }
+  },
+  "sangraha_verified": {
+   "raw": {
+    "docs": 4355234,
+    "bytes": 24218423959
+   },
+   "after_filters": {
+    "docs": 4182186,
+    "bytes": 23237640844
+   },
+   "after_exact_dedup": {
+    "docs": 4097801,
+    "bytes": 22768731430
+   },
+   "after_near_dedup": {
+    "docs": 4084777,
+    "bytes": 22669080669
+   },
+   "after_quality": {
+    "docs": 4084777,
+    "bytes": 22669080669
+   },
+   "final": {
+    "docs": 4082876,
+    "bytes": 22660787396
+   }
+  },
+  "wikipedia": {
+   "raw": {
+    "docs": 163093,
+    "bytes": 633587134
+   },
+   "after_filters": {
+    "docs": 93146,
+    "bytes": 573374849
+   },
+   "after_exact_dedup": {
+    "docs": 93054,
+    "bytes": 573185720
+   },
+   "after_near_dedup": {
+    "docs": 86499,
+    "bytes": 563426247
+   },
+   "after_quality": {
+    "docs": 86499,
+    "bytes": 563426247
+   },
+   "final": {
+    "docs": 86499,
+    "bytes": 563426247
+   }
+  }
+ },
+ "split": {
+  "train": {
+   "manual": {
+    "docs": 283060,
+    "bytes": 1661107045
+   },
+   "sangraha_verified": {
+    "docs": 4062323,
+    "bytes": 22547579536
+   },
+   "wikipedia": {
+    "docs": 86063,
+    "bytes": 560615713
+   }
+  },
+  "test": {
+   "manual": {
+    "docs": 736,
+    "bytes": 4282783
+   },
+   "sangraha_verified": {
+    "docs": 10322,
+    "bytes": 57004639
+   },
+   "wikipedia": {
+    "docs": 222,
+    "bytes": 1704598
+   }
+  },
+  "val": {
+   "manual": {
+    "docs": 712,
+    "bytes": 4159171
+   },
+   "sangraha_verified": {
+    "docs": 10231,
+    "bytes": 56203221
+   },
+   "wikipedia": {
+    "docs": 214,
+    "bytes": 1105936
+   }
+  }
+ },
+ "est_train_tokens": 2666307158.6315794
+}

@@ -1,0 +1,156 @@
+{
+ "gpus": [
+  "Tesla T4",
+  "Tesla T4"
+ ],
+ "torch": "2.11.0+cu128",
+ "overfit": {
+  "first": 9.361103057861328,
+  "min": 0.00021076196571812034,
+  "last": 0.00021076196571812034,
+  "steps_to_below_0.5": 116,
+  "finite": true,
+  "seconds": 68.4,
+  "pass": true
+ },
+ "bench_attempts": [
+  {
+   "micro_batch": 8,
+   "compile": false,
+   "status": "ok",
+   "seconds": 24.5
+  },
+  {
+   "micro_batch": 16,
+   "compile": false,
+   "status": "ok",
+   "seconds": 41.5
+  },
+  {
+   "micro_batch": 24,
+   "compile": false,
+   "status": "failed",
+   "seconds": 9.4
+  },
+  {
+   "micro_batch": 8,
+   "compile": true,
+   "status": "ok",
+   "seconds": 63.1
+  },
+  {
+   "micro_batch": 16,
+   "compile": true,
+   "status": "ok",
+   "seconds": 69.6
+  },
+  {
+   "micro_batch": 24,
+   "compile": true,
+   "status": "ok",
+   "seconds": 81.7
+  }
+ ],
+ "bench": [
+  {
+   "micro_batch": 8,
+   "compile": false,
+   "grad_accum": 4,
+   "world": 2,
+   "tok_per_s": 38947,
+   "s_per_262k_step": 6.731,
+   "mfu": 0.1382,
+   "peak_mem_gb": 5.73,
+   "warmup_s": 5.5,
+   "finite": true,
+   "last_loss": 8.0383,
+   "gpu": "Tesla T4",
+   "torch": "2.11.0+cu128"
+  },
+  {
+   "micro_batch": 16,
+   "compile": false,
+   "grad_accum": 4,
+   "world": 2,
+   "tok_per_s": 35317,
+   "s_per_262k_step": 7.423,
+   "mfu": 0.1253,
+   "peak_mem_gb": 10.1,
+   "warmup_s": 10.9,
+   "finite": true,
+   "last_loss": 7.796,
+   "gpu": "Tesla T4",
+   "torch": "2.11.0+cu128"
+  },
+  {
+   "micro_batch": 8,
+   "compile": true,
+   "grad_accum": 4,
+   "world": 2,
+   "tok_per_s": 51779,
+   "s_per_262k_step": 5.063,
+   "mfu": 0.1837,
+   "peak_mem_gb": 4.01,
+   "warmup_s": 42.4,
+   "finite": true,
+   "last_loss": 8.0394,
+   "gpu": "Tesla T4",
+   "torch": "2.11.0+cu128"
+  },
+  {
+   "micro_batch": 16,
+   "compile": true,
+   "grad_accum": 4,
+   "world": 2,
+   "tok_per_s": 47897,
+   "s_per_262k_step": 5.473,
+   "mfu": 0.1699,
+   "peak_mem_gb": 6.67,
+   "warmup_s": 42.2,
+   "finite": true,
+   "last_loss": 7.7946,
+   "gpu": "Tesla T4",
+   "torch": "2.11.0+cu128"
+  },
+  {
+   "micro_batch": 24,
+   "compile": true,
+   "grad_accum": 4,
+   "world": 2,
+   "tok_per_s": 48668,
+   "s_per_262k_step": 5.386,
+   "mfu": 0.1726,
+   "peak_mem_gb": 9.4,
+   "warmup_s": 46.3,
+   "finite": true,
+   "last_loss": 7.7907,
+   "gpu": "Tesla T4",
+   "torch": "2.11.0+cu128"
+  }
+ ],
+ "choice": {
+  "micro_batch": 8,
+  "compile": true,
+  "grad_accum": 4,
+  "world": 2,
+  "tok_per_s": 51779,
+  "s_per_262k_step": 5.063,
+  "mfu": 0.1837,
+  "peak_mem_gb": 4.01,
+  "warmup_s": 42.4,
+  "finite": true,
+  "last_loss": 8.0394,
+  "gpu": "Tesla T4",
+  "torch": "2.11.0+cu128"
+ },
+ "compile_speedup": 1.329,
+ "projection": {
+  "steps": 7405,
+  "tokens": 1941176320,
+  "tok_per_s": 51779,
+  "wall_hours": 10.41,
+  "gpu_hours": 20.83,
+  "sessions_11h15m": 1,
+  "gate_over_30_gpu_hours": false
+ }
+}

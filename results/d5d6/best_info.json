@@ -1,0 +1,21 @@
+{
+ "step": 7250,
+ "tokens": 1900544000,
+ "val_loss": 2.7825373858213425,
+ "windows": 512,
+ "model_config": {
+  "vocab_size": 10240,
+  "d_model": 640,
+  "n_layers": 12,
+  "n_heads": 10,
+  "n_kv_heads": 5,
+  "ffn_hidden": 1728,
+  "max_seq_len": 1024,
+  "rope_theta": 10000.0,
+  "norm_eps": 1e-05,
+  "tie_embeddings": true,
+  "dropout": 0.0,
+  "attn_impl": "sdpa",
+  "expected_params": 61128320
+ }
+}

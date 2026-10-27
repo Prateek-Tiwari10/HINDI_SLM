@@ -1,0 +1,4 @@
+name,model_type,vocab_size,fertility,chars_per_token,byte_fallback_pct,heavy_split_pct,embedding_pct,morphology_pct,train_seconds,peak_ram_gb,sample_pct,sample_lines
+ladder_unigram_8192_p05,unigram,8192,1.4335,3.5591,1.4247,4.2192,6.9905,46.1039,377.9,9.6,4.99,1207783
+ladder_unigram_8192_p15,unigram,8192,1.4335,3.559,1.4247,4.2175,6.9905,46.7532,1221.9,28.26,14.93,3622977
+ladder_unigram_8192_p30,unigram,8192,1.4329,3.5605,1.419,4.2095,6.9905,46.7532,2813.4,88.63,29.95,7269398

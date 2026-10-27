@@ -1,0 +1,11 @@
+{
+ "split": "val",
+ "windows_all": 4468,
+ "targets_all": 4570764,
+ "bytes_all": 42489737,
+ "windows_subset": 512,
+ "targets_subset": 523776,
+ "bytes_subset": 4898930,
+ "bytes_per_target_token_all": 9.295981372041961,
+ "method": "per-token UTF-8 byte table (train/data.py token_byte_lengths); bos/eos/control = 0 bytes"
+}

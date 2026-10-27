@@ -1,0 +1,5 @@
+source,docs,mean_chars,median_chars,mean_bytes,pct_devanagari_letters,est_total_docs,est_total_gb,est_total_tokens_b
+wikipedia,10000,1487.9,484.5,3739.5,96.89,163093,0.61,0.06
+manual,10000,3347.2,2430.5,7061.6,95.16,377324,2.66,0.28
+sangraha_verified,10000,2229.7,1538.0,5649.4,97.75,17420932,98.42,10.36
+fineweb2,10000,2496.3,1699.0,6225.5,96.36,22095985,137.56,14.48

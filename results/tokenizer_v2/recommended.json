@@ -1,0 +1,18 @@
+{
+ "name": "hi_unigram_10240",
+ "metrics": {
+  "name": "hi_unigram_10240",
+  "model_type": "unigram",
+  "vocab_size": 10240,
+  "fertility": 1.3934,
+  "chars_per_token": 3.6616,
+  "byte_fallback_pct": 1.4657,
+  "heavy_split_pct": 3.6595,
+  "embedding_pct": 8.7381,
+  "morphology_pct": 44.1558,
+  "train_seconds": 374.5,
+  "peak_ram_gb": 9.6,
+  "sample_pct": 4.99,
+  "sample_lines": 1207783
+ }
+}

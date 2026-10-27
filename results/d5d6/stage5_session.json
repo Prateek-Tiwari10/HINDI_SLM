@@ -1,0 +1,35 @@
+{
+ "exit_code": 0,
+ "started": "resume",
+ "resumed_from": "step_006500",
+ "start_step": 6500,
+ "end_step": 7405,
+ "total_steps": 7405,
+ "tokens_seen": 1941176320,
+ "last_train_loss": 2.856983,
+ "last_val": {
+  "type": "val",
+  "step": 7405,
+  "tokens": 1941176320,
+  "val_loss": 2.805025,
+  "val_ppl": 16.527,
+  "val_bpb": 0.435327,
+  "windows": 4468
+ },
+ "tok_per_s_median": 52764.0,
+ "mfu_median": 0.1872,
+ "min_scale": 524288.0,
+ "max_grad_norm": 0.2103,
+ "mem_gb": 4.02,
+ "halts": [],
+ "stop_wall_clock": false,
+ "done": true,
+ "session_end": {
+  "type": "event",
+  "step": 7405,
+  "event": "session_end",
+  "done": true,
+  "halted": false,
+  "elapsed_s": 4720
+ }
+}
