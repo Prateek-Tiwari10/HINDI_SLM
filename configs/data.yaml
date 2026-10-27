@@ -3,18 +3,21 @@
 hf:
   user: Prateek-Tiwari10
   dataset_repo: Prateek-Tiwari10/hindi-lm-data
-  filtered_prefix: work/filtered/
-  final_prefix: final/
+  # v2 = full-Sangraha collection + strict cleaning + quality ranking. v1 (work/filtered/,
+  # final/, tokenized/hi_unigram_8192/) stays on the Hub untouched for comparison.
+  work_prefix: work/v2/               # drop lists, markers, boilerplate lines, quality scores
+  filtered_prefix: work/v2/filtered/
+  final_prefix: final_v2/
   tokenized_prefix: tokenized/
 
 target:
   model_params: 60_000_000
   train_tokens_needed: 1_800_000_000
-  train_tokens_target: 2_100_000_000   # 1.8B + ~15% headroom, after all filtering
-  bytes_per_token_estimate: 9.5        # rough Hindi figure at ~10K vocab; calibrated in Stage 5
-  stage3a_overshoot: 1.25              # keep streaming until 1.25x target, to absorb near-dedup losses
+  train_tokens_target: 2_000_000_000   # v2: the quality ranking keeps the best docs up to this many train tokens
+  collect_tokens_target: 10_000_000_000 # v2: raw tokens to collect before cleaning (all sources read in full)
+  bytes_per_token_estimate: 8.99       # measured in Stage 5 (v1) with hi_unigram_8192
+  stage3a_overshoot: 1.0
   quality_filter_trigger_multiple: 2.0 # run Stage 3c only if survivors > 2x target
-  quality_filter_keep_multiple: 1.5    # keep top slice reaching ~1.5x target
 
 sources:
   # Verified 2026-10-01 against HF metadata (see data/SOURCES.md).
@@ -48,7 +51,7 @@ sources:
     text_field: text
     priority: 3
     upsample_train: 1
-    use: until_target
+    use: all                            # v2: all 100 files (~10.5B raw tokens)
   fineweb2:
     hf_repo: HuggingFaceFW/fineweb-2
     prefix: data/hin_Deva/train/
@@ -102,9 +105,52 @@ filters:
       - "लॉग इन करें"
       - "यह भी पढ़ें"
       - "copyright"
+  # v2 additions, adapted from Gopher (Rae et al. 2021) and FineWeb for Hindi.
+  max_words: 100_000
+  stopword_ratio_min: 0.10              # share of words that are Hindi function words
+  stopwords: [है, हैं, था, थी, थे, हो, के, की, का, को, में, से, पर, ने, और, या, कि,
+              यह, वह, ये, वे, इस, उस, भी, ही, तो, एक, लिए, कर, नहीं, जो, साथ, तक]
+  dup_line_char_frac_max: 0.20          # chars in repeated lines / all chars
+  line_punct_ratio_min: 0.12            # share of lines ending in terminal punctuation
+  terminal_punct: "।॥.?!\"”’')"
+  short_line_chars: 30
+  short_line_char_frac_max: 0.50        # share of chars in lines shorter than short_line_chars
+                                        # (by chars, not FineWeb's line count: the count dropped 6.9% of Wikipedia, mostly stubs + link lists)
+  bullet_line_ratio_max: 0.90
+  ellipsis_line_ratio_max: 0.30
+  top_ngram_char_frac_max: {2: 0.20, 3: 0.18, 4: 0.16}
+  dup_ngram_char_frac_max: {5: 0.15, 6: 0.14, 7: 0.13, 8: 0.12, 9: 0.11, 10: 0.10}
   pii:
     email_token: "<EMAIL>"
     phone_token: "<PHONE>"
+
+lines:
+  # Line-level cleaning (v2), applied after normalize() and before the doc filters.
+  # 1. Lines that repeat across many different docs (nav bars, share widgets, bylines).
+  #    Counted on the v1 filtered shards (4.45M docs), skipping v1 near-duplicates so
+  #    syndicated articles do not count as boilerplate.
+  count_prefix: work/filtered/
+  count_near_drops: work/near_dedup/drops.parquet
+  min_docs: 30                          # a line in >= 30 different docs is boilerplate
+  max_chars: 300                        # longer repeated lines are content; near-dedup handles them
+  report_top: 300
+  # 2. Short lines matching these patterns (case-insensitive), wherever they occur.
+  pattern_max_chars: 200
+  drop_patterns:
+    - "^(यह|ये|इसे|इन्हें|इन्हे)\\s+(भी|खबरें)\\s+पढ़ें"
+    - "^(और|अधिक|पूरी खबर)\\s+पढ़ें"
+    - "^(also read|read also|read more|click here|advertisement|sponsored|follow us)\\b"
+    - "^(विज्ञापन|स्पॉन्सर्ड)\\s*$"
+    - "^(फोटो|फ़ोटो|तस्वीर|चित्र|photo|image|pic)\\s*(साभार)?\\s*[:|-]"
+    - "^(tags?|टैग्स?|टैग|keywords?)\\s*[:：]"
+    - "(सर्वाधिकार सुरक्षित|all rights reserved|©|copyright)"
+    - "(ऐप|app)\\s*(डाउनलोड|download)|डाउनलोड करें"
+    - "(फॉलो करें|सब्सक्राइब करें|लाइक करें|शेयर करें|(ग्रुप|चैनल) से जुड़ें|join (our|us))"
+    - "(javascript|cookies?)\\b"
+
+stop_rules:                           # from the instruction file: halt and ask Prateek
+  max_removed_wikipedia: 0.60
+  max_removed_any: 0.90
 
 audit:
   removed_per_stage_per_source: 50
@@ -131,10 +177,21 @@ dedup:
   audit_pairs: 20
 
 quality:
+  # v2: always runs; keeps every never_drop doc, then web docs up to target.train_tokens_target.
+  # method decides which web docs:
+  #   random   - a seeded random draw per doc, so every genre keeps its share (in use; option D).
+  #   fasttext - rank by P(hq) from a classifier trained on Wikipedia + news crawl vs web. Ran once
+  #              (work/v2/quality/); rejected: the audit shows it learned source/spelling style
+  #              (dropped books and ordinary news at P~0), not quality.
+  method: random
   docs_per_class: 200_000
   positive_sources: [wikipedia, manual]
   negative_sources: [sangraha_verified, fineweb2]
+  negative_shards: 25                   # random web shards the negatives are drawn from
   never_drop: [wikipedia, manual]
+  fasttext: {epoch: 5, word_ngrams: 2, dim: 64, bucket: 1_000_000}
+  audit_shards: 4                       # web shards re-read for the cut-line audit
+  audit_docs: 30
   seed: 7
 
 split:

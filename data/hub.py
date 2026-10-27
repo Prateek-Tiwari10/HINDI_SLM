@@ -10,9 +10,10 @@ import tempfile
 import time
 from pathlib import Path
 
-from huggingface_hub import HfApi, hf_hub_download
+from huggingface_hub import CommitOperationAdd, HfApi, hf_hub_download
 
-RETRIES = 5
+RETRIES = 8
+MAX_WAIT_SECONDS = 300  # HF commit rate limits can need minutes, not seconds
 
 
 def get_api():
@@ -28,7 +29,7 @@ def _retry(fn, what):
         except Exception as err:  # noqa: BLE001 - any network error is retried
             if attempt == RETRIES - 1:
                 raise
-            wait = 2 ** attempt * 5
+            wait = min(MAX_WAIT_SECONDS, 2 ** attempt * 5)
             print(f"[hub] {what} failed ({type(err).__name__}: {err}); retry in {wait}s", flush=True)
             time.sleep(wait)
 
@@ -75,6 +76,31 @@ def upload_folder(repo_id, local_dir, path_in_repo, repo_type="dataset", message
         ),
         f"upload folder {path_in_repo}",
     )
+
+
+def upload_folder_with_marker(repo_id, local_dir, path_in_repo, marker_path, repo_type="dataset", message=None):
+    """Upload a folder and its done-marker in ONE commit.
+
+    A Hub commit is atomic: either every file lands, or none does. So the
+    marker exists only if the data upload succeeded. That is the done-marker
+    rule, with half the commits (HF rate-limits commits per hour).
+    """
+    local_dir = Path(local_dir)
+    files = sorted(f for f in local_dir.rglob("*") if f.is_file())
+    api = get_api()
+
+    def commit():
+        # Fresh operation objects per attempt: a failed attempt leaves state on them.
+        ops = [
+            CommitOperationAdd(path_in_repo=f"{path_in_repo}/{f.relative_to(local_dir).as_posix()}",
+                               path_or_fileobj=str(f))
+            for f in files
+        ]
+        ops.append(CommitOperationAdd(path_in_repo=marker_path, path_or_fileobj=b"done\n"))
+        api.create_commit(repo_id=repo_id, repo_type=repo_type, operations=ops,
+                          commit_message=message or f"Upload {path_in_repo}")
+
+    _retry(commit, f"commit {path_in_repo}")
 
 
 def write_marker(repo_id, marker_path, repo_type="dataset"):
