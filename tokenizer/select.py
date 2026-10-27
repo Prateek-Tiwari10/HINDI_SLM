@@ -60,6 +60,14 @@ def compare_algorithms(bpe, uni, sel, log):
 def select(rows, sel):
     """Apply the rule. Returns (chosen row, markdown log)."""
     log = ["## Step 1 — vocab size per algorithm", ""]
+    trained = {r["model_type"] for r in rows}
+    if len(trained) == 1:
+        only = trained.pop()
+        size = choose_vocab(rows, only, sel, log)
+        chosen = next(r for r in rows if r["model_type"] == only and r["vocab_size"] == size)
+        log += ["", f"Only {only} tokenizers trained successfully, so steps 2-4 do not apply.",
+                "", f"**Recommended tokenizer: `{chosen['name']}`**"]
+        return chosen, "\n".join(log)
     sizes = {t: choose_vocab(rows, t, sel, log) for t in ("bpe", "unigram")}
     size = max(sizes.values()) if sel["common_size_rule"] == "larger" else min(sizes.values())
     log += ["", "## Step 2 — common size", "",

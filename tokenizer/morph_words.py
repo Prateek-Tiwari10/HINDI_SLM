@@ -9,6 +9,7 @@ import csv
 import re
 import unicodedata
 from collections import Counter
+from pathlib import Path
 
 from data.config import REPO_ROOT, load_config
 
@@ -86,4 +87,4 @@ def morphology_score(sp, words):
 
 if __name__ == "__main__":
     config = load_config("configs/tokenizer.yaml")
-    build(config, REPO_ROOT / config["sample"]["out_path"])
+    build(config, Path(config["sample"]["band_dir"]) / "band_0.txt")  # the smallest sample

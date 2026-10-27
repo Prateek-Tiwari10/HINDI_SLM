@@ -1,4 +1,4 @@
-"""Stage 5: encode final/{train,val,test} with the chosen tokenizer into uint16 .bin shards.
+"""Stage 5: encode <final_prefix>{train,val,test} with the chosen tokenizer into uint16 .bin shards.
 
     python -m tokenizer.encode [--tokenizer hi_unigram_10240]
 
@@ -10,7 +10,7 @@
    - concatenate into train_000.bin ... (~500M tokens each), val.bin, test.bin.
    Train shards are cut every shard_tokens tokens, so one doc can span two files.
    The training loader reads them as one continuous stream.
-3. Write meta.json and upload everything to tokenized/<tokenizer>/.
+3. Write meta.json and upload everything to <tokenized_prefix><tokenizer>/.
 """
 
 import argparse
@@ -24,6 +24,7 @@ import sentencepiece as spm
 
 from data import hub
 from data.config import config_hash, load_config
+from tokenizer.train import resolve_threads
 
 SPLITS = ("train", "val", "test")
 
@@ -51,7 +52,7 @@ def encode_shard(cfg, sp, split_name, parquet_remote, out_dir):
     batch = cfg["encode"]["encode_batch_docs"]
     docs = []
     for start in range(0, len(table["text"]), batch):
-        docs.extend(encode_docs(sp, table["text"][start : start + batch], cfg["runtime"]["threads"]))
+        docs.extend(encode_docs(sp, table["text"][start : start + batch], resolve_threads(cfg)))
     lengths = np.array([len(d) for d in docs], dtype=np.int64)
     offsets = np.concatenate([[0], np.cumsum(lengths)]).astype(np.int64)
     tokens = np.concatenate(docs) if docs else np.zeros(0, dtype=np.uint16)
@@ -70,12 +71,12 @@ def encode_shard(cfg, sp, split_name, parquet_remote, out_dir):
 def encode_all(cfg, sp, name):
     """Encode every final shard not yet marked done."""
     repo = cfg["hf"]["dataset_repo"]
-    enc_prefix = f"work/encoded/{name}/"
+    enc_prefix = f"{cfg['hf']['encoded_prefix']}{name}/"
     suffix = ".done"
     done = hub.done_markers(repo, enc_prefix, suffix)
     work = Path(cfg["runtime"]["work_dir"], "enc_out")
     for split_name in SPLITS:
-        for remote in hub.list_files(repo, f"final/{split_name}/"):
+        for remote in hub.list_files(repo, f"{cfg['hf']['final_prefix']}{split_name}/"):
             if not remote.endswith(".parquet"):
                 continue
             shard = Path(remote).stem
@@ -84,8 +85,7 @@ def encode_all(cfg, sp, name):
                 continue
             out_dir = work / split_name / shard
             encode_shard(cfg, sp, split_name, remote, out_dir)
-            hub.upload_folder(repo, out_dir, key, message=f"Encoded {split_name}/{shard}")
-            hub.write_marker(repo, f"{key}{suffix}")
+            hub.upload_folder_with_marker(repo, out_dir, key, f"{key}{suffix}", message=f"Encoded {split_name}/{shard}")
             for f in out_dir.iterdir():
                 f.unlink()
             print(f"[encode] {split_name}/{shard}", flush=True)
@@ -94,7 +94,7 @@ def encode_all(cfg, sp, name):
 def load_encoded_split(cfg, name, split_name):
     """Memory-mapped tokens/offsets per shard, plus doc sources and stats."""
     repo = cfg["hf"]["dataset_repo"]
-    prefix = f"work/encoded/{name}/{split_name}/"
+    prefix = f"{cfg['hf']['encoded_prefix']}{name}/{split_name}/"
     local = Path(cfg["runtime"]["work_dir"], "enc_in")
     shards = sorted({p[len(prefix):].split("/")[0] for p in hub.list_files(repo, prefix) if "/" in p[len(prefix):]})
     parts = []
@@ -194,19 +194,22 @@ def assemble(cfg, sp, name):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tokenizer", help="defaults to recommended.json in the tokenizer repo")
+    parser.add_argument("--tokenizer", help="defaults to recommended.json under sweep_prefix in the tokenizer repo")
     args = parser.parse_args()
     cfg = load_config("configs/tokenizer.yaml")
     local = Path(cfg["runtime"]["work_dir"], "tok_model")
     name = args.tokenizer
     if not name:
-        rec = hub.download(cfg["hf"]["tokenizer_repo"], "recommended.json", local, repo_type="model")
+        # The sweep writes recommended.json next to its models; the repo-root copy is v1's.
+        rec = hub.download(cfg["hf"]["tokenizer_repo"], f"{cfg['hf']['sweep_prefix']}recommended.json", local,
+                           repo_type="model")
         name = json.loads(Path(rec).read_text())["name"]
     print(f"[encode] tokenizer {name}", flush=True)
     sp = load_tokenizer(cfg, name, local)
     encode_all(cfg, sp, name)
     out_dir, meta = assemble(cfg, sp, name)
-    hub.upload_folder(cfg["hf"]["dataset_repo"], out_dir, f"tokenized/{name}", message=f"Tokenized dataset {name}")
+    hub.upload_folder(cfg["hf"]["dataset_repo"], out_dir, f"{cfg['hf']['tokenized_prefix']}{name}",
+                      message=f"Tokenized dataset {name}")
     report_dir = Path(cfg["runtime"]["out_dir"])
     report_dir.mkdir(parents=True, exist_ok=True)
     (report_dir / "stage5_meta.json").write_text(json.dumps(meta, indent=1))
@@ -214,7 +217,7 @@ def main():
     print(f"[encode] train content tokens (with Wikipedia 2x): {train_tokens / 1e9:.3f}B; "
           f"bytes/token {meta['bytes_per_token']}", flush=True)
     if train_tokens < cfg["encode"]["min_train_tokens"]:
-        print(f"STOP: train tokens below {cfg['encode']['min_train_tokens'] / 1e9:.1f}B", flush=True)
+        raise SystemExit(f"STOP: train tokens below {cfg['encode']['min_train_tokens'] / 1e9:.1f}B")
 
 
 if __name__ == "__main__":

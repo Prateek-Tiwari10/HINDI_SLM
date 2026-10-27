@@ -3,29 +3,55 @@
 hf:
   tokenizer_repo: Prateek-Tiwari10/hindi-lm-tokenizer
   dataset_repo: Prateek-Tiwari10/hindi-lm-data
-  sweep_prefix: sweep/                # all 8 .model/.vocab + train info, in the tokenizer repo
-  work_prefix: work/tokenizer/        # tok sample + val docs, in the dataset repo
+  # v2: the sweep is retrained on final_v2. v1 models stay under sweep/, v2 ones go to sweep_v2/.
+  sweep_prefix: sweep_v2/             # ladder + 8 grid .model/.vocab + train info, in the tokenizer repo
+  work_prefix: work/v2/tokenizer/     # sample info, in the dataset repo
+  final_prefix: final_v2/
+  final_markers_prefix: work/v2/final_markers_random/   # split done-markers; the sample waits for all of them
+  encoded_prefix: work/v2/encoded/
+  tokenized_prefix: tokenized/v2/
 
 runtime:
   work_dir: /tmp/hindi-lm
   out_dir: /kaggle/working/out
-  threads: 4
+  threads: auto                      # auto = every core (4 on the CPU kernel, many more on the TPU VM)
+  max_threads: 64                     # cap for 'auto' (the TPU VM has ~100+ cores; SentencePiece gains little past this)
 
 sample:
-  target_tokens: 100_000_000
-  target_bytes: 950_000_000           # ~100M tokens at ~9.5 bytes/token
+  # Nested samples of train docs, one per ladder rung. A doc is in rung k when its id-hash draw
+  # is < fractions[k], so the 5% sample is inside the 15% one, which is inside the 30% one.
+  # Each doc goes to one "band" file; rung k trains on bands 0..k (no text is stored twice).
   split: train
   upsample: false                     # same source proportions as train, no upsampling
   max_line_chars: 2000
-  out_path: data/work/tok_sample.txt
+  band_dir: /tmp/hindi-lm/tok/bands   # scratch; rebuilt each run (deterministic), not uploaded
   val_docs: 20_000
-  val_out_path: data/work/val_docs.jsonl.gz
+  val_out_path: /tmp/hindi-lm/tok/val_docs.jsonl.gz
   seed: 2024
+
+ladder:
+  # Does a bigger tokenizer sample give a better tokenizer? Train one tokenizer per rung, score
+  # each on the same val docs, then apply this rule (fixed before any result is seen):
+  #   use the smallest rung whose fertility is within fertility_tol (relative) of the largest
+  #   trained rung, and whose heavy-split rate is within heavy_split_tol_pp (absolute) of it.
+  # Morphology is reported but not used: 154 words is too few to separate close samples.
+  model_type: unigram
+  vocab_size: 8192
+  fractions: [0.05, 0.15, 0.30]
+  # Trained only if the last two rungs still differ by more than the tolerances (the curve has
+  # not flattened yet) and the RAM guard allows it.
+  extend_fraction: 0.50
+  fertility_tol: 0.005
+  heavy_split_tol_pp: 0.10
+  # RAM guard: v1 measured 10.3 GB peak Unigram RAM for a 0.95 GB sample (~11x). A rung is
+  # skipped, and the skip logged, when 11x its text would exceed ram_headroom of free RAM.
+  ram_per_text_byte: 11.0
+  ram_headroom: 0.85
 
 sweep:
   model_types: [bpe, unigram]
   vocab_sizes: [8192, 10240, 12288, 16384]
-  out_dir: tokenizer/out
+  out_dir: /tmp/hindi-lm/tok/out
 
 trainer:
   character_coverage: 0.9995
@@ -38,7 +64,9 @@ trainer:
   eos_id: 3
   chat_symbols: ["<|system|>", "<|user|>", "<|assistant|>"]
   num_reserved_symbols: 16            # <|reserved_0|> ... <|reserved_15|>
-  input_sentence_size: 5_000_000
+  input_sentence_size: 0              # 0 = every line of the sample (v1 used a 5M-line cap); logged
+  # SentencePiece's suffix array is int32 by default and fails on ~2.1B+ characters.
+  large_corpus_chars: 1_500_000_000   # above this, train_extremely_large_corpus=true (same result, 64-bit index)
   shuffle_input_sentence: true
   max_sentence_length: 16384
 

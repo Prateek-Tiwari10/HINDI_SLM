@@ -24,6 +24,7 @@ import sentencepiece as spm  # noqa: E402
 
 from data.config import REPO_ROOT  # noqa: E402
 from tokenizer import morph_words  # noqa: E402
+from tokenizer.train import resolve_threads  # noqa: E402
 
 SERIES_STYLE = {  # fixed categorical order: slot 1 blue, slot 2 orange; marker shape as second cue
     "bpe": {"color": "#2a78d6", "marker": "o", "label": "BPE"},
@@ -68,7 +69,7 @@ def evaluate_all(cfg, infos, val_path):
     words = word_counts(texts)
     morph = morph_words.load(cfg)
     m = cfg["metrics"]
-    threads = cfg["runtime"]["threads"]
+    threads = resolve_threads(cfg)
     out_dir = REPO_ROOT / cfg["sweep"]["out_dir"]
     rows = []
     for info in infos:
@@ -82,6 +83,9 @@ def evaluate_all(cfg, infos, val_path):
         row["morphology_pct"] = morph_words.morphology_score(sp, morph)
         row["train_seconds"] = info["train_seconds"]
         row["peak_ram_gb"] = info["peak_ram_gb"]
+        if "sample" in info:
+            row["sample_pct"] = info["sample"]["pct_of_train_bytes"]
+            row["sample_lines"] = info["sample"]["lines"]
         rows.append({k: round(v, 4) if isinstance(v, float) else v for k, v in row.items()})
         print(f"[eval] {row['name']}: fertility {row['fertility']:.3f}", flush=True)
     return rows, {"val_docs": len(texts), "val_words": sum(words.values()), "morph_words": len(morph)}

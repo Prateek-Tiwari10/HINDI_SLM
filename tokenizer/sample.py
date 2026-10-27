@@ -1,11 +1,12 @@
-"""Stage 4a: tokenizer training sample (train split only) and val text for evaluation.
+"""Stage 4a: nested tokenizer training samples (train split only) and val text for evaluation.
 
-- Training sample: each train doc is kept with probability p = target_bytes / train_bytes.
-  The draw is a hash of the doc id, so it is deterministic. Every source is sampled at
-  the same rate, which keeps train's source proportions, with no upsampling.
+- Every train doc gets a deterministic draw in [0, 1) from a hash of its id. With rung fractions
+  f0 < f1 < ..., the doc goes to band k when f(k-1) <= draw < f(k). Rung k trains on bands 0..k,
+  so the samples are nested (the 5% sample is inside the 15% one) and no line is stored twice.
+- Every source is sampled at the same rate, which keeps train's source proportions, with no upsampling.
 - Docs are split into lines of at most max_line_chars (SentencePiece's line limit).
-- Val text: val_docs docs from the val split, chosen the same way.
-Both files are uploaded to the dataset repo so later steps and reruns can reuse them.
+- Val text: val_docs docs from the val split, chosen by the same hash.
+The samples are rebuilt each run from <final_prefix> (deterministic), so nothing large is uploaded.
 """
 
 import gzip
@@ -50,18 +51,34 @@ def doc_to_lines(text, max_chars):
     return lines
 
 
-def split_bytes(data_repo, split_name, local):
-    """Total text bytes in a split, summed from the final/stats/*.json files."""
+def band_of(draw, fractions):
+    """Index of the first rung whose fraction is above the draw; None if the doc is in no rung."""
+    for i, fraction in enumerate(fractions):
+        if draw < fraction:
+            return i
+    return None
+
+
+def all_fractions(cfg):
+    """Every rung that may be trained, in increasing order (the base rungs plus the extension)."""
+    lcfg = cfg["ladder"]
+    return sorted(set(lcfg["fractions"]) | {lcfg["extend_fraction"]})
+
+
+def split_bytes(cfg, split_name, local):
+    """Total text bytes in a split, summed from the <final_prefix>stats/*.json files."""
+    data_repo, prefix = cfg["hf"]["dataset_repo"], cfg["hf"]["final_prefix"]
     total = 0
-    for path in hub.list_files(data_repo, "final/stats/"):
+    for path in hub.list_files(data_repo, f"{prefix}stats/"):
         stats = json.loads(Path(hub.download(data_repo, path, local)).read_text())
         total += sum(v["bytes"] for v in stats.get(split_name, {}).values())
     return total
 
 
-def iter_split_docs(data_repo, split_name, local):
-    """(id, source, text) of every doc in final/<split>/*.parquet."""
-    for path in hub.list_files(data_repo, f"final/{split_name}/"):
+def iter_split_docs(cfg, split_name, local):
+    """(id, source, text) of every doc in <final_prefix><split>/*.parquet."""
+    data_repo, prefix = cfg["hf"]["dataset_repo"], cfg["hf"]["final_prefix"]
+    for path in hub.list_files(data_repo, f"{prefix}{split_name}/"):
         if not path.endswith(".parquet"):
             continue
         local_path = hub.download(data_repo, path, local)
@@ -70,32 +87,55 @@ def iter_split_docs(data_repo, split_name, local):
         Path(local_path).unlink()
 
 
-def build_train_sample(cfg, out_path):
+def build_bands(cfg, band_dir):
+    """Write band_<k>.txt files; return per-band docs/bytes/chars/lines and the train size."""
     s = cfg["sample"]
-    data_repo = cfg["hf"]["dataset_repo"]
+    fractions = all_fractions(cfg)
     local = Path(cfg["runtime"]["work_dir"], "tok_src")
-    total = split_bytes(data_repo, s["split"], local)
-    rate = min(1.0, s["target_bytes"] / total)
-    print(f"[sample] train bytes {total / 1e9:.2f} GB -> keep rate {rate:.4f}", flush=True)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    kept_bytes = kept_docs = 0
-    with open(out_path, "w", encoding="utf-8") as out:
-        for doc_id, _, text in iter_split_docs(data_repo, s["split"], local):
-            if keep_draw(doc_id, s["seed"]) >= rate:
+    total = split_bytes(cfg, s["split"], local)
+    band_dir = Path(band_dir)
+    band_dir.mkdir(parents=True, exist_ok=True)
+    need = fractions[-1] * total * 1.1
+    free = shutil.disk_usage(band_dir).free
+    print(f"[sample] train {total / 1e9:.2f} GB; bands up to {100 * fractions[-1]:.0f}% need "
+          f"~{need / 1e9:.1f} GB disk, {free / 1e9:.1f} GB free", flush=True)
+    if need > free:
+        raise SystemExit(f"STOP: not enough disk for the tokenizer samples ({need / 1e9:.1f} GB needed)")
+    paths = [band_dir / f"band_{k}.txt" for k in range(len(fractions))]
+    bands = [{"fraction": f, "docs": 0, "bytes": 0, "chars": 0, "lines": 0} for f in fractions]
+    files = [open(path, "w", encoding="utf-8") for path in paths]
+    try:
+        for doc_id, _, text in iter_split_docs(cfg, s["split"], local):
+            k = band_of(keep_draw(doc_id, s["seed"]), fractions)
+            if k is None:
                 continue
-            for line in doc_to_lines(text, s["max_line_chars"]):
-                out.write(line + "\n")
-            kept_docs += 1
-            kept_bytes += len(text.encode("utf-8"))
-    return {"train_bytes": total, "rate": rate, "docs": kept_docs, "bytes": kept_bytes}
+            lines = doc_to_lines(text, s["max_line_chars"])
+            files[k].write("".join(line + "\n" for line in lines))
+            band = bands[k]
+            band["docs"] += 1
+            band["bytes"] += len(text.encode("utf-8"))
+            band["chars"] += sum(len(line) for line in lines)
+            band["lines"] += len(lines)
+    finally:
+        for f in files:
+            f.close()
+    return paths, {"train_bytes": total, "bands": bands}
+
+
+def rung_input(paths, info, k):
+    """Files and cumulative size of rung k (bands 0..k)."""
+    bands = info["bands"][: k + 1]
+    size = {key: sum(b[key] for b in bands) for key in ("docs", "bytes", "chars", "lines")}
+    size["fraction"] = info["bands"][k]["fraction"]
+    size["pct_of_train_bytes"] = round(100 * size["bytes"] / info["train_bytes"], 2)
+    return [str(p) for p in paths[: k + 1]], size
 
 
 def build_val_docs(cfg, out_path):
     """The val_docs val docs with the smallest id hash: a fixed random subset."""
     s = cfg["sample"]
     local = Path(cfg["runtime"]["work_dir"], "tok_src")
-    docs = [(keep_draw(i, s["seed"]), i, src, t)
-            for i, src, t in iter_split_docs(cfg["hf"]["dataset_repo"], "val", local)]
+    docs = [(keep_draw(i, s["seed"]), i, src, t) for i, src, t in iter_split_docs(cfg, "val", local)]
     docs.sort()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with gzip.open(out_path, "wt", encoding="utf-8") as f:
@@ -104,35 +144,28 @@ def build_val_docs(cfg, out_path):
     return {"val_docs_available": len(docs), "val_docs_used": min(len(docs), s["val_docs"])}
 
 
-def fetch_or_build(cfg):
-    """Local paths of the train sample and val docs, building + uploading them once."""
-    data_repo, prefix = cfg["hf"]["dataset_repo"], cfg["hf"]["work_prefix"]
-    sample_path = REPO_ROOT / cfg["sample"]["out_path"]
-    val_path = REPO_ROOT / cfg["sample"]["val_out_path"]
-    remote = set(hub.list_files(data_repo, prefix))
-    info_remote = f"{prefix}sample_info.json"
-    local = Path(cfg["runtime"]["work_dir"], "tok_cache")
-    sample_path.parent.mkdir(parents=True, exist_ok=True)
-    if info_remote in remote:
-        gz = hub.download(data_repo, f"{prefix}tok_sample.txt.gz", local)
-        with gzip.open(gz, "rb") as src, open(sample_path, "wb") as dst:
-            shutil.copyfileobj(src, dst)
-        shutil.copy(hub.download(data_repo, f"{prefix}val_docs.jsonl.gz", local), val_path)
-        return sample_path, val_path, json.loads(Path(hub.download(data_repo, info_remote, local)).read_text())
+def check_final_complete(cfg):
+    """STOP unless every shard of <final_prefix> was split by the current selection (one marker per stats file)."""
+    repo = cfg["hf"]["dataset_repo"]
+    shards = [p for p in hub.list_files(repo, f"{cfg['hf']['final_prefix']}stats/") if p.endswith(".json")]
+    markers = hub.done_markers(repo, cfg["hf"]["final_markers_prefix"])
+    if not shards or len(markers) < len(shards):
+        raise SystemExit(f"STOP: {cfg['hf']['final_prefix']} is not fully split yet "
+                         f"({len(markers)} of {len(shards)} shards); finish stage3b first")
 
-    info = build_train_sample(cfg, sample_path)
+
+def build(cfg):
+    """Band files, val docs and their info. The info is also uploaded to <work_prefix> as a record."""
+    check_final_complete(cfg)
+    paths, info = build_bands(cfg, REPO_ROOT / cfg["sample"]["band_dir"])
+    val_path = REPO_ROOT / cfg["sample"]["val_out_path"]
     info.update(build_val_docs(cfg, val_path))
+    local = Path(cfg["runtime"]["work_dir"], "tok_cache")
     local.mkdir(parents=True, exist_ok=True)
-    gz = local / "tok_sample.txt.gz"
-    with open(sample_path, "rb") as src, gzip.open(gz, "wb", compresslevel=3) as dst:
-        shutil.copyfileobj(src, dst)
-    hub.upload_file(data_repo, gz, f"{prefix}tok_sample.txt.gz")
-    hub.upload_file(data_repo, val_path, f"{prefix}val_docs.jsonl.gz")
-    info_path = local / "sample_info.json"
-    info_path.write_text(json.dumps(info, indent=1))
-    hub.upload_file(data_repo, info_path, info_remote)
-    return sample_path, val_path, info
+    (local / "sample_info.json").write_text(json.dumps(info, indent=1))
+    hub.upload_file(cfg["hf"]["dataset_repo"], local / "sample_info.json", f"{cfg['hf']['work_prefix']}sample_info.json")
+    return paths, val_path, info
 
 
 if __name__ == "__main__":
-    print(fetch_or_build(load_config("configs/tokenizer.yaml"))[2])
+    print(build(load_config("configs/tokenizer.yaml"))[2])
