@@ -1,0 +1,46 @@
+# D6 — pretraining config. Scripts read values from here only.
+model_config: configs/model_61m.yaml
+
+data:
+  hf_repo: Prateek-Tiwari10/hindi-lm-data
+  prefix: tokenized/v2/hi_unigram_10240/
+  local_dir: /kaggle/tmp/data/        # not /kaggle/working (20 GB output limit)
+  seq_len: 1024                       # windows of seq_len + 1 tokens (input + shifted target)
+  order_seed: 1337                    # permutation of window indices
+  val_subset_windows: 512             # fixed subset evaluated during training; all windows at the end
+
+tokenizer:
+  hf_repo: Prateek-Tiwari10/hindi-lm-tokenizer
+  path: sweep_v2/hi_unigram_10240.model
+
+precision: fp16                       # autocast + GradScaler (T4 has no bf16)
+micro_batch: 8                        # per GPU; Stage 2: 8 + compile is fastest (16 was in the plan)
+world_size: 2                         # 2 x T4, torchrun --nproc_per_node=2
+grad_accum: 16                        # 2 * 8 * 16 * 1024 = 262,144 tokens/step (unchanged)
+total_steps: null                     # null = one epoch, floor(train_windows / global_batch_windows)
+
+optim:
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  weight_decay: 0.1                   # 2-D weights only; 0 on RMSNorm gains
+  peak_lr: 1.0e-3                     # Stage 4: lowest final val loss of {3e-4, 6e-4, 1e-3}, no spikes
+  warmup_steps: 200
+  min_lr_ratio: 0.1                   # cosine to 10% of peak at the last step
+  grad_clip: 1.0
+
+attn_impl: sdpa
+compile: true                         # Stage 2: +33% vs best eager (>= 15% rule), finite losses
+
+checkpoint:
+  local_dir: /kaggle/working/ckpt/
+  hf_repo: Prateek-Tiwari10/hindi-lm-checkpoints
+  hf_prefix: pretrain_61m/
+  every_steps: 500
+  keep_last: 2
+  wall_clock_budget_s: 40500          # 11h15m; Kaggle kills at 12h
+
+logging:
+  every_steps: 10
+  eval_every_steps: 250
+  jsonl: logs/pretrain_61m.jsonl
+  peak_tflops_per_gpu: 65.0           # T4 fp16 tensor-core peak, for MFU
