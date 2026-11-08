@@ -132,6 +132,7 @@ class HindiLlama(nn.Module):
         use_cache: bool = True,
         eos_id: int | None = None,
         generator: torch.Generator | None = None,
+        logits_mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
         """Extend idx (B, T) by up to max_new_tokens tokens.
 
@@ -139,9 +140,15 @@ class HindiLlama(nn.Module):
         and, if top_k is set, cut to the k largest before sampling. use_cache=False
         recomputes the whole sequence each step (the reference for testing the cache).
         Generation stops early if every row has produced eos_id. The total length must
-        fit in max_seq_len (positions are absolute RoPE angles; there is no sliding window).
+        fit in max_seq_len (positions are absolute RoPE angles; there is no sliding window),
+        otherwise ValueError. logits_mask is an optional bool (vocab_size,) tensor: logits
+        where it is False are set to -inf before greedy selection or sampling (the D9
+        Devanagari-only output mask); None keeps the unmasked behaviour.
         """
-        assert idx.shape[1] + max_new_tokens <= self.cfg.max_seq_len, "prompt + new tokens > max_seq_len"
+        if idx.shape[1] + max_new_tokens > self.cfg.max_seq_len:
+            raise ValueError(f"prompt {idx.shape[1]} + {max_new_tokens} new tokens > max_seq_len {self.cfg.max_seq_len}")
+        if logits_mask is not None:
+            logits_mask = logits_mask.to(idx.device)
         was_training = self.training
         self.eval()
         cache = KVCache(self.cfg.n_layers) if use_cache else None
@@ -151,6 +158,8 @@ class HindiLlama(nn.Module):
         for _ in range(max_new_tokens):
             logits, _ = self(step_input if use_cache else out, kv_cache=cache)
             logits = logits[:, -1, :].float()
+            if logits_mask is not None:
+                logits = logits.masked_fill(~logits_mask, float("-inf"))
             if temperature == 0:
                 nxt = logits.argmax(dim=-1, keepdim=True)
             else:

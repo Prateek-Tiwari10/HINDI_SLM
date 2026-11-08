@@ -55,12 +55,13 @@ if embed:
     keep = ["pyproject.toml", "README.md", "configs", "data", "tokenizer", "tests", "model", "train", "eval"]
     skip_dirs = {"__pycache__", "raw", "work", "out", "_hub"}
     skip_ext = {".bin", ".parquet", ".gz", ".model", ".vocab"}
+    always = {"tokenizer/hi_unigram_10240.model"}   # frozen base tokenizer (255 KB) used by tokenizer/hinglish.py
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w:gz") as tar:
         for name in keep:
             for path in sorted([root / name] if (root / name).is_file() else (root / name).rglob("*")):
                 rel = path.relative_to(root)
-                if path.is_file() and not skip_dirs & set(rel.parts) and path.suffix not in skip_ext:
+                if path.is_file() and not skip_dirs & set(rel.parts) and (path.suffix not in skip_ext or str(rel) in always):
                     tar.add(path, arcname=str(rel))
     code_b64 = base64.b64encode(buf.getvalue()).decode()
     print(f"Code embedded in run.py ({len(code_b64) / 1024:.0f} KB base64)")
