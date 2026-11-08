@@ -72,7 +72,8 @@ def generate_samples(model: HindiLlama, sp, prompts: list[str], bos: int, eos: i
             new = y[0, len(ids):].tolist()
             if eos in new:
                 new = new[:new.index(eos)]
-            text = sp.decode(new)
+            # Decode with the prompt so the continuation keeps its leading space (sp drops a leading ▁).
+            text = sp.decode(ids[1:] + new)[len(sp.decode(ids[1:])):]
             out.append({"prompt": prompt, "setting": name, "new_tokens": len(new), "text": text})
     return out
 

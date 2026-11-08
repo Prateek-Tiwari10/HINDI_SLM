@@ -1,0 +1,87 @@
+{
+ "best_info": {
+  "step": 7250,
+  "tokens": 1900544000,
+  "val_loss": 2.7825373858213425,
+  "windows": 512,
+  "model_config": {
+   "vocab_size": 10240,
+   "d_model": 640,
+   "n_layers": 12,
+   "n_heads": 10,
+   "n_kv_heads": 5,
+   "ffn_hidden": 1728,
+   "max_seq_len": 1024,
+   "rope_theta": 10000.0,
+   "norm_eps": 1e-05,
+   "tie_embeddings": true,
+   "dropout": 0.0,
+   "attn_impl": "sdpa",
+   "expected_params": 61128320
+  }
+ },
+ "checkpoints": {
+  "best": {
+   "step": 7250,
+   "val": {
+    "loss": 2.807089,
+    "ppl": 16.562,
+    "bpb": 0.435648,
+    "windows": 4468,
+    "target_tokens": 4570764,
+    "bytes": 42489737
+   },
+   "test": {
+    "loss": 2.817273,
+    "ppl": 16.731,
+    "bpb": 0.438398,
+    "windows": 4559,
+    "target_tokens": 4663857,
+    "bytes": 43239434
+   }
+  },
+  "final": {
+   "step": 7405,
+   "val": {
+    "loss": 2.805025,
+    "ppl": 16.527,
+    "bpb": 0.435327,
+    "windows": 4468,
+    "target_tokens": 4570764,
+    "bytes": 42489737
+   },
+   "test": {
+    "loss": 2.815482,
+    "ppl": 16.701,
+    "bpb": 0.438119,
+    "windows": 4559,
+    "target_tokens": 4663857,
+    "bytes": 43239434
+   }
+  }
+ },
+ "text_metrics": {
+  "greedy": {
+   "rep4_mean": 0.7807,
+   "distinct_1": 0.1108,
+   "distinct_2": 0.1831,
+   "mean_words": 114.6
+  },
+  "T=0.7, top-k 50": {
+   "rep4_mean": 0.1159,
+   "distinct_1": 0.3545,
+   "distinct_2": 0.7025,
+   "mean_words": 108.9
+  },
+  "T=1.0": {
+   "rep4_mean": 0.002,
+   "distinct_1": 0.5619,
+   "distinct_2": 0.9432,
+   "mean_words": 106.6
+  }
+ },
+ "n_prompts": 10,
+ "new_tokens": 150,
+ "elapsed_s": 345.7,
+ "torch": "2.11.0+cu128"
+}
