@@ -1,6 +1,6 @@
 # Progress — Hindi SLM
 
-_Last updated: 2026-10-23_
+_Last updated: 2026-11-09_
 
 Goal: a ~60M-parameter decoder-only Hindi LM trained from scratch (data, tokenizer, model, training).
 This repo covers decisions D1–D4 so far: data collection, cleaning, dedup, splits, tokenizer and tokenized dataset.
@@ -23,9 +23,12 @@ This repo covers decisions D1–D4 so far: data collection, cleaning, dedup, spl
 | D6 Stage 3 — kill-and-resume test | ✅ passed 2026-10-21: resumed run bit-identical (max loss diff 0.0, batches equal) ([stage3](results/d5d6/stage3_RESULTS.md)) |
 | D6 Stage 4 — LR sweep | ✅ done 2026-10-21: peak LR **1e-3** (val 3.605 vs 3.741 @6e-4, 3.969 @3e-4; no spikes) ([stage4](results/d5d6/stage4_RESULTS.md)) |
 | D6 Stage 5 — full pretraining (7,405 steps, 1.94B tokens) | ✅ done 2026-10-23 (2 sessions): best val 2.783 (subset, step 7,250), final all-window val 2.805 / BPB 0.435 / PPL 16.5; no halts ([stage5](results/d5d6/stage5_RESULTS.md)) |
-| D6 Stage 6 — evaluation (val/test all windows, samples, repetition/Distinct) | ⏳ kernel `hindi-lm-d6-eval` (`python -m eval.stage6`) pushed 2026-10-23; needs **Save Version** in the Kaggle UI (HF_TOKEN) |
-| Finetune, serve | ⬜ out of scope for D5/D6 |
-| Git: commit and push all work | ⬜ only the `Initialization` commit exists; everything since is uncommitted |
+| D6 Stage 6 — evaluation (val/test all windows, samples, repetition/Distinct) | ✅ done 2026-10-27: final `step_007405` val 2.805 / PPL 16.53 / BPB 0.435, test 2.816 / PPL 16.70 / BPB 0.438 (beats `best/` by 0.002) ([stage6](results/d5d6/stage6_RESULTS.md)) |
+| D7 Stage 7a — Hinglish tokenizer extension (D8) | ✅ done 2026-10-27: char-level Latin + `<rom>`/`<dev>`, Devanagari-only output mask ([stage7a](results/d7_hinglish/stage7a_RESULTS.md)) |
+| D7 Stage 7b — model surgery on 61M checkpoint (D9) | ✅ passed 2026-11-09: 61,169,280 params, base logits exact, KL 2.7e-5 with `mean` init, KV cache identical ([stage7b](results/d7_hinglish/stage7b_RESULTS.md)) |
+| D7 fine-tuning (phase A new rows, phase B full) | ⬜ next |
+| Serve | ⬜ later |
+| Git: commit and push all work | ✅ pushed 2026-10-27 (9 commits by folder); Stage 6 write-up not yet committed |
 
 ## v1 pipeline (Stages 0–5): done
 
@@ -90,14 +93,14 @@ Instructions: [CLAUDE_CODE_INSTRUCTIONS_D5_D6.md](CLAUDE_CODE_INSTRUCTIONS_D5_D6
 - **Stage 1 — correctness: ✅ passed** (Kaggle CPU `hindi-lm-d6-tests` v1). 74/74 tests pass; exactly 61,128,320 params (54,574,080 non-embedding). Causality, RoPE, manual = SDPA, GQA = MHA, KV-cache = no-cache, init std and init loss all checked.
 - **Stage 2 — GPU smoke test + benchmark: ✅ passed** (`hindi-lm-d6-smoke` v2). Overfit loss 9.36 → 0.0002; best setting micro-batch 8 + `torch.compile` = 51,779 tok/s on 2×T4 (18.4% MFU); one epoch = 7,405 steps ≈ 10.4 h wall / 20.8 GPU-h.
 - **Stages 3–5** run in one kernel, `hindi-lm-d6-pretrain` (`train/d6_pipeline.py`), with gates enforced in code; results land in HF `hindi-lm-checkpoints/d6_results/`. Done in 2 sessions; final checkpoint `step_007405`, `best/` = step 7,250.
-- **Stage 6 — evaluation:** ⏳ kernel `hindi-lm-d6-eval` runs [eval/stage6.py](eval/stage6.py) on one T4 (~30 min). It scores loss/PPL/BPB over all val and test windows for both `best/` (step 7,250) and the final `step_007405`: during training `best/` was picked by comparing subset losses with the final full-window loss, so the two are re-scored on the same sets. It also writes the three plots, samples for 10 prompts ([eval/prompts.txt](eval/prompts.txt)) × {greedy, T=0.7 top-k 50, T=1.0} × 150 tokens, and repetition/Distinct-1/2 ([eval/metrics.py](eval/metrics.py)). Outputs go to HF `d6_results/` (`stage6.json`, `samples.md`).
+- **Stage 6 — evaluation: ✅ done** (`hindi-lm-d6-eval`, 2026-10-27, ~6 min on one T4). Scored both checkpoints on all 4,468 val and 4,559 test windows; the final `step_007405` is slightly better than `best/` (val 2.8050 vs 2.8071), so it is the pretrained model. Greedy decoding loops (4-gram repetition 0.78); T=0.7 top-k 50 is fluent and on topic (repetition 0.12, Distinct-2 0.70); facts are unreliable, as expected at 61M with no instruction tuning. Samples in [results/d5d6/samples.md](results/d5d6/samples.md).
 
 ## Next steps
 
 1. Update DECISIONS.md D1–D3 and README with the v2 numbers (they still describe v1).
-2. Commit and push the repo.
-3. D6 Stage 6: click Save Version on `hindi-lm-d6-eval`, then write `results/d5d6/stage6_RESULTS.md` and copy `samples.md`.
-4. Gate 6: add D5 (architecture) and D6 (training setup) entries to DECISIONS.md.
+2. Commit the Stage 6 write-up (`results/d5d6/stage6*`, samples, plots, `eval/stage6.py` space fix, PROGRESS).
+3. Commit the D7 Stage 7a/7b work (tokenizer/hinglish.py, model/surgery.py, tests, kernels, results/d7_hinglish/).
+4. D7 fine-tuning: phase A (new rows only), then phase B (full), from `step_007405` with `mean` init.
 
 ## Open notes
 

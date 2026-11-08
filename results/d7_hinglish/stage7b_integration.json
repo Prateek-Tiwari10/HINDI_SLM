@@ -1,0 +1,194 @@
+{
+ "device": "cuda",
+ "torch": "2.11.0+cu128",
+ "tokenizer_sha256": "70e469cd87019e5daef3d3f00c7f66a5fc2a3f011af0f76b9ec228bc934eea27",
+ "base_checkpoint": "Prateek-Tiwari10/hindi-lm-checkpoints/pretrain_61m/step_007405",
+ "params": {
+  "before": 61128320,
+  "after": 61169280,
+  "expected_after": 61169280
+ },
+ "unit_checks_full_size": {
+  "mean": {
+   "old_rows_identical": true,
+   "head_is_embedding": true,
+   "new_rows_finite": true,
+   "new_row_norm_mean": 0.4353143870830536,
+   "old_row_norm_mean": 1.2849839925765991,
+   "mu_norm": 0.4172661602497101,
+   "new_over_old_norm": 0.3387702800952239
+  },
+  "random": {
+   "old_rows_identical": true,
+   "head_is_embedding": true,
+   "new_rows_finite": true,
+   "new_row_norm_mean": 0.5067667365074158,
+   "old_row_norm_mean": 1.2849839925765991,
+   "mu_norm": 0.4172661602497101,
+   "new_over_old_norm": 0.39437591396859906
+  },
+  "save_load": {
+   "head_is_embedding": true,
+   "weights_equal": true
+  },
+  "base_logits": {
+   "mean": {
+    "hidden_exact": true,
+    "logits_same_matmul_shape_exact": true,
+    "logits_exact": true,
+    "logits_max_abs_diff": 0.0
+   },
+   "random": {
+    "hidden_exact": true,
+    "logits_same_matmul_shape_exact": true,
+    "logits_exact": true,
+    "logits_max_abs_diff": 0.0
+   }
+  }
+ },
+ "kl": {
+  "mean": {
+   "positions": 102300,
+   "kl_mean": 2.7299407520331442e-05,
+   "kl_max": 0.001379544846713543,
+   "kl_p99": 0.0002336548495804891,
+   "new_id_mass_mean": 2.7297694032313302e-05,
+   "new_id_mass_max": 0.0013787394855171442,
+   "gpu_base_logit_max_abs_diff": 0.0
+  },
+  "random": {
+   "positions": 102300,
+   "kl_mean": 0.0006827127654105425,
+   "kl_max": 0.016853787004947662,
+   "kl_p99": 0.005016363225877285,
+   "new_id_mass_mean": 0.0006819459376856685,
+   "new_id_mass_max": 0.016712650656700134,
+   "gpu_base_logit_max_abs_diff": 0.0
+  }
+ },
+ "kv_cache": {
+  "cuda": {
+   "identical_tokens": true,
+   "tokens_per_s_cache": 92.4,
+   "tokens_per_s_no_cache": 90.1,
+   "speedup": 1.03
+  },
+  "sample_greedy": {
+   "prompt": "भारत की राजधानी नई दिल्ली",
+   "continuation": "में स्थित है। यह भारत का सबसे बड़ा और विश्व का 10वां सबसे बड़ा राष्ट्रीय उद्यान है।\n\nभारत के राष्ट्रीय उद्यान 1990 के दशक में, एक प्रसिद्ध अमेरिकी लेखक, लेखक और लेखक, जो अपने कामों के लिए प्रसिद्ध हैं, ने अपने काम"
+  },
+  "cpu": {
+   "identical_tokens": true,
+   "tokens_per_s_cache": 47.3,
+   "tokens_per_s_no_cache": 11.6,
+   "speedup": 4.08
+  }
+ },
+ "smoke_probe": {
+  "input": "kal meeting cancel ho gayi kya",
+  "input_ids_len": 32,
+  "n_allowed": 9703,
+  "greedy": {
+   "n_new": 40,
+   "all_allowed": true,
+   "max_id": 699,
+   "ids": [
+    285,
+    699,
+    286,
+    284,
+    301,
+    298,
+    299,
+    298,
+    282,
+    284,
+    299,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298,
+    298
+   ],
+   "text": "की वजह से 2010 में 100000000000000000000000000000"
+  },
+  "T=1.0": {
+   "n_new": 40,
+   "all_allowed": true,
+   "max_id": 9531,
+   "ids": [
+    280,
+    33,
+    2447,
+    1277,
+    2073,
+    9531,
+    456,
+    3182,
+    4668,
+    284,
+    301,
+    301,
+    298,
+    301,
+    298,
+    353,
+    289,
+    1062,
+    296,
+    4311,
+    3625,
+    654,
+    279,
+    300,
+    296,
+    1623,
+    279,
+    6747,
+    412,
+    303,
+    292,
+    746,
+    765,
+    3941,
+    2692,
+    8724,
+    321,
+    279,
+    302,
+    5223
+   ],
+   "text": "।\nबिहार(संस्कृति संरक्षण विधेयक 22020' का प्रयोग एक देखभाल कोच बनाने के लिए एक प्रस्ताव के सहारे बहुतों ने दुनिया भर भूतपूर्व मैटर के इस आन्दोलन"
+  }
+ },
+ "tokenizer_test_1": {
+  "sentences": 1000,
+  "returncode": 0,
+  "summary": "============================== 1 passed in 0.47s ==============================="
+ },
+ "elapsed_s": 117.7
+}
