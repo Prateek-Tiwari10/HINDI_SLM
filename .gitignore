@@ -50,3 +50,6 @@ kaggle/*/run.py
 # Local tooling / scratch
 .github/copilot-instructions.md
 TXT
+
+# Stage specs (kept local, like the other instruction files)
+instructions/
