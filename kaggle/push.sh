@@ -31,7 +31,7 @@ from pathlib import Path
 from huggingface_hub import HfApi
 
 root = Path(sys.argv[1])
-keep = ["pyproject.toml", "README.md", "configs", "data", "tokenizer", "tests", "model", "train", "eval"]
+keep = ["pyproject.toml", "README.md", "configs", "data", "tokenizer", "tests", "model", "train", "eval", "finetune"]
 with tempfile.TemporaryDirectory() as tmp:
     for name in keep:
         src = root / name
@@ -52,7 +52,7 @@ from pathlib import Path
 kernel_dir, command, template, root, embed = Path(sys.argv[1]), sys.argv[2], Path(sys.argv[3]).read_text(), Path(sys.argv[4]), sys.argv[5] == "1"
 code_b64 = ""
 if embed:
-    keep = ["pyproject.toml", "README.md", "configs", "data", "tokenizer", "tests", "model", "train", "eval"]
+    keep = ["pyproject.toml", "README.md", "configs", "data", "tokenizer", "tests", "model", "train", "eval", "finetune"]
     skip_dirs = {"__pycache__", "raw", "work", "out", "_hub"}
     skip_ext = {".bin", ".parquet", ".gz", ".model", ".vocab"}
     always = {"tokenizer/hi_unigram_10240.model"}   # frozen base tokenizer (255 KB) used by tokenizer/hinglish.py

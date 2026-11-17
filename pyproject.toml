@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["data*", "tokenizer*", "model*", "train*", "eval*"]
+include = ["data*", "tokenizer*", "model*", "train*", "eval*", "finetune*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

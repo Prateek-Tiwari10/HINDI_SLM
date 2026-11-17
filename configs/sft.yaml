@@ -1,0 +1,53 @@
+# D7 Stages 7d/7e: supervised fine-tuning, Hinglish -> Devanagari. finetune/sft.py reads values from here only.
+
+base:
+  hf_repo: Prateek-Tiwari10/hindi-lm-checkpoints
+  checkpoint: pretrain_61m/step_007405/ckpt.pt     # final D6 checkpoint (the one Stage 7b checked)
+  model_config: configs/model_61m.yaml
+  init: mean                                       # D9: new rows = mean of old rows + 0.1 sigma noise
+  init_seed: 0
+
+data:
+  hf_repo: Prateek-Tiwari10/hindi-lm-hinglish-pairs
+  path: romanize-v2/
+  revision: null              # set by --data-revision (Stage 7c upload revision) so runs are pinned
+  local_dir: /kaggle/tmp/pairs/
+  buckets: [64, 128, 192, 256]
+  chunk_batches: 100          # length bucketing: sort within chunks of 100 global batches
+  order_seed: 1337
+
+batch:
+  global_pairs: 64            # effective batch (spec 7e)
+  micro_batch: 32             # per GPU: 2 GPUs x 32 x accum 1 = 64
+
+optim:
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  weight_decay: 0.1           # phase B: 2-D weights only (pretraining convention); phase A: 0 (D9)
+  grad_clip: 1.0
+  min_lr_ratio: 0.1           # cosine to 10% of peak
+
+phases:
+  A: {peak_lr: 1.0e-3, warmup_steps: 50, total_steps: 1000}
+  B: {peak_lr: null, warmup_steps: 100, total_steps: 1500}   # main run: --epochs 2 --warmup-frac 0.03
+
+eval:
+  every_steps: 500
+  dev_subset: 500             # fixed dev_real pairs for greedy decoding (mask + KV cache), per part below
+  clean_selection_above: 0.25 # dev contaminated share above this: eval 500 clean + 500 contaminated,
+                              # select on clean CER (Prateek, 7c review); decode budget: meta.json decode_cap
+  subset_seed: 1337
+  max_new_tokens: 256
+  val_batch: 64
+
+checkpoint:
+  hf_repo: Prateek-Tiwari10/hindi-lm-checkpoints
+  prefix_root: d7/
+  every_steps: 500
+  local_dir: /kaggle/tmp/ckpt_sft/   # not /kaggle/working: kernel output stays small
+  out_dir: /kaggle/working/out/sft/   # run logs copied here for `kaggle kernels output`
+  wall_clock_budget_s: 40500  # 11h15m; Kaggle kills at 12h
+
+compile: false                # off: compiled steps were 4x slower on T4 (stage7d_RESULTS.md)
+logging:
+  every_steps: 10

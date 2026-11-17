@@ -53,3 +53,6 @@ TXT
 
 # Stage specs (kept local, like the other instruction files)
 instructions/
+
+# Prateek's private Hinglish chat test set (D7 test_chat); never commit
+data/hinglish/chat_test.tsv

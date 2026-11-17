@@ -10,6 +10,7 @@ so stages that never touch HF run from an API push without the HF_TOKEN secret.
 import base64
 import io
 import os
+import re
 import subprocess
 import sys
 import tarfile
@@ -55,7 +56,8 @@ def main():
         sh(f"rm -rf {CODE_DIR} && cp -r /kaggle/working/_code/code {CODE_DIR} && rm -rf /kaggle/working/_code")
     sh(f"{sys.executable} -m pip install -q -e {CODE_DIR}")
     sh(f"{sys.executable} -m pytest -v {CODE_DIR}/tests", cwd=CODE_DIR)
-    sh(STAGE_COMMAND.replace("python ", f"{sys.executable} ", 1), cwd=CODE_DIR)
+    # every `python` in a chained command (a && b) must be this interpreter, where the code is installed
+    sh(re.sub(r"(?<![\w/.-])python3? ", f"{sys.executable} ", STAGE_COMMAND), cwd=CODE_DIR)
 
 
 if __name__ == "__main__":

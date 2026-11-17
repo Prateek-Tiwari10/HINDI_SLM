@@ -1,0 +1,5667 @@
+{
+ "mode": "all",
+ "generator_version": "romanize-v2",
+ "config_hash": "26ab6dc68db4",
+ "shortcuts": 31,
+ "started": "2026-11-17 06:16:46",
+ "dakshina": {
+  "url": "https://storage.googleapis.com/gresearch/dakshina/dakshina_dataset_v1.0.tar",
+  "archive_bytes": 2008340480,
+  "archive_sha256": "83530bec211893d9df429298f42e63c350c25ad56f9f5172f85edb0575ee5b03",
+  "license": "CC BY-SA 4.0",
+  "files": {
+   "hi.romanized.rejoined.aligned.cased_nopunct.tsv": {
+    "bytes": 3523557,
+    "lines": 186521
+   },
+   "hi.romanized.rejoined.aligned.tsv": {
+    "bytes": 3576654,
+    "lines": 186521
+   },
+   "hi.romanized.rejoined.dev.native.txt": {
+    "bytes": 1228431,
+    "lines": 5000
+   },
+   "hi.romanized.rejoined.dev.roman.txt": {
+    "bytes": 524623,
+    "lines": 5000
+   },
+   "hi.romanized.rejoined.test.native.txt": {
+    "bytes": 1207588,
+    "lines": 5000
+   },
+   "hi.romanized.rejoined.test.roman.txt": {
+    "bytes": 516012,
+    "lines": 5000
+   },
+   "hi.romanized.rejoined.tsv": {
+    "bytes": 3476654,
+    "lines": 10000
+   },
+   "hi.romanized.split.tsv": {
+    "bytes": 3560093,
+    "lines": 11567
+   },
+   "hi.romanized.split.validation.edits.txt": {
+    "bytes": 254496,
+    "lines": 11568
+   },
+   "hi.romanized.split.validation.native.txt": {
+    "bytes": 2422237,
+    "lines": 11567
+   },
+   "hi.translit.sampled.dev.tsv": {
+    "bytes": 125512,
+    "lines": 4358
+   },
+   "hi.translit.sampled.test.tsv": {
+    "bytes": 128062,
+    "lines": 4502
+   },
+   "hi.translit.sampled.train.tsv": {
+    "bytes": 1326377,
+    "lines": 44204
+   }
+  },
+  "dev_pairs": 5000,
+  "test_pairs": 5000
+ },
+ "aksharantar": {
+  "repo": "ai4bharat/Aksharantar",
+  "file": "hin.zip",
+  "sha256": "208c2d1b128234e6dc777b750779b4f5e6214ab43244039349b530bf9868bdaf",
+  "members": [
+   "hin_test.json",
+   "hin_train.json",
+   "hin_valid.json"
+  ],
+  "train_member": "hin_train.json",
+  "train_rows": 1299155,
+  "columns": [
+   "english word",
+   "native word",
+   "score",
+   "source",
+   "unique_identifier"
+  ],
+  "license": "CC-BY (manually collected part), CC0 (mined part); see the dataset card",
+  "by_source": {
+   "IndicCorp": 956190,
+   "Samanantar": 152778,
+   "Existing": 131773,
+   "Dakshina": 24727,
+   "Wikidata": 24528,
+   "AK-Freq": 9159
+  }
+ },
+ "lexicon": {
+  "precedence": "dakshina words: dakshina spellings only; aksharantar only for words dakshina lacks",
+  "max_rule_distance": 0.34,
+  "weight_power": 2,
+  "drop_singletons_if_top_ge": 5,
+  "word_types": 926747,
+  "word_types_dakshina": 24990,
+  "word_types_aksharantar": 901757,
+  "aksharantar_words_fully_rejected": 233750,
+  "spelling_pairs": 1000782,
+  "avg_spellings_per_word": 1.08,
+  "singleton_spellings_dropped": 460,
+  "kept_rows": {
+   "dakshina": 44188,
+   "aksharantar": 957061
+  },
+  "rejected_rows": {
+   "aksharantar:charset": 1,
+   "aksharantar:final_vowel": 28359,
+   "aksharantar:first_sound": 4842,
+   "aksharantar:inflection_guard": 53077,
+   "aksharantar:length": 1344,
+   "aksharantar:rule_distance": 201790,
+   "aksharantar:word_in_dakshina": 52681,
+   "dakshina:length": 16
+  },
+  "random_entries": {
+   "मुसीर": {
+    "museer": 1
+   },
+   "बृहन्मठ": {
+    "brihanmath": 1
+   },
+   "वसंज": {
+    "vasanj": 1
+   },
+   "देवीनगर": {
+    "devinagar": 1
+   },
+   "मंत्रालयातर्फे": {
+    "mantralayatarfe": 1
+   },
+   "मल्हम": {
+    "malham": 1
+   },
+   "वींझार": {
+    "veenjhar": 1,
+    "veenjhaar": 1,
+    "veenzhaar": 1
+   },
+   "कोयम": {
+    "koyam": 1
+   },
+   "संयंत्रकर्मी": {
+    "samyantrakarmi": 1
+   },
+   "सुब्रतसाहू": {
+    "subratsahu": 1
+   }
+  }
+ },
+ "realism_diagnostics": [
+  {
+   "word": "के",
+   "count": 3804,
+   "human": {
+    "ke": 3774,
+    "ka": 5,
+    "k": 4,
+    "je": 3,
+    "ki": 3
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ke": 0.61,
+    "k": 0.39
+   },
+   "rules": "ke"
+  },
+  {
+   "word": "में",
+   "count": 2994,
+   "human": {
+    "men": 1288,
+    "me": 836,
+    "mein": 767,
+    "mem": 69,
+    "main": 19
+   },
+   "shortcut_p": {
+    "men": 0.364,
+    "me": 0.273,
+    "mein": 0.273,
+    "main": 0.091
+   },
+   "lexicon_p": {
+    "mein": 1.0
+   },
+   "rules": "men"
+  },
+  {
+   "word": "है",
+   "count": 2784,
+   "human": {
+    "hai": 2731,
+    "hain": 41,
+    "hi": 3,
+    "ahai": 2,
+    "aur": 2
+   },
+   "shortcut_p": {
+    "hai": 0.6,
+    "h": 0.2,
+    "he": 0.2
+   },
+   "lexicon_p": {
+    "hai": 1.0
+   },
+   "rules": "hai"
+  },
+  {
+   "word": "की",
+   "count": 1963,
+   "human": {
+    "ki": 1851,
+    "kii": 78,
+    "kee": 12,
+    "ke": 9,
+    "ko": 5
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ki": 1.0
+   },
+   "rules": "ki"
+  },
+  {
+   "word": "और",
+   "count": 1671,
+   "human": {
+    "aur": 1620,
+    "aura": 33,
+    "and": 2,
+    "ayr": 2,
+    "air": 1
+   },
+   "shortcut_p": {
+    "aur": 0.7,
+    "or": 0.3
+   },
+   "lexicon_p": {
+    "aur": 1.0
+   },
+   "rules": "aur"
+  },
+  {
+   "word": "से",
+   "count": 1545,
+   "human": {
+    "se": 1538,
+    "men": 2,
+    "sse": 1,
+    "ke": 1,
+    "the": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "se": 0.9,
+    "say": 0.1
+   },
+   "rules": "se"
+  },
+  {
+   "word": "का",
+   "count": 1414,
+   "human": {
+    "ka": 1383,
+    "kaa": 20,
+    "k": 3,
+    "pa": 2,
+    "a": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ka": 1.0
+   },
+   "rules": "ka"
+  },
+  {
+   "word": "को",
+   "count": 1225,
+   "human": {
+    "ko": 1214,
+    "ki": 3,
+    "ke": 3,
+    "to": 2,
+    "koo": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ko": 0.9,
+    "co": 0.1
+   },
+   "rules": "ko"
+  },
+  {
+   "word": "हैं",
+   "count": 977,
+   "human": {
+    "hain": 649,
+    "hai": 311,
+    "haim": 8,
+    "hian": 3,
+    "yogya": 1
+   },
+   "shortcut_p": {
+    "hain": 0.556,
+    "hai": 0.333,
+    "h": 0.111
+   },
+   "lexicon_p": {
+    "hain": 1.0
+   },
+   "rules": "hain"
+  },
+  {
+   "word": "एक",
+   "count": 966,
+   "human": {
+    "ek": 933,
+    "eka": 21,
+    "eak": 3,
+    "em": 1,
+    "ke": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ek": 1.0
+   },
+   "rules": "ek"
+  },
+  {
+   "word": "पर",
+   "count": 711,
+   "human": {
+    "par": 667,
+    "para": 19,
+    "pr": 12,
+    "paa": 2,
+    "pae": 2
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "par": 1.0
+   },
+   "rules": "par"
+  },
+  {
+   "word": "किया",
+   "count": 567,
+   "human": {
+    "kiya": 550,
+    "kiyaa": 11,
+    "kiye": 2,
+    "kya": 1,
+    "kiy": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": null,
+   "rules": "kiya"
+  },
+  {
+   "word": "ने",
+   "count": 562,
+   "human": {
+    "ne": 556,
+    "ke": 2,
+    "se": 1,
+    "be": 1,
+    "men": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ne": 1.0
+   },
+   "rules": "ne"
+  },
+  {
+   "word": "भी",
+   "count": 534,
+   "human": {
+    "bhi": 530,
+    "bhii": 1,
+    "hi": 1,
+    "bi": 1,
+    "nidaan": 1
+   },
+   "shortcut_p": {
+    "bhi": 1.0
+   },
+   "lexicon_p": {
+    "bhi": 1.0
+   },
+   "rules": "bhi"
+  },
+  {
+   "word": "यह",
+   "count": 529,
+   "human": {
+    "yah": 454,
+    "yeh": 54,
+    "yaha": 7,
+    "ya": 3,
+    "yan": 1
+   },
+   "shortcut_p": {
+    "yeh": 0.5,
+    "ye": 0.4,
+    "yah": 0.1
+   },
+   "lexicon_p": {
+    "yah": 1.0
+   },
+   "rules": "yah"
+  },
+  {
+   "word": "लिए",
+   "count": 497,
+   "human": {
+    "liye": 376,
+    "lie": 116,
+    "le": 1,
+    "lye": 1,
+    "eliye": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "liye": 1.0
+   },
+   "rules": "liye"
+  },
+  {
+   "word": "था",
+   "count": 478,
+   "human": {
+    "tha": 457,
+    "thaa": 15,
+    "hai": 2,
+    "taha": 1,
+    "th": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "tha": 1.0
+   },
+   "rules": "tha"
+  },
+  {
+   "word": "इस",
+   "count": 454,
+   "human": {
+    "is": 440,
+    "isa": 10,
+    "us": 2,
+    "iis": 2
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "is": 1.0
+   },
+   "rules": "is"
+  },
+  {
+   "word": "कि",
+   "count": 432,
+   "human": {
+    "ki": 430,
+    "pratyaropit": 1,
+    "kri": 1
+   },
+   "shortcut_p": {
+    "ki": 0.875,
+    "k": 0.125
+   },
+   "lexicon_p": {
+    "ki": 1.0
+   },
+   "rules": "ki"
+  },
+  {
+   "word": "गया",
+   "count": 423,
+   "human": {
+    "gaya": 419,
+    "jata": 1,
+    "ki": 1,
+    "hai": 1,
+    "gayaa": 1
+   },
+   "shortcut_p": {
+    "gaya": 0.7,
+    "gya": 0.3
+   },
+   "lexicon_p": null,
+   "rules": "gaya"
+  },
+  {
+   "word": "रूप",
+   "count": 353,
+   "human": {
+    "rup": 194,
+    "roop": 148,
+    "rupa": 6,
+    "ruo": 1,
+    "manak": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "roop": 0.61,
+    "rup": 0.39
+   },
+   "rules": "roop"
+  },
+  {
+   "word": "नहीं",
+   "count": 341,
+   "human": {
+    "nahi": 213,
+    "nahin": 121,
+    "nahim": 3,
+    "nhin": 2,
+    "nahn": 1
+   },
+   "shortcut_p": {
+    "nahi": 0.5,
+    "nhi": 0.3,
+    "nahin": 0.1,
+    "nai": 0.1
+   },
+   "lexicon_p": {
+    "nahin": 0.862,
+    "nahi": 0.138
+   },
+   "rules": "naheen"
+  },
+  {
+   "word": "करने",
+   "count": 326,
+   "human": {
+    "karne": 306,
+    "karane": 18,
+    "kanre": 1,
+    "marne": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "karane": 1.0
+   },
+   "rules": "karne"
+  },
+  {
+   "word": "हो",
+   "count": 313,
+   "human": {
+    "ho": 310,
+    "jo": 1,
+    "hi": 1,
+    "jho": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ho": 1.0
+   },
+   "rules": "ho"
+  },
+  {
+   "word": "ही",
+   "count": 306,
+   "human": {
+    "hi": 286,
+    "hii": 14,
+    "hee": 3,
+    "ka": 1,
+    "hoi": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": null,
+   "rules": "hi"
+  },
+  {
+   "word": "जो",
+   "count": 303,
+   "human": {
+    "jo": 296,
+    "ji": 3,
+    "ko": 3,
+    "hai": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": null,
+   "rules": "jo"
+  },
+  {
+   "word": "कर",
+   "count": 302,
+   "human": {
+    "kar": 295,
+    "kara": 5,
+    "karli": 1,
+    "ka": 1
+   },
+   "shortcut_p": {
+    "kar": 0.8,
+    "kr": 0.2
+   },
+   "lexicon_p": {
+    "kar": 1.0
+   },
+   "rules": "kar"
+  },
+  {
+   "word": "जाता",
+   "count": 292,
+   "human": {
+    "jata": 268,
+    "jaata": 21,
+    "jataa": 1,
+    "ajata": 1,
+    "jaataa": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "jata": 0.667,
+    "jaata": 0.167,
+    "jaataa": 0.167
+   },
+   "rules": "jaata"
+  },
+  {
+   "word": "तथा",
+   "count": 260,
+   "human": {
+    "tatha": 252,
+    "tathaa": 2,
+    "tahe": 1,
+    "the": 1,
+    "thatha": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "tatha": 1.0
+   },
+   "rules": "tatha"
+  },
+  {
+   "word": "थे",
+   "count": 259,
+   "human": {
+    "the": 257,
+    "he": 1,
+    "tha": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "the": 1.0
+   },
+   "rules": "the"
+  },
+  {
+   "word": "होता",
+   "count": 252,
+   "human": {
+    "hota": 248,
+    "hot": 2,
+    "hotaa": 1,
+    "hoga": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": null,
+   "rules": "hota"
+  },
+  {
+   "word": "साथ",
+   "count": 247,
+   "human": {
+    "sath": 151,
+    "saath": 88,
+    "satha": 4,
+    "ke": 1,
+    "saathyah": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "saath": 0.64,
+    "sath": 0.36
+   },
+   "rules": "saath"
+  },
+  {
+   "word": "अपने",
+   "count": 235,
+   "human": {
+    "apne": 227,
+    "apane": 6,
+    "apni": 2
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "apne": 1.0
+   },
+   "rules": "apne"
+  },
+  {
+   "word": "द्वारा",
+   "count": 233,
+   "human": {
+    "dwara": 133,
+    "dvara": 80,
+    "dwaraa": 10,
+    "dwar": 4,
+    "dvaara": 2
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "dwara": 0.889,
+    "davara": 0.056,
+    "dvara": 0.056
+   },
+   "rules": "dvaara"
+  },
+  {
+   "word": "बाद",
+   "count": 210,
+   "human": {
+    "baad": 187,
+    "bad": 18,
+    "baat": 2,
+    "bada": 2,
+    "baadm": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "baad": 0.5,
+    "bad": 0.5
+   },
+   "rules": "baad"
+  },
+  {
+   "word": "दिया",
+   "count": 198,
+   "human": {
+    "diya": 196,
+    "diyaa": 2
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "diya": 1.0
+   },
+   "rules": "diya"
+  },
+  {
+   "word": "या",
+   "count": 195,
+   "human": {
+    "ya": 181,
+    "yaa": 10,
+    "narak": 1,
+    "yah": 1,
+    "yar": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "ya": 1.0
+   },
+   "rules": "ya"
+  },
+  {
+   "word": "तक",
+   "count": 187,
+   "human": {
+    "tak": 182,
+    "taka": 3,
+    "tka": 1,
+    "taj": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "tak": 1.0
+   },
+   "rules": "tak"
+  },
+  {
+   "word": "थी",
+   "count": 182,
+   "human": {
+    "thi": 172,
+    "thee": 8,
+    "hai": 1,
+    "thii": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "thi": 1.0
+   },
+   "rules": "thi"
+  },
+  {
+   "word": "भारत",
+   "count": 179,
+   "human": {
+    "bharat": 168,
+    "bharata": 5,
+    "bhat": 1,
+    "bhaarat": 1,
+    "bhart": 1
+   },
+   "shortcut_p": null,
+   "lexicon_p": {
+    "bharat": 1.0
+   },
+   "rules": "bhaarat"
+  }
+ ],
+ "realism": {
+  "dev_sentences": 5000,
+  "generator": {
+   "aligned_sentences": 4838,
+   "aligned_words": 84118,
+   "word_agreement": 0.6269,
+   "agreement_by_source": {
+    "shortcut": {
+     "words": 11995,
+     "agreement": 0.5186
+    },
+    "lexicon": {
+     "words": 58620,
+     "agreement": 0.671
+    },
+    "rules": {
+     "words": 11932,
+     "agreement": 0.5001
+    }
+   },
+   "word_source_share": {
+    "shortcut": 0.1431,
+    "lexicon": 0.7113,
+    "rules": 0.1456
+   },
+   "bigram_kl_human_vs_this": 0.01218
+  },
+  "generator_clean": {
+   "aligned_sentences": 4838,
+   "aligned_words": 84118,
+   "word_agreement": 0.6333,
+   "agreement_by_source": {
+    "shortcut": {
+     "words": 11995,
+     "agreement": 0.5213
+    },
+    "lexicon": {
+     "words": 58620,
+     "agreement": 0.6807
+    },
+    "rules": {
+     "words": 11932,
+     "agreement": 0.4944
+    }
+   },
+   "word_source_share": {
+    "shortcut": 0.1431,
+    "lexicon": 0.7113,
+    "rules": 0.1456
+   },
+   "bigram_kl_human_vs_this": 0.01288
+  },
+  "rule_only": {
+   "aligned_sentences": 4838,
+   "aligned_words": 84118,
+   "word_agreement": 0.6201,
+   "agreement_by_source": {
+    "shortcut": {
+     "words": 0,
+     "agreement": null
+    },
+    "lexicon": {
+     "words": 0,
+     "agreement": null
+    },
+    "rules": {
+     "words": 82547,
+     "agreement": 0.618
+    }
+   },
+   "word_source_share": {
+    "shortcut": 0.0,
+    "lexicon": 0.0,
+    "rules": 1.0
+   },
+   "bigram_kl_human_vs_this": 0.06839
+  },
+  "human_dot_after_danda": 0.9896,
+  "dev_sentences_ending_in_danda": 3860,
+  "examples": [
+   {
+    "dev": "इसके आने से पूर्व ही लोग घरों की सफाई का कार्य शुरू कर देते हैं।",
+    "human": "iske aane se purva hi log gharon ki safai ka karya shuru kar dete hain.",
+    "generator": "iske aane se purva hi log gharon ki safai ka karya shuruu kar dete hain."
+   },
+   {
+    "dev": "विलुप्ति की कगार पर गुणकारी तीखुर",
+    "human": "vilupti ki kagaar par gunkaari tikhur",
+    "generator": "vilupti ki kagar par gunkari teekhur"
+   },
+   {
+    "dev": "माइकल कामेन (द वॉल के वाद्यमय हिस्सों के लिए एक योगदानकर्ता) ने दोनों के बीच मध्यस्थता की और उस भूमिका को निभाया जिस पर पारंपरिक रूप से रिचर्ड राइट ने कब्जा किया हुआ था जो अब अनुपस्थित थे।",
+    "human": "Michael kamen (the wall ke vadyamaya hisso ke liye ek yogdanakarta) ne dono ke bich madhyasthata ki aur us bhumika ko nibhaya jis par paramparik rup se richard wright ne kabja kiya hua tha jo ab anupasthit the.",
+    "generator": "michael kaamen (da wall ke vaadyamay hisson ke liye ek yogdaankarta) ne donon ke bich madhyasthta ki aur us bhumika ko nibhaaya jis par paaramprik roop se richard right ne kabja kiya hua tha jo ab anupasthiti the."
+   },
+   {
+    "dev": "शाहनामा नौरोज़ के त्यौहार को महान जमशेद के शासनकाल से जोड़ता है।",
+    "human": "shahnama noroj ke tyohaar ko mahaan Jamshed ke shashankaal se jodta hai.",
+    "generator": "shahnama nauroz k tyauhaar ko mahan jamhsed ke shasankal se jodta hai."
+   },
+   {
+    "dev": "मेहरोत्रा, डॉ॰ एन.",
+    "human": "Mehrotra, Dr॰ N.",
+    "generator": "mehrotra, do en."
+   },
+   {
+    "dev": "दुर्गा भाभी",
+    "human": "durga bhabhi",
+    "generator": "durga bhabhi"
+   },
+   {
+    "dev": "स्वामी बृहस्पति",
+    "human": "swami brhaspati",
+    "generator": "swami brihaspati"
+   },
+   {
+    "dev": "बॉलीवुड, हिन्दी चलचित्र उद्योग भी मुंबई में ही स्थित है।",
+    "human": "bollywood, hindi chalchitra udyog bhi mumbai me hi sthit hai.",
+    "generator": "bollywood, hindi chalchitr udhyog bhi mumbai mein hi sthit hai."
+   }
+  ]
+ },
+ "test_chat": {
+  "present": true,
+  "pairs": 180
+ },
+ "scan": {
+  "shards": 113,
+  "per_source": {
+   "manual": {
+    "docs": 224222,
+    "sentences": 4613774,
+    "candidates": 2158722,
+    "conversational": 232173,
+    "shards": 11
+   },
+   "sangraha_verified": {
+    "docs": 2849013,
+    "sentences": 62276728,
+    "candidates": 37036825,
+    "conversational": 5882353,
+    "shards": 100
+   },
+   "wikipedia": {
+    "docs": 69511,
+    "sentences": 2252465,
+    "candidates": 1144464,
+    "conversational": 55534,
+    "shards": 2
+   }
+  },
+  "sampled_conversational": 678000,
+  "sampled_general": 339000
+ },
+ "contamination": {
+  "dev_real": {
+   "sentences": 5000,
+   "exact": 3674,
+   "near_only": 67,
+   "contaminated": 3741,
+   "clean": 1259,
+   "contaminated_share": 0.7482
+  },
+  "test_real": {
+   "sentences": 5000,
+   "exact": 3661,
+   "near_only": 92,
+   "contaminated": 3753,
+   "clean": 1247,
+   "contaminated_share": 0.7506
+  },
+  "test_chat": {
+   "sentences": 180,
+   "exact": 17,
+   "near_only": 0,
+   "contaminated": 17,
+   "clean": 163,
+   "contaminated_share": 0.0944
+  },
+  "definition": "contaminated = exact or near-duplicate of a v2 pretraining sentence; clean = neither",
+  "near_dup_sources_scanned": [
+   "manual",
+   "wikipedia"
+  ],
+  "method": "exact: sentence key (letters+digits) over every v2 train sentence; near: MinHash word-3-gram, 16x8 LSH, agreement >= 0.8, only in the listed sources"
+ },
+ "pool": {
+  "after_dedup": {
+   "conv": 667371,
+   "general": 334033
+  },
+  "leakage_removed": {
+   "exact": 135,
+   "near": 2
+  },
+  "after_leakage": {
+   "conv": 667303,
+   "general": 333964
+  }
+ },
+ "coverage_pre_gate": {
+  "sentences": 50000,
+  "coverage": 0.8624,
+  "by_source": {
+   "shortcut": 0.2118,
+   "lexicon": 0.6506,
+   "rules": 0.1376
+  }
+ },
+ "tokenizer": {
+  "version": "hinglish-v1",
+  "base_sha256": "70e469cd87019e5daef3d3f00c7f66a5fc2a3f011af0f76b9ec228bc934eea27",
+  "vocab_size": 10304
+ },
+ "leakage_recheck": {
+  "hits": {
+   "train": {
+    "exact": 0,
+    "near": 0
+   },
+   "val_syn": {
+    "exact": 0,
+    "near": 0
+   }
+  },
+  "overlap": {
+   "train_val_syn": 0,
+   "dev_real_test_real": 40
+  }
+ },
+ "coverage_train": {
+  "coverage": 0.8628,
+  "by_source": {
+   "shortcut": 0.2118,
+   "lexicon": 0.651,
+   "rules": 0.1372
+  }
+ },
+ "splits": {
+  "val_syn": {
+   "pairs": 5000,
+   "tokens": 441008,
+   "n_tokens": {
+    "mean": 88.2,
+    "p50": 88,
+    "p99": 155,
+    "max": 193
+   },
+   "over_max_tokens": 0,
+   "pairs_with_lunk": 0,
+   "conversational_share": 0.7,
+   "noise_levels": {
+    "mild": 2266,
+    "clean": 1749,
+    "heavy": 985
+   },
+   "source_share": {
+    "shortcut": 0.2104,
+    "lexicon": 0.6486,
+    "rules": 0.1409
+   },
+   "contamination": null
+  },
+  "train": {
+   "pairs": 600000,
+   "tokens": 53094714,
+   "n_tokens": {
+    "mean": 88.5,
+    "p50": 88,
+    "p99": 156,
+    "max": 256
+   },
+   "over_max_tokens": 0,
+   "pairs_with_lunk": 0,
+   "conversational_share": 0.7,
+   "noise_levels": {
+    "mild": 269725,
+    "clean": 210233,
+    "heavy": 120042
+   },
+   "source_share": {
+    "shortcut": 0.2116,
+    "lexicon": 0.65,
+    "rules": 0.1384
+   },
+   "contamination": null
+  },
+  "dev_real": {
+   "pairs": 5000,
+   "tokens": 664411,
+   "n_tokens": {
+    "mean": 132.9,
+    "p50": 114,
+    "p99": 454,
+    "max": 2277
+   },
+   "over_max_tokens": 425,
+   "pairs_with_lunk": 77,
+   "conversational_share": 0.085,
+   "noise_levels": {},
+   "source_share": null,
+   "contamination": {
+    "exact": 3674,
+    "clean": 1259,
+    "near": 67
+   }
+  },
+  "test_real": {
+   "pairs": 5000,
+   "tokens": 654153,
+   "n_tokens": {
+    "mean": 130.8,
+    "p50": 111,
+    "p99": 446,
+    "max": 1236
+   },
+   "over_max_tokens": 445,
+   "pairs_with_lunk": 73,
+   "conversational_share": 0.0766,
+   "noise_levels": {},
+   "source_share": null,
+   "contamination": {
+    "exact": 3661,
+    "clean": 1247,
+    "near": 92
+   }
+  },
+  "test_chat": {
+   "pairs": 180,
+   "tokens": 5791,
+   "n_tokens": {
+    "mean": 32.2,
+    "p50": 32,
+    "p99": 52,
+    "max": 55
+   },
+   "over_max_tokens": 0,
+   "pairs_with_lunk": 0,
+   "conversational_share": 0.5111,
+   "noise_levels": {},
+   "source_share": null,
+   "contamination": {
+    "exact": 17,
+    "clean": 163
+   }
+  }
+ },
+ "dropped": {
+  "val_syn": {},
+  "train": {
+   "over_max_tokens": 39
+  }
+ },
+ "decode_cap": {
+  "ratio_quantile": 99.9,
+  "ratio": 0.56,
+  "factor": 1.5,
+  "extra": 8,
+  "formula": "max_new = ceil(ratio * factor * (prompt_len - 2)) + extra, capped by eval.max_new_tokens",
+  "refs_longer_than_cap": {
+   "val_syn": 0,
+   "train": 8,
+   "dev_real": 2,
+   "test_real": 1,
+   "test_chat": 0
+  }
+ },
+ "spelling_top200": [
+  {
+   "word": "है",
+   "count": 260662,
+   "spelling": {
+    "hai": 0.599,
+    "h": 0.201,
+    "he": 0.2
+   },
+   "after_noise": {
+    "hai": 0.599,
+    "h": 0.201,
+    "he": 0.2
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "hai",
+   "human_dakshina_dev": {
+    "hai": 0.981,
+    "hain": 0.015,
+    "hi": 0.001,
+    "ahai": 0.001
+   }
+  },
+  {
+   "word": "नहीं",
+   "count": 227693,
+   "spelling": {
+    "nahi": 0.501,
+    "nhi": 0.3,
+    "nahin": 0.1,
+    "nai": 0.099
+   },
+   "after_noise": {
+    "nahi": 0.471,
+    "nhi": 0.33,
+    "nahin": 0.1,
+    "nai": 0.099
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "naheen",
+   "human_dakshina_dev": {
+    "nahi": 0.625,
+    "nahin": 0.355,
+    "nahim": 0.009,
+    "nhin": 0.006
+   }
+  },
+  {
+   "word": "के",
+   "count": 207155,
+   "spelling": {
+    "ke": 0.61,
+    "k": 0.39
+   },
+   "after_noise": {
+    "ke": 0.61,
+    "k": 0.39
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ke",
+   "human_dakshina_dev": {
+    "ke": 0.992,
+    "ka": 0.001,
+    "k": 0.001,
+    "je": 0.001
+   }
+  },
+  {
+   "word": "में",
+   "count": 179819,
+   "spelling": {
+    "men": 0.361,
+    "me": 0.276,
+    "mein": 0.272,
+    "main": 0.091
+   },
+   "after_noise": {
+    "men": 0.361,
+    "me": 0.276,
+    "mein": 0.272,
+    "main": 0.091
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "men",
+   "human_dakshina_dev": {
+    "men": 0.43,
+    "me": 0.279,
+    "mein": 0.256,
+    "mem": 0.023
+   }
+  },
+  {
+   "word": "की",
+   "count": 141059,
+   "spelling": {
+    "ki": 1.0
+   },
+   "after_noise": {
+    "ki": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ki",
+   "human_dakshina_dev": {
+    "ki": 0.943,
+    "kii": 0.04,
+    "kee": 0.006,
+    "ke": 0.005
+   }
+  },
+  {
+   "word": "से",
+   "count": 117094,
+   "spelling": {
+    "se": 0.9,
+    "say": 0.1
+   },
+   "after_noise": {
+    "se": 0.9,
+    "say": 0.1
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "se",
+   "human_dakshina_dev": {
+    "se": 0.995,
+    "men": 0.001,
+    "sse": 0.001,
+    "ke": 0.001
+   }
+  },
+  {
+   "word": "को",
+   "count": 109022,
+   "spelling": {
+    "ko": 0.902,
+    "co": 0.098
+   },
+   "after_noise": {
+    "ko": 0.902,
+    "co": 0.098
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ko",
+   "human_dakshina_dev": {
+    "ko": 0.991,
+    "ki": 0.002,
+    "ke": 0.002,
+    "to": 0.002
+   }
+  },
+  {
+   "word": "हैं",
+   "count": 107169,
+   "spelling": {
+    "hain": 0.555,
+    "hai": 0.334,
+    "h": 0.111
+   },
+   "after_noise": {
+    "hain": 0.555,
+    "hai": 0.334,
+    "h": 0.111
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "hain",
+   "human_dakshina_dev": {
+    "hain": 0.664,
+    "hai": 0.318,
+    "haim": 0.008,
+    "hian": 0.003
+   }
+  },
+  {
+   "word": "का",
+   "count": 99536,
+   "spelling": {
+    "ka": 1.0
+   },
+   "after_noise": {
+    "ka": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ka",
+   "human_dakshina_dev": {
+    "ka": 0.978,
+    "kaa": 0.014,
+    "k": 0.002,
+    "pa": 0.001
+   }
+  },
+  {
+   "word": "और",
+   "count": 93329,
+   "spelling": {
+    "aur": 0.702,
+    "or": 0.298
+   },
+   "after_noise": {
+    "aur": 0.702,
+    "or": 0.298
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "aur",
+   "human_dakshina_dev": {
+    "aur": 0.969,
+    "aura": 0.02,
+    "and": 0.001,
+    "ayr": 0.001
+   }
+  },
+  {
+   "word": "भी",
+   "count": 84039,
+   "spelling": {
+    "bhi": 1.0
+   },
+   "after_noise": {
+    "bhi": 1.0
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "bhi",
+   "human_dakshina_dev": {
+    "bhi": 0.993,
+    "bhii": 0.002,
+    "hi": 0.002,
+    "bi": 0.002
+   }
+  },
+  {
+   "word": "कि",
+   "count": 79663,
+   "spelling": {
+    "ki": 0.877,
+    "k": 0.123
+   },
+   "after_noise": {
+    "ki": 0.877,
+    "k": 0.123
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "ki",
+   "human_dakshina_dev": {
+    "ki": 0.995,
+    "pratyaropit": 0.002,
+    "kri": 0.002
+   }
+  },
+  {
+   "word": "पर",
+   "count": 69027,
+   "spelling": {
+    "par": 1.0
+   },
+   "after_noise": {
+    "par": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "par",
+   "human_dakshina_dev": {
+    "par": 0.938,
+    "para": 0.027,
+    "pr": 0.017,
+    "paa": 0.003
+   }
+  },
+  {
+   "word": "ने",
+   "count": 61585,
+   "spelling": {
+    "ne": 1.0
+   },
+   "after_noise": {
+    "ne": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ne",
+   "human_dakshina_dev": {
+    "ne": 0.989,
+    "ke": 0.004,
+    "se": 0.002,
+    "be": 0.002
+   }
+  },
+  {
+   "word": "तो",
+   "count": 52867,
+   "spelling": {
+    "to": 0.747,
+    "toh": 0.253
+   },
+   "after_noise": {
+    "to": 0.747,
+    "toh": 0.253
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "to",
+   "human_dakshina_dev": {
+    "to": 0.994,
+    "yah": 0.006
+   }
+  },
+  {
+   "word": "क्या",
+   "count": 50778,
+   "spelling": {
+    "kya": 0.889,
+    "kia": 0.111
+   },
+   "after_noise": {
+    "kya": 0.889,
+    "kia": 0.111
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "kya",
+   "human_dakshina_dev": {
+    "kya": 0.96,
+    "kyaa": 0.04
+   }
+  },
+  {
+   "word": "इस",
+   "count": 48299,
+   "spelling": {
+    "is": 1.0
+   },
+   "after_noise": {
+    "is": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "is",
+   "human_dakshina_dev": {
+    "is": 0.969,
+    "isa": 0.022,
+    "us": 0.004,
+    "iis": 0.004
+   }
+  },
+  {
+   "word": "हो",
+   "count": 47978,
+   "spelling": {
+    "ho": 1.0
+   },
+   "after_noise": {
+    "ho": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ho",
+   "human_dakshina_dev": {
+    "ho": 0.99,
+    "jo": 0.003,
+    "hi": 0.003,
+    "jho": 0.003
+   }
+  },
+  {
+   "word": "यह",
+   "count": 47420,
+   "spelling": {
+    "yeh": 0.497,
+    "ye": 0.404,
+    "yah": 0.099
+   },
+   "after_noise": {
+    "yeh": 0.497,
+    "ye": 0.404,
+    "yah": 0.099
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "yah",
+   "human_dakshina_dev": {
+    "yah": 0.858,
+    "yeh": 0.102,
+    "yaha": 0.013,
+    "ya": 0.006
+   }
+  },
+  {
+   "word": "ही",
+   "count": 47026,
+   "spelling": {
+    "hi": 1.0
+   },
+   "after_noise": {
+    "hi": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "hi",
+   "human_dakshina_dev": {
+    "hi": 0.935,
+    "hii": 0.046,
+    "hee": 0.01,
+    "ka": 0.003
+   }
+  },
+  {
+   "word": "आप",
+   "count": 45909,
+   "spelling": {
+    "aap": 0.701,
+    "ap": 0.299
+   },
+   "after_noise": {
+    "aap": 0.612,
+    "ap": 0.388
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "aap",
+   "human_dakshina_dev": {
+    "aap": 0.96,
+    "ap": 0.04
+   }
+  },
+  {
+   "word": "एक",
+   "count": 45040,
+   "spelling": {
+    "ek": 1.0
+   },
+   "after_noise": {
+    "ek": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ek",
+   "human_dakshina_dev": {
+    "ek": 0.966,
+    "eka": 0.022,
+    "eak": 0.003,
+    "em": 0.001
+   }
+  },
+  {
+   "word": "कर",
+   "count": 42625,
+   "spelling": {
+    "kar": 0.799,
+    "kr": 0.201
+   },
+   "after_noise": {
+    "kar": 0.799,
+    "kr": 0.201
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "kar",
+   "human_dakshina_dev": {
+    "kar": 0.977,
+    "kara": 0.017,
+    "karli": 0.003,
+    "ka": 0.003
+   }
+  },
+  {
+   "word": "लिए",
+   "count": 40701,
+   "spelling": {
+    "liye": 1.0
+   },
+   "after_noise": {
+    "liye": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "liye",
+   "human_dakshina_dev": {
+    "liye": 0.757,
+    "lie": 0.233,
+    "le": 0.002,
+    "lye": 0.002
+   }
+  },
+  {
+   "word": "कोई",
+   "count": 38318,
+   "spelling": {
+    "koi": 1.0
+   },
+   "after_noise": {
+    "koi": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "koi",
+   "human_dakshina_dev": {
+    "koi": 0.99,
+    "koyi": 0.01
+   }
+  },
+  {
+   "word": "था",
+   "count": 37529,
+   "spelling": {
+    "tha": 1.0
+   },
+   "after_noise": {
+    "tha": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "tha",
+   "human_dakshina_dev": {
+    "tha": 0.956,
+    "thaa": 0.031,
+    "hai": 0.004,
+    "taha": 0.002
+   }
+  },
+  {
+   "word": "मैं",
+   "count": 36128,
+   "spelling": {
+    "main": 0.498,
+    "mai": 0.303,
+    "me": 0.199
+   },
+   "after_noise": {
+    "main": 0.498,
+    "mai": 0.303,
+    "me": 0.199
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "main",
+   "human_dakshina_dev": {
+    "main": 0.632,
+    "mai": 0.158,
+    "men": 0.105,
+    "mein": 0.053
+   }
+  },
+  {
+   "word": "हम",
+   "count": 34716,
+   "spelling": {
+    "hum": 0.796,
+    "ham": 0.204
+   },
+   "after_noise": {
+    "hum": 0.796,
+    "ham": 0.204
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "ham",
+   "human_dakshina_dev": {
+    "ham": 0.875,
+    "hum": 0.125
+   }
+  },
+  {
+   "word": "किया",
+   "count": 29410,
+   "spelling": {
+    "kiya": 1.0
+   },
+   "after_noise": {
+    "kiya": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "kiya",
+   "human_dakshina_dev": {
+    "kiya": 0.97,
+    "kiyaa": 0.019,
+    "kiye": 0.004,
+    "kya": 0.002
+   }
+  },
+  {
+   "word": "कहा",
+   "count": 27441,
+   "spelling": {
+    "kaha": 1.0
+   },
+   "after_noise": {
+    "kaha": 0.939,
+    "kha": 0.061
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kaha",
+   "human_dakshina_dev": {
+    "kaha": 0.964,
+    "kah": 0.024,
+    "kahaa": 0.012
+   }
+  },
+  {
+   "word": "वह",
+   "count": 25746,
+   "spelling": {
+    "woh": 0.419,
+    "vo": 0.25,
+    "wo": 0.248,
+    "vah": 0.082
+   },
+   "after_noise": {
+    "woh": 0.367,
+    "vo": 0.25,
+    "wo": 0.249,
+    "vah": 0.071,
+    "voh": 0.052,
+    "wah": 0.011
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "vah",
+   "human_dakshina_dev": {
+    "vah": 0.6,
+    "wah": 0.218,
+    "veh": 0.139,
+    "vaha": 0.042
+   }
+  },
+  {
+   "word": "गया",
+   "count": 25575,
+   "spelling": {
+    "gaya": 0.698,
+    "gya": 0.302
+   },
+   "after_noise": {
+    "gaya": 0.654,
+    "gya": 0.346
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "gaya",
+   "human_dakshina_dev": {
+    "gaya": 0.991,
+    "jata": 0.002,
+    "ki": 0.002,
+    "hai": 0.002
+   }
+  },
+  {
+   "word": "लेकिन",
+   "count": 23623,
+   "spelling": {
+    "lekin": 1.0
+   },
+   "after_noise": {
+    "lekin": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "lekin",
+   "human_dakshina_dev": {
+    "lekin": 0.96,
+    "lekina": 0.02,
+    "leking": 0.01,
+    "ek": 0.01
+   }
+  },
+  {
+   "word": "तक",
+   "count": 22480,
+   "spelling": {
+    "tak": 1.0
+   },
+   "after_noise": {
+    "tak": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "tak",
+   "human_dakshina_dev": {
+    "tak": 0.973,
+    "taka": 0.016,
+    "tka": 0.005,
+    "taj": 0.005
+   }
+  },
+  {
+   "word": "साथ",
+   "count": 22270,
+   "spelling": {
+    "saath": 0.64,
+    "sath": 0.36
+   },
+   "after_noise": {
+    "saath": 0.562,
+    "sath": 0.438
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "saath",
+   "human_dakshina_dev": {
+    "sath": 0.611,
+    "saath": 0.356,
+    "satha": 0.016,
+    "ke": 0.004
+   }
+  },
+  {
+   "word": "करने",
+   "count": 22017,
+   "spelling": {
+    "karane": 1.0
+   },
+   "after_noise": {
+    "karane": 0.943,
+    "krane": 0.057
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "karne",
+   "human_dakshina_dev": {
+    "karne": 0.939,
+    "karane": 0.055,
+    "kanre": 0.003,
+    "marne": 0.003
+   }
+  },
+  {
+   "word": "अपने",
+   "count": 21726,
+   "spelling": {
+    "apne": 1.0
+   },
+   "after_noise": {
+    "apne": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "apne",
+   "human_dakshina_dev": {
+    "apne": 0.966,
+    "apane": 0.026,
+    "apni": 0.009
+   }
+  },
+  {
+   "word": "कुछ",
+   "count": 21589,
+   "spelling": {
+    "kuchh": 0.802,
+    "kuch": 0.198
+   },
+   "after_noise": {
+    "kuchh": 0.802,
+    "kuch": 0.198
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kuchh",
+   "human_dakshina_dev": {
+    "kuch": 0.528,
+    "kuchh": 0.429,
+    "kucha": 0.025,
+    "kucch": 0.006
+   }
+  },
+  {
+   "word": "किसी",
+   "count": 20437,
+   "spelling": {
+    "kisi": 1.0
+   },
+   "after_noise": {
+    "kisi": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kisi",
+   "human_dakshina_dev": {
+    "kisi": 0.974,
+    "kis": 0.017,
+    "kji": 0.009
+   }
+  },
+  {
+   "word": "रहे",
+   "count": 19808,
+   "spelling": {
+    "rahe": 0.6,
+    "rhe": 0.4
+   },
+   "after_noise": {
+    "rahe": 0.563,
+    "rhe": 0.437
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "rahe",
+   "human_dakshina_dev": {
+    "rahe": 0.969,
+    "rhe": 0.031
+   }
+  },
+  {
+   "word": "सकते",
+   "count": 19710,
+   "spelling": {
+    "sakte": 0.799,
+    "sakate": 0.201
+   },
+   "after_noise": {
+    "sakte": 0.747,
+    "sakate": 0.19,
+    "skte": 0.052,
+    "skate": 0.011
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "sakte",
+   "human_dakshina_dev": {
+    "sakte": 0.983,
+    "sakta": 0.017
+   }
+  },
+  {
+   "word": "मुझे",
+   "count": 19568,
+   "spelling": {
+    "mujhe": 0.798,
+    "mjhe": 0.202
+   },
+   "after_noise": {
+    "mujhe": 0.798,
+    "mjhe": 0.202
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "mujhe",
+   "human_dakshina_dev": {
+    "mujhe": 1.0
+   }
+  },
+  {
+   "word": "रहा",
+   "count": 19447,
+   "spelling": {
+    "raha": 0.604,
+    "rha": 0.396
+   },
+   "after_noise": {
+    "raha": 0.567,
+    "rha": 0.433
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "raha",
+   "human_dakshina_dev": {
+    "raha": 0.944,
+    "rha": 0.056
+   }
+  },
+  {
+   "word": "थी",
+   "count": 18472,
+   "spelling": {
+    "thi": 1.0
+   },
+   "after_noise": {
+    "thi": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "thi",
+   "human_dakshina_dev": {
+    "thi": 0.945,
+    "thee": 0.044,
+    "hai": 0.005,
+    "thii": 0.005
+   }
+  },
+  {
+   "word": "जो",
+   "count": 17513,
+   "spelling": {
+    "jo": 1.0
+   },
+   "after_noise": {
+    "jo": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "jo",
+   "human_dakshina_dev": {
+    "jo": 0.977,
+    "ji": 0.01,
+    "ko": 0.01,
+    "hai": 0.003
+   }
+  },
+  {
+   "word": "थे",
+   "count": 17443,
+   "spelling": {
+    "the": 1.0
+   },
+   "after_noise": {
+    "the": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "the",
+   "human_dakshina_dev": {
+    "the": 0.992,
+    "he": 0.004,
+    "tha": 0.004
+   }
+  },
+  {
+   "word": "बाद",
+   "count": 16909,
+   "spelling": {
+    "bad": 0.504,
+    "baad": 0.496
+   },
+   "after_noise": {
+    "bad": 0.566,
+    "baad": 0.434
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "baad",
+   "human_dakshina_dev": {
+    "baad": 0.89,
+    "bad": 0.086,
+    "baat": 0.01,
+    "bada": 0.01
+   }
+  },
+  {
+   "word": "अब",
+   "count": 16809,
+   "spelling": {
+    "ab": 0.793,
+    "aab": 0.207
+   },
+   "after_noise": {
+    "ab": 0.819,
+    "aab": 0.181
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ab",
+   "human_dakshina_dev": {
+    "ab": 0.975,
+    "aba": 0.025
+   }
+  },
+  {
+   "word": "सकता",
+   "count": 16104,
+   "spelling": {
+    "sakta": 0.801,
+    "sakata": 0.199
+   },
+   "after_noise": {
+    "sakta": 0.754,
+    "sakata": 0.189,
+    "skta": 0.047,
+    "skata": 0.01
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "sakta",
+   "human_dakshina_dev": {
+    "sakta": 0.91,
+    "saktaa": 0.036,
+    "sakataa": 0.018,
+    "sakata": 0.018
+   }
+  },
+  {
+   "word": "उन्होंने",
+   "count": 15626,
+   "spelling": {
+    "unhone": 1.0
+   },
+   "after_noise": {
+    "unhone": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "unhonne",
+   "human_dakshina_dev": {
+    "unhone": 0.793,
+    "unhonne": 0.17,
+    "unhonen": 0.03,
+    "unhonie": 0.007
+   }
+  },
+  {
+   "word": "जा",
+   "count": 15533,
+   "spelling": {
+    "ja": 0.686,
+    "jaa": 0.314
+   },
+   "after_noise": {
+    "ja": 0.729,
+    "jaa": 0.271
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ja",
+   "human_dakshina_dev": {
+    "ja": 0.752,
+    "jaa": 0.248
+   }
+  },
+  {
+   "word": "दिया",
+   "count": 15257,
+   "spelling": {
+    "diya": 1.0
+   },
+   "after_noise": {
+    "diya": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "diya",
+   "human_dakshina_dev": {
+    "diya": 0.99,
+    "diyaa": 0.01
+   }
+  },
+  {
+   "word": "बात",
+   "count": 14933,
+   "spelling": {
+    "baat": 1.0
+   },
+   "after_noise": {
+    "baat": 0.87,
+    "bat": 0.13
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "baat",
+   "human_dakshina_dev": {
+    "baat": 0.844,
+    "bat": 0.111,
+    "bata": 0.022,
+    "vbaat": 0.022
+   }
+  },
+  {
+   "word": "या",
+   "count": 14493,
+   "spelling": {
+    "ya": 1.0
+   },
+   "after_noise": {
+    "ya": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ya",
+   "human_dakshina_dev": {
+    "ya": 0.928,
+    "yaa": 0.051,
+    "narak": 0.005,
+    "yah": 0.005
+   }
+  },
+  {
+   "word": "होता",
+   "count": 14435,
+   "spelling": {
+    "hota": 1.0
+   },
+   "after_noise": {
+    "hota": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "hota",
+   "human_dakshina_dev": {
+    "hota": 0.984,
+    "hot": 0.008,
+    "hotaa": 0.004,
+    "hoga": 0.004
+   }
+  },
+  {
+   "word": "रही",
+   "count": 14247,
+   "spelling": {
+    "rahi": 0.596,
+    "rhi": 0.404
+   },
+   "after_noise": {
+    "rahi": 0.562,
+    "rhi": 0.438
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "rahi",
+   "human_dakshina_dev": {
+    "rahi": 0.975,
+    "rahin": 0.025
+   }
+  },
+  {
+   "word": "हुआ",
+   "count": 14166,
+   "spelling": {
+    "hua": 1.0
+   },
+   "after_noise": {
+    "hua": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hua",
+   "human_dakshina_dev": {
+    "hua": 0.944,
+    "huaa": 0.049,
+    "hya": 0.006
+   }
+  },
+  {
+   "word": "ये",
+   "count": 14111,
+   "spelling": {
+    "ye": 0.661,
+    "yeh": 0.339
+   },
+   "after_noise": {
+    "ye": 0.661,
+    "yeh": 0.339
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "ye",
+   "human_dakshina_dev": {
+    "ye": 0.977,
+    "uye": 0.011,
+    "haiye": 0.011
+   }
+  },
+  {
+   "word": "न",
+   "count": 14013,
+   "spelling": {
+    "naa": 1.0
+   },
+   "after_noise": {
+    "naa": 0.872,
+    "na": 0.128
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "na",
+   "human_dakshina_dev": {
+    "na": 0.571,
+    "n": 0.429
+   }
+  },
+  {
+   "word": "करते",
+   "count": 13855,
+   "spelling": {
+    "karte": 0.866,
+    "karate": 0.134
+   },
+   "after_noise": {
+    "karte": 0.812,
+    "karate": 0.126,
+    "krte": 0.053,
+    "krate": 0.008
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "karte",
+   "human_dakshina_dev": {
+    "karte": 0.965,
+    "karate": 0.017,
+    "prayog": 0.006,
+    "karta": 0.006
+   }
+  },
+  {
+   "word": "इसके",
+   "count": 13772,
+   "spelling": {
+    "iske": 0.798,
+    "isake": 0.202
+   },
+   "after_noise": {
+    "iske": 0.798,
+    "isake": 0.202
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "iske",
+   "human_dakshina_dev": {
+    "iske": 0.944,
+    "isake": 0.035,
+    "sike": 0.007,
+    "uske": 0.007
+   }
+  },
+  {
+   "word": "क्यों",
+   "count": 13660,
+   "spelling": {
+    "kyu": 0.391,
+    "kyon": 0.305,
+    "kyun": 0.304
+   },
+   "after_noise": {
+    "kyu": 0.391,
+    "kyon": 0.305,
+    "kyun": 0.304
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "kyon",
+   "human_dakshina_dev": {
+    "kyon": 0.667,
+    "kyo": 0.333
+   }
+  },
+  {
+   "word": "कैसे",
+   "count": 13591,
+   "spelling": {
+    "kaise": 0.807,
+    "kese": 0.193
+   },
+   "after_noise": {
+    "kaise": 0.807,
+    "kese": 0.193
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "kaise",
+   "human_dakshina_dev": {
+    "kaise": 1.0
+   }
+  },
+  {
+   "word": "गई",
+   "count": 12709,
+   "spelling": {
+    "gayi": 0.447,
+    "gai": 0.366,
+    "gyi": 0.187
+   },
+   "after_noise": {
+    "gayi": 0.419,
+    "gai": 0.366,
+    "gyi": 0.215
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "gai",
+   "human_dakshina_dev": {
+    "gai": 0.817,
+    "gayi": 0.159,
+    "gaii": 0.024
+   }
+  },
+  {
+   "word": "समय",
+   "count": 12379,
+   "spelling": {
+    "samay": 0.901,
+    "samaya": 0.099
+   },
+   "after_noise": {
+    "samay": 0.901,
+    "samaya": 0.092,
+    "smaya": 0.007
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "samay",
+   "human_dakshina_dev": {
+    "samay": 0.962,
+    "samaya": 0.023,
+    "samyy": 0.008,
+    "ke": 0.008
+   }
+  },
+  {
+   "word": "होने",
+   "count": 12089,
+   "spelling": {
+    "hone": 1.0
+   },
+   "after_noise": {
+    "hone": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hone",
+   "human_dakshina_dev": {
+    "hone": 1.0
+   }
+  },
+  {
+   "word": "वे",
+   "count": 11829,
+   "spelling": {
+    "way": 0.894,
+    "ve": 0.106
+   },
+   "after_noise": {
+    "way": 0.778,
+    "vay": 0.116,
+    "ve": 0.093,
+    "we": 0.013
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ve",
+   "human_dakshina_dev": {
+    "ve": 0.818,
+    "we": 0.164,
+    "vve": 0.006,
+    "veh": 0.006
+   }
+  },
+  {
+   "word": "हुए",
+   "count": 11808,
+   "spelling": {
+    "hue": 0.906,
+    "huye": 0.094
+   },
+   "after_noise": {
+    "hue": 0.906,
+    "huye": 0.094
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "huye",
+   "human_dakshina_dev": {
+    "huye": 0.57,
+    "hue": 0.398,
+    "hye": 0.023,
+    "hua": 0.008
+   }
+  },
+  {
+   "word": "करना",
+   "count": 11666,
+   "spelling": {
+    "karna": 1.0
+   },
+   "after_noise": {
+    "karna": 0.943,
+    "krna": 0.057
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "karna",
+   "human_dakshina_dev": {
+    "karna": 0.974,
+    "karana": 0.013,
+    "karnaa": 0.013
+   }
+  },
+  {
+   "word": "होगा",
+   "count": 11601,
+   "spelling": {
+    "hoga": 1.0
+   },
+   "after_noise": {
+    "hoga": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hoga",
+   "human_dakshina_dev": {
+    "hoga": 0.964,
+    "hogaa": 0.036
+   }
+  },
+  {
+   "word": "तरह",
+   "count": 11406,
+   "spelling": {
+    "tarah": 1.0
+   },
+   "after_noise": {
+    "tarah": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "tarah",
+   "human_dakshina_dev": {
+    "tarah": 0.971,
+    "trarah": 0.01,
+    "tarag": 0.01,
+    "taraha": 0.01
+   }
+  },
+  {
+   "word": "तुम",
+   "count": 11044,
+   "spelling": {
+    "tum": 1.0
+   },
+   "after_noise": {
+    "tum": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "tum",
+   "human_dakshina_dev": {
+    "tum": 1.0
+   }
+  },
+  {
+   "word": "बहुत",
+   "count": 10859,
+   "spelling": {
+    "bahut": 0.544,
+    "bohot": 0.276,
+    "bhut": 0.18
+   },
+   "after_noise": {
+    "bahut": 0.544,
+    "bohot": 0.276,
+    "bhut": 0.18
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "bahut",
+   "human_dakshina_dev": {
+    "bahut": 0.933,
+    "bahuta": 0.056,
+    "bahu": 0.011
+   }
+  },
+  {
+   "word": "पहले",
+   "count": 10821,
+   "spelling": {
+    "pahle": 0.65,
+    "pehle": 0.281,
+    "pahale": 0.068
+   },
+   "after_noise": {
+    "pahle": 0.65,
+    "pehle": 0.281,
+    "pahale": 0.068
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "pahle",
+   "human_dakshina_dev": {
+    "pahle": 0.453,
+    "pahale": 0.302,
+    "pehle": 0.221,
+    "pahae": 0.012
+   }
+  },
+  {
+   "word": "हूं",
+   "count": 10726,
+   "spelling": {
+    "hun": 0.381,
+    "hu": 0.373,
+    "hoon": 0.246
+   },
+   "after_noise": {
+    "hun": 0.411,
+    "hu": 0.373,
+    "hoon": 0.216
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "hoon",
+   "human_dakshina_dev": {
+    "hun": 0.8,
+    "hu": 0.2
+   }
+  },
+  {
+   "word": "अपनी",
+   "count": 10663,
+   "spelling": {
+    "apni": 1.0
+   },
+   "after_noise": {
+    "apni": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "apni",
+   "human_dakshina_dev": {
+    "apni": 0.927,
+    "apne": 0.04,
+    "apani": 0.016,
+    "apnee": 0.008
+   }
+  },
+  {
+   "word": "चाहिए",
+   "count": 10643,
+   "spelling": {
+    "chahie": 0.336,
+    "chahiye": 0.333,
+    "chaahie": 0.331
+   },
+   "after_noise": {
+    "chahie": 0.375,
+    "chahiye": 0.314,
+    "chaahie": 0.291,
+    "chhiye": 0.02
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "chaahiye",
+   "human_dakshina_dev": {
+    "chahiye": 0.833,
+    "chaahiye": 0.133,
+    "chahie": 0.033
+   }
+  },
+  {
+   "word": "लोगों",
+   "count": 10642,
+   "spelling": {
+    "logon": 1.0
+   },
+   "after_noise": {
+    "logon": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "logon",
+   "human_dakshina_dev": {
+    "logon": 0.658,
+    "logo": 0.316,
+    "lgon": 0.013,
+    "lohon": 0.013
+   }
+  },
+  {
+   "word": "फिर",
+   "count": 10628,
+   "spelling": {
+    "fir": 1.0
+   },
+   "after_noise": {
+    "fir": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "phir",
+   "human_dakshina_dev": {
+    "fir": 0.662,
+    "phir": 0.324,
+    "fhir": 0.015
+   }
+  },
+  {
+   "word": "काम",
+   "count": 10621,
+   "spelling": {
+    "kaam": 0.614,
+    "kam": 0.386
+   },
+   "after_noise": {
+    "kaam": 0.538,
+    "kam": 0.462
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kaam",
+   "human_dakshina_dev": {
+    "kaam": 0.855,
+    "kam": 0.145
+   }
+  },
+  {
+   "word": "जब",
+   "count": 10610,
+   "spelling": {
+    "jab": 0.901,
+    "jb": 0.099
+   },
+   "after_noise": {
+    "jab": 0.901,
+    "jb": 0.099
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "jab",
+   "human_dakshina_dev": {
+    "jab": 0.945,
+    "jaba": 0.022,
+    "yah": 0.011,
+    "jb": 0.011
+   }
+  },
+  {
+   "word": "ऐसा",
+   "count": 10450,
+   "spelling": {
+    "aisa": 1.0
+   },
+   "after_noise": {
+    "aisa": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "aisa",
+   "human_dakshina_dev": {
+    "aisa": 0.974,
+    "yesa": 0.026
+   }
+  },
+  {
+   "word": "ठीक",
+   "count": 10350,
+   "spelling": {
+    "thik": 0.501,
+    "theek": 0.499
+   },
+   "after_noise": {
+    "thik": 0.567,
+    "theek": 0.433
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "theek",
+   "human_dakshina_dev": {
+    "thik": 0.8,
+    "theek": 0.133,
+    "thil": 0.067
+   }
+  },
+  {
+   "word": "उन्हें",
+   "count": 10146,
+   "spelling": {
+    "unhen": 0.807,
+    "unhein": 0.193
+   },
+   "after_noise": {
+    "unhen": 0.807,
+    "unhein": 0.193
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "unhen",
+   "human_dakshina_dev": {
+    "unhe": 0.492,
+    "unhen": 0.409,
+    "unhein": 0.045,
+    "unhne": 0.03
+   }
+  },
+  {
+   "word": "कभी",
+   "count": 10123,
+   "spelling": {
+    "kabhi": 1.0
+   },
+   "after_noise": {
+    "kabhi": 0.937,
+    "kbhi": 0.063
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kabhi",
+   "human_dakshina_dev": {
+    "kabhi": 0.966,
+    "kahi": 0.034
+   }
+  },
+  {
+   "word": "जाता",
+   "count": 9961,
+   "spelling": {
+    "jata": 0.663,
+    "jaata": 0.169,
+    "jaataa": 0.168
+   },
+   "after_noise": {
+    "jata": 0.658,
+    "jaataa": 0.148,
+    "jaata": 0.147,
+    "jta": 0.047
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "jaata",
+   "human_dakshina_dev": {
+    "jata": 0.918,
+    "jaata": 0.072,
+    "jataa": 0.003,
+    "ajata": 0.003
+   }
+  },
+  {
+   "word": "लोग",
+   "count": 9909,
+   "spelling": {
+    "log": 1.0
+   },
+   "after_noise": {
+    "log": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "log",
+   "human_dakshina_dev": {
+    "log": 0.955,
+    "loga": 0.03,
+    "lof": 0.015
+   }
+  },
+  {
+   "word": "उनके",
+   "count": 9836,
+   "spelling": {
+    "unke": 1.0
+   },
+   "after_noise": {
+    "unke": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "unke",
+   "human_dakshina_dev": {
+    "unke": 0.962,
+    "unake": 0.023,
+    "junke": 0.008,
+    "inke": 0.008
+   }
+  },
+  {
+   "word": "हुई",
+   "count": 9770,
+   "spelling": {
+    "hui": 1.0
+   },
+   "after_noise": {
+    "hui": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hui",
+   "human_dakshina_dev": {
+    "hui": 0.966,
+    "huyi": 0.022,
+    "hue": 0.011
+   }
+  },
+  {
+   "word": "मेरी",
+   "count": 9271,
+   "spelling": {
+    "meri": 1.0
+   },
+   "after_noise": {
+    "meri": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "meri",
+   "human_dakshina_dev": {
+    "meri": 0.889,
+    "mary": 0.111
+   }
+  },
+  {
+   "word": "उसे",
+   "count": 9266,
+   "spelling": {
+    "use": 1.0
+   },
+   "after_noise": {
+    "use": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "use",
+   "human_dakshina_dev": {
+    "use": 1.0
+   }
+  },
+  {
+   "word": "आज",
+   "count": 9230,
+   "spelling": {
+    "aaj": 1.0
+   },
+   "after_noise": {
+    "aaj": 0.872,
+    "aj": 0.128
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "aaj",
+   "human_dakshina_dev": {
+    "aaj": 0.969,
+    "aj": 0.031
+   }
+  },
+  {
+   "word": "अगर",
+   "count": 9099,
+   "spelling": {
+    "agar": 1.0
+   },
+   "after_noise": {
+    "agar": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "agar",
+   "human_dakshina_dev": {
+    "agar": 1.0
+   }
+  },
+  {
+   "word": "अभी",
+   "count": 9086,
+   "spelling": {
+    "abhi": 1.0
+   },
+   "after_noise": {
+    "abhi": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "abhi",
+   "human_dakshina_dev": {
+    "abhi": 1.0
+   }
+  },
+  {
+   "word": "इन",
+   "count": 9073,
+   "spelling": {
+    "in": 1.0
+   },
+   "after_noise": {
+    "in": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "in",
+   "human_dakshina_dev": {
+    "in": 1.0
+   }
+  },
+  {
+   "word": "कारण",
+   "count": 8947,
+   "spelling": {
+    "karan": 0.902,
+    "kaaran": 0.098
+   },
+   "after_noise": {
+    "karan": 0.916,
+    "kaaran": 0.084
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kaaran",
+   "human_dakshina_dev": {
+    "karan": 0.766,
+    "kaaran": 0.178,
+    "karam": 0.028,
+    "karaan": 0.019
+   }
+  },
+  {
+   "word": "आपको",
+   "count": 8852,
+   "spelling": {
+    "aapko": 1.0
+   },
+   "after_noise": {
+    "aapko": 0.866,
+    "apko": 0.134
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "aapko",
+   "human_dakshina_dev": {
+    "aapko": 0.429,
+    "apko": 0.429,
+    "apako": 0.143
+   }
+  },
+  {
+   "word": "बार",
+   "count": 8477,
+   "spelling": {
+    "bar": 0.937,
+    "baar": 0.063
+   },
+   "after_noise": {
+    "bar": 0.945,
+    "baar": 0.055
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "baar",
+   "human_dakshina_dev": {
+    "baar": 0.811,
+    "bar": 0.17,
+    "bara": 0.019
+   }
+  },
+  {
+   "word": "गए",
+   "count": 8460,
+   "spelling": {
+    "gaye": 1.0
+   },
+   "after_noise": {
+    "gaye": 0.939,
+    "gye": 0.061
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "gaye",
+   "human_dakshina_dev": {
+    "gaye": 0.723,
+    "gae": 0.267,
+    "gayen": 0.01
+   }
+  },
+  {
+   "word": "रूप",
+   "count": 8443,
+   "spelling": {
+    "roop": 0.617,
+    "rup": 0.383
+   },
+   "after_noise": {
+    "roop": 0.536,
+    "rup": 0.464
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "roop",
+   "human_dakshina_dev": {
+    "rup": 0.55,
+    "roop": 0.419,
+    "rupa": 0.017,
+    "ruo": 0.003
+   }
+  },
+  {
+   "word": "होती",
+   "count": 8409,
+   "spelling": {
+    "hoti": 1.0
+   },
+   "after_noise": {
+    "hoti": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hoti",
+   "human_dakshina_dev": {
+    "hoti": 1.0
+   }
+  },
+  {
+   "word": "उस",
+   "count": 8296,
+   "spelling": {
+    "us": 0.803,
+    "usa": 0.197
+   },
+   "after_noise": {
+    "us": 0.803,
+    "usa": 0.197
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "us",
+   "human_dakshina_dev": {
+    "us": 0.952,
+    "is": 0.012,
+    "uss": 0.012,
+    "usa": 0.012
+   }
+  },
+  {
+   "word": "करता",
+   "count": 8266,
+   "spelling": {
+    "karta": 1.0
+   },
+   "after_noise": {
+    "karta": 0.942,
+    "krta": 0.058
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "karta",
+   "human_dakshina_dev": {
+    "karta": 0.901,
+    "kartaa": 0.072,
+    "kart": 0.013,
+    "karata": 0.013
+   }
+  },
+  {
+   "word": "हूँ",
+   "count": 8264,
+   "spelling": {
+    "hun": 0.376,
+    "hu": 0.376,
+    "hoon": 0.247
+   },
+   "after_noise": {
+    "hun": 0.414,
+    "hu": 0.376,
+    "hoon": 0.21
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "hoon",
+   "human_dakshina_dev": {
+    "hun": 0.833,
+    "hu": 0.167
+   }
+  },
+  {
+   "word": "दी",
+   "count": 8190,
+   "spelling": {
+    "di": 0.797,
+    "the": 0.203
+   },
+   "after_noise": {
+    "di": 0.797,
+    "the": 0.203
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "di",
+   "human_dakshina_dev": {
+    "di": 0.91,
+    "the": 0.045,
+    "dee": 0.03,
+    "dii": 0.015
+   }
+  },
+  {
+   "word": "कई",
+   "count": 8163,
+   "spelling": {
+    "kai": 0.806,
+    "kayi": 0.194
+   },
+   "after_noise": {
+    "kai": 0.806,
+    "kayi": 0.183,
+    "kyi": 0.011
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kai",
+   "human_dakshina_dev": {
+    "kai": 0.962,
+    "kayi": 0.023,
+    "mai": 0.008,
+    "kaii": 0.008
+   }
+  },
+  {
+   "word": "उसके",
+   "count": 8060,
+   "spelling": {
+    "uske": 0.805,
+    "usake": 0.195
+   },
+   "after_noise": {
+    "uske": 0.805,
+    "usake": 0.195
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "uske",
+   "human_dakshina_dev": {
+    "uske": 0.962,
+    "usake": 0.029,
+    "iske": 0.01
+   }
+  },
+  {
+   "word": "सभी",
+   "count": 8031,
+   "spelling": {
+    "sabhi": 1.0
+   },
+   "after_noise": {
+    "sabhi": 0.942,
+    "sbhi": 0.058
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "sabhi",
+   "human_dakshina_dev": {
+    "sabhi": 0.99,
+    "tukdiyan": 0.01
+   }
+  },
+  {
+   "word": "दिन",
+   "count": 8008,
+   "spelling": {
+    "din": 1.0
+   },
+   "after_noise": {
+    "din": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "din",
+   "human_dakshina_dev": {
+    "din": 0.946,
+    "dina": 0.054
+   }
+  },
+  {
+   "word": "घर",
+   "count": 7981,
+   "spelling": {
+    "ghar": 1.0
+   },
+   "after_noise": {
+    "ghar": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ghar",
+   "human_dakshina_dev": {
+    "ghar": 1.0
+   }
+  },
+  {
+   "word": "दो",
+   "count": 7961,
+   "spelling": {
+    "do": 1.0
+   },
+   "after_noise": {
+    "do": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "do",
+   "human_dakshina_dev": {
+    "do": 0.989,
+    "to": 0.011
+   }
+  },
+  {
+   "word": "पुलिस",
+   "count": 7905,
+   "spelling": {
+    "police": 1.0
+   },
+   "after_noise": {
+    "police": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "pulis",
+   "human_dakshina_dev": {
+    "police": 0.941,
+    "poliice": 0.059
+   }
+  },
+  {
+   "word": "मेरा",
+   "count": 7894,
+   "spelling": {
+    "mera": 1.0
+   },
+   "after_noise": {
+    "mera": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "mera",
+   "human_dakshina_dev": {
+    "mera": 1.0
+   }
+  },
+  {
+   "word": "ऐसे",
+   "count": 7704,
+   "spelling": {
+    "aise": 1.0
+   },
+   "after_noise": {
+    "aise": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "aise",
+   "human_dakshina_dev": {
+    "aise": 0.973,
+    "aie": 0.027
+   }
+  },
+  {
+   "word": "पास",
+   "count": 7670,
+   "spelling": {
+    "pass": 1.0
+   },
+   "after_noise": {
+    "pass": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "paas",
+   "human_dakshina_dev": {
+    "paas": 0.756,
+    "pas": 0.178,
+    "pass": 0.044,
+    "epaas": 0.022
+   }
+  },
+  {
+   "word": "नाम",
+   "count": 7666,
+   "spelling": {
+    "naam": 1.0
+   },
+   "after_noise": {
+    "naam": 0.87,
+    "nam": 0.13
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "naam",
+   "human_dakshina_dev": {
+    "naam": 0.843,
+    "nam": 0.139,
+    "nama": 0.017
+   }
+  },
+  {
+   "word": "सरकार",
+   "count": 7533,
+   "spelling": {
+    "sarkaar": 1.0
+   },
+   "after_noise": {
+    "sarkaar": 0.873,
+    "sarkar": 0.127
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "sarkaar",
+   "human_dakshina_dev": {
+    "sarkar": 0.721,
+    "sarkaar": 0.162,
+    "sarakar": 0.103,
+    "sakar": 0.015
+   }
+  },
+  {
+   "word": "भारत",
+   "count": 7461,
+   "spelling": {
+    "bharat": 1.0
+   },
+   "after_noise": {
+    "bharat": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "bhaarat",
+   "human_dakshina_dev": {
+    "bharat": 0.939,
+    "bharata": 0.028,
+    "bhat": 0.006,
+    "bhaarat": 0.006
+   }
+  },
+  {
+   "word": "करें",
+   "count": 7150,
+   "spelling": {
+    "karen": 1.0
+   },
+   "after_noise": {
+    "karen": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "karen",
+   "human_dakshina_dev": {
+    "karen": 0.5,
+    "kare": 0.4,
+    "karein": 0.1
+   }
+  },
+  {
+   "word": "यदि",
+   "count": 7148,
+   "spelling": {
+    "yadi": 1.0
+   },
+   "after_noise": {
+    "yadi": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "yadi",
+   "human_dakshina_dev": {
+    "yadi": 1.0
+   }
+  },
+  {
+   "word": "हालांकि",
+   "count": 7140,
+   "spelling": {
+    "halanki": 0.803,
+    "haalanki": 0.197
+   },
+   "after_noise": {
+    "halanki": 0.83,
+    "haalanki": 0.17
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "haalaanki",
+   "human_dakshina_dev": {
+    "halanki": 0.951,
+    "hananki": 0.024,
+    "halaki": 0.024
+   }
+  },
+  {
+   "word": "सकती",
+   "count": 7118,
+   "spelling": {
+    "sakti": 0.807,
+    "sakati": 0.193
+   },
+   "after_noise": {
+    "sakti": 0.76,
+    "sakati": 0.18,
+    "skti": 0.047,
+    "skati": 0.013
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "sakti",
+   "human_dakshina_dev": {
+    "sakti": 0.872,
+    "skati": 0.026,
+    "sakati": 0.026,
+    "sakta": 0.026
+   }
+  },
+  {
+   "word": "लेकर",
+   "count": 7111,
+   "spelling": {
+    "lekar": 1.0
+   },
+   "after_noise": {
+    "lekar": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "lekar",
+   "human_dakshina_dev": {
+    "lekar": 0.966,
+    "leka": 0.034
+   }
+  },
+  {
+   "word": "वाले",
+   "count": 7003,
+   "spelling": {
+    "wale": 0.723,
+    "vale": 0.183,
+    "vaale": 0.048,
+    "waale": 0.046
+   },
+   "after_noise": {
+    "wale": 0.657,
+    "vale": 0.253,
+    "vaale": 0.047,
+    "waale": 0.044
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "vaale",
+   "human_dakshina_dev": {
+    "wale": 0.57,
+    "vale": 0.38,
+    "vaale": 0.017,
+    "wake": 0.008
+   }
+  },
+  {
+   "word": "इसे",
+   "count": 6789,
+   "spelling": {
+    "ise": 0.799,
+    "isse": 0.201
+   },
+   "after_noise": {
+    "ise": 0.799,
+    "isse": 0.201
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ise",
+   "human_dakshina_dev": {
+    "ise": 0.987,
+    "is": 0.013
+   }
+  },
+  {
+   "word": "यहां",
+   "count": 6768,
+   "spelling": {
+    "yahan": 1.0
+   },
+   "after_noise": {
+    "yahan": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "yahaan",
+   "human_dakshina_dev": {
+    "yahan": 0.5,
+    "yaha": 0.477,
+    "yahaan": 0.023
+   }
+  },
+  {
+   "word": "उनकी",
+   "count": 6664,
+   "spelling": {
+    "unki": 1.0
+   },
+   "after_noise": {
+    "unki": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "unki",
+   "human_dakshina_dev": {
+    "unki": 0.943,
+    "unaki": 0.045,
+    "sabhi": 0.011
+   }
+  },
+  {
+   "word": "दोनों",
+   "count": 6604,
+   "spelling": {
+    "donon": 1.0
+   },
+   "after_noise": {
+    "donon": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "donon",
+   "human_dakshina_dev": {
+    "dono": 0.485,
+    "donon": 0.455,
+    "dinon": 0.03,
+    "donhon": 0.015
+   }
+  },
+  {
+   "word": "इसलिए",
+   "count": 6577,
+   "spelling": {
+    "isliye": 0.679,
+    "islie": 0.321
+   },
+   "after_noise": {
+    "isliye": 0.679,
+    "islie": 0.321
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "isliye",
+   "human_dakshina_dev": {
+    "isliye": 0.946,
+    "isalie": 0.027,
+    "islie": 0.027
+   }
+  },
+  {
+   "word": "इससे",
+   "count": 6544,
+   "spelling": {
+    "isase": 1.0
+   },
+   "after_noise": {
+    "isase": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "isse",
+   "human_dakshina_dev": {
+    "isse": 0.935,
+    "isase": 0.065
+   }
+  },
+  {
+   "word": "सब",
+   "count": 6484,
+   "spelling": {
+    "sab": 1.0
+   },
+   "after_noise": {
+    "sab": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "sab",
+   "human_dakshina_dev": {
+    "sab": 0.905,
+    "saba": 0.048,
+    "sb": 0.048
+   }
+  },
+  {
+   "word": "पता",
+   "count": 6322,
+   "spelling": {
+    "pataa": 0.505,
+    "pata": 0.495
+   },
+   "after_noise": {
+    "pata": 0.522,
+    "pataa": 0.443,
+    "pta": 0.035
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "pata",
+   "human_dakshina_dev": {
+    "pata": 0.871,
+    "pataa": 0.129
+   }
+  },
+  {
+   "word": "कम",
+   "count": 6259,
+   "spelling": {
+    "kam": 1.0
+   },
+   "after_noise": {
+    "kam": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kam",
+   "human_dakshina_dev": {
+    "kam": 0.925,
+    "kama": 0.062,
+    "km": 0.013
+   }
+  },
+  {
+   "word": "अधिक",
+   "count": 6238,
+   "spelling": {
+    "adhik": 1.0
+   },
+   "after_noise": {
+    "adhik": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "adhik",
+   "human_dakshina_dev": {
+    "adhik": 0.95,
+    "adhika": 0.025,
+    "adhit": 0.017,
+    "adhi": 0.008
+   }
+  },
+  {
+   "word": "मेरे",
+   "count": 6185,
+   "spelling": {
+    "mere": 1.0
+   },
+   "after_noise": {
+    "mere": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "mere",
+   "human_dakshina_dev": {
+    "mere": 1.0
+   }
+  },
+  {
+   "word": "बारे",
+   "count": 6175,
+   "spelling": {
+    "bare": 1.0
+   },
+   "after_noise": {
+    "bare": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "baare",
+   "human_dakshina_dev": {
+    "bare": 0.805,
+    "baare": 0.195
+   }
+  },
+  {
+   "word": "बताया",
+   "count": 6078,
+   "spelling": {
+    "bataya": 0.508,
+    "bataayaa": 0.492
+   },
+   "after_noise": {
+    "bataya": 0.531,
+    "bataayaa": 0.43,
+    "btaya": 0.039
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "bataaya",
+   "human_dakshina_dev": {
+    "bataya": 1.0
+   }
+  },
+  {
+   "word": "जाने",
+   "count": 6063,
+   "spelling": {
+    "jaane": 0.862,
+    "jane": 0.138
+   },
+   "after_noise": {
+    "jaane": 0.743,
+    "jane": 0.232,
+    "jne": 0.025
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "jaane",
+   "human_dakshina_dev": {
+    "jane": 0.795,
+    "jaane": 0.205
+   }
+  },
+  {
+   "word": "आ",
+   "count": 5872,
+   "spelling": {
+    "a": 1.0
+   },
+   "after_noise": {
+    "a": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "a",
+   "human_dakshina_dev": {
+    "aa": 0.926,
+    "a": 0.074
+   }
+  },
+  {
+   "word": "इसका",
+   "count": 5864,
+   "spelling": {
+    "iska": 0.799,
+    "isaka": 0.201
+   },
+   "after_noise": {
+    "iska": 0.799,
+    "isaka": 0.201
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "iska",
+   "human_dakshina_dev": {
+    "iska": 0.902,
+    "iskaa": 0.049,
+    "isaka": 0.02,
+    "iaska": 0.01
+   }
+  },
+  {
+   "word": "वो",
+   "count": 5858,
+   "spelling": {
+    "wo": 0.446,
+    "vo": 0.375,
+    "woh": 0.179
+   },
+   "after_noise": {
+    "wo": 0.437,
+    "vo": 0.384,
+    "woh": 0.16,
+    "voh": 0.019
+   },
+   "source": {
+    "shortcut": 1.0
+   },
+   "rules": "vo",
+   "human_dakshina_dev": {
+    "vo": 0.688,
+    "wo": 0.312
+   }
+  },
+  {
+   "word": "देश",
+   "count": 5752,
+   "spelling": {
+    "desh": 1.0
+   },
+   "after_noise": {
+    "desh": 0.877,
+    "des": 0.123
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "desh",
+   "human_dakshina_dev": {
+    "desh": 0.944,
+    "desa": 0.019,
+    "samst": 0.019,
+    "avm": 0.019
+   }
+  },
+  {
+   "word": "ले",
+   "count": 5670,
+   "spelling": {
+    "le": 1.0
+   },
+   "after_noise": {
+    "le": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "le",
+   "human_dakshina_dev": {
+    "le": 1.0
+   }
+  },
+  {
+   "word": "दे",
+   "count": 5624,
+   "spelling": {
+    "de": 1.0
+   },
+   "after_noise": {
+    "de": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "de",
+   "human_dakshina_dev": {
+    "de": 0.933,
+    "den": 0.033,
+    "the": 0.033
+   }
+  },
+  {
+   "word": "तब",
+   "count": 5541,
+   "spelling": {
+    "tab": 1.0
+   },
+   "after_noise": {
+    "tab": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "tab",
+   "human_dakshina_dev": {
+    "tab": 0.912,
+    "tak": 0.029,
+    "taba": 0.029,
+    "tan": 0.029
+   }
+  },
+  {
+   "word": "लिया",
+   "count": 5527,
+   "spelling": {
+    "liya": 0.799,
+    "lia": 0.201
+   },
+   "after_noise": {
+    "liya": 0.799,
+    "lia": 0.201
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "liya",
+   "human_dakshina_dev": {
+    "liya": 0.963,
+    "liye": 0.037
+   }
+  },
+  {
+   "word": "प्रकार",
+   "count": 5501,
+   "spelling": {
+    "prakar": 1.0
+   },
+   "after_noise": {
+    "prakar": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "prakaar",
+   "human_dakshina_dev": {
+    "prakar": 0.786,
+    "prakaar": 0.171,
+    "prakara": 0.026,
+    "prkar": 0.009
+   }
+  },
+  {
+   "word": "साल",
+   "count": 5444,
+   "spelling": {
+    "saal": 1.0
+   },
+   "after_noise": {
+    "saal": 0.864,
+    "sal": 0.136
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "saal",
+   "human_dakshina_dev": {
+    "saal": 0.853,
+    "sal": 0.088,
+    "sala": 0.059
+   }
+  },
+  {
+   "word": "होगी",
+   "count": 5388,
+   "spelling": {
+    "hogi": 1.0
+   },
+   "after_noise": {
+    "hogi": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hogi",
+   "human_dakshina_dev": {
+    "hogi": 1.0
+   }
+  },
+  {
+   "word": "द्वारा",
+   "count": 5370,
+   "spelling": {
+    "dwara": 0.888,
+    "davara": 0.062,
+    "dvara": 0.05
+   },
+   "after_noise": {
+    "dwara": 0.778,
+    "dvara": 0.16,
+    "davara": 0.054,
+    "dawara": 0.008
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "dvaara",
+   "human_dakshina_dev": {
+    "dwara": 0.571,
+    "dvara": 0.343,
+    "dwaraa": 0.043,
+    "dwar": 0.017
+   }
+  },
+  {
+   "word": "सबसे",
+   "count": 5364,
+   "spelling": {
+    "sabse": 1.0
+   },
+   "after_noise": {
+    "sabse": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "sabse",
+   "human_dakshina_dev": {
+    "sabse": 0.956,
+    "sabase": 0.044
+   }
+  },
+  {
+   "word": "अपना",
+   "count": 5295,
+   "spelling": {
+    "apna": 0.943,
+    "apana": 0.057
+   },
+   "after_noise": {
+    "apna": 0.943,
+    "apana": 0.057
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "apna",
+   "human_dakshina_dev": {
+    "apna": 0.929,
+    "apana": 0.048,
+    "pana": 0.024
+   }
+  },
+  {
+   "word": "होते",
+   "count": 5293,
+   "spelling": {
+    "hote": 1.0
+   },
+   "after_noise": {
+    "hote": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hote",
+   "human_dakshina_dev": {
+    "hote": 0.983,
+    "the": 0.009,
+    "hoe": 0.009
+   }
+  },
+  {
+   "word": "केवल",
+   "count": 5258,
+   "spelling": {
+    "keval": 0.791,
+    "kewal": 0.209
+   },
+   "after_noise": {
+    "keval": 0.713,
+    "kewal": 0.287
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "keval",
+   "human_dakshina_dev": {
+    "keval": 0.966,
+    "keal": 0.017,
+    "kcal": 0.017
+   }
+  },
+  {
+   "word": "उनका",
+   "count": 5230,
+   "spelling": {
+    "unka": 1.0
+   },
+   "after_noise": {
+    "unka": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "unka",
+   "human_dakshina_dev": {
+    "unka": 0.897,
+    "unaka": 0.052,
+    "unkaa": 0.034,
+    "unko": 0.017
+   }
+  },
+  {
+   "word": "मे",
+   "count": 5125,
+   "spelling": {
+    "me": 1.0
+   },
+   "after_noise": {
+    "me": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "me",
+   "human_dakshina_dev": {
+    "me": 0.635,
+    "men": 0.25,
+    "mein": 0.115
+   }
+  },
+  {
+   "word": "करेंगे",
+   "count": 5107,
+   "spelling": {
+    "karenge": 1.0
+   },
+   "after_noise": {
+    "karenge": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "karenge",
+   "human_dakshina_dev": {
+    "karenge": 1.0
+   }
+  },
+  {
+   "word": "इसमें",
+   "count": 5096,
+   "spelling": {
+    "ismein": 0.67,
+    "ismem": 0.171,
+    "ismen": 0.159
+   },
+   "after_noise": {
+    "ismein": 0.67,
+    "ismem": 0.171,
+    "ismen": 0.159
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "ismen",
+   "human_dakshina_dev": {
+    "ismen": 0.367,
+    "ismein": 0.327,
+    "isme": 0.224,
+    "isamem": 0.061
+   }
+  },
+  {
+   "word": "इतना",
+   "count": 4991,
+   "spelling": {
+    "itna": 1.0
+   },
+   "after_noise": {
+    "itna": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "itna",
+   "human_dakshina_dev": {
+    "itna": 0.917,
+    "itana": 0.083
+   }
+  },
+  {
+   "word": "ज्यादा",
+   "count": 4948,
+   "spelling": {
+    "jyada": 1.0
+   },
+   "after_noise": {
+    "jyada": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "jyaada",
+   "human_dakshina_dev": {
+    "jyada": 1.0
+   }
+  },
+  {
+   "word": "क्योंकि",
+   "count": 4900,
+   "spelling": {
+    "kyunki": 0.796,
+    "kyonki": 0.204
+   },
+   "after_noise": {
+    "kyunki": 0.796,
+    "kyonki": 0.204
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kyonki",
+   "human_dakshina_dev": {
+    "kyonki": 0.982,
+    "ki": 0.018
+   }
+  },
+  {
+   "word": "जाएगा",
+   "count": 4812,
+   "spelling": {
+    "jayega": 0.26,
+    "jaega": 0.25,
+    "jaayega": 0.249,
+    "jayegaa": 0.241
+   },
+   "after_noise": {
+    "jayega": 0.322,
+    "jaega": 0.25,
+    "jaayega": 0.216,
+    "jayegaa": 0.213
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "jaayega",
+   "human_dakshina_dev": {
+    "jayega": 0.533,
+    "jaega": 0.333,
+    "jaayega": 0.067,
+    "jayegaa": 0.067
+   }
+  },
+  {
+   "word": "जीवन",
+   "count": 4768,
+   "spelling": {
+    "jeevan": 1.0
+   },
+   "after_noise": {
+    "jeevan": 0.87,
+    "jeewan": 0.069,
+    "jivan": 0.061
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "jeevan",
+   "human_dakshina_dev": {
+    "jivan": 0.73,
+    "jeevan": 0.238,
+    "jeen": 0.016,
+    "jivana": 0.016
+   }
+  },
+  {
+   "word": "उसकी",
+   "count": 4746,
+   "spelling": {
+    "uski": 1.0
+   },
+   "after_noise": {
+    "uski": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "uski",
+   "human_dakshina_dev": {
+    "uski": 0.923,
+    "usaki": 0.077
+   }
+  },
+  {
+   "word": "दौरान",
+   "count": 4745,
+   "spelling": {
+    "dauran": 0.8,
+    "dauraan": 0.2
+   },
+   "after_noise": {
+    "dauran": 0.826,
+    "dauraan": 0.174
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "dauraan",
+   "human_dakshina_dev": {
+    "dauran": 0.796,
+    "dauraan": 0.163,
+    "dauan": 0.02,
+    "duaran": 0.02
+   }
+  },
+  {
+   "word": "बीच",
+   "count": 4738,
+   "spelling": {
+    "bich": 0.794,
+    "beech": 0.206
+   },
+   "after_noise": {
+    "bich": 0.818,
+    "beech": 0.182
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "beech",
+   "human_dakshina_dev": {
+    "bich": 0.529,
+    "beech": 0.431,
+    "bica": 0.02,
+    "beeech": 0.02
+   }
+  },
+  {
+   "word": "यही",
+   "count": 4732,
+   "spelling": {
+    "yahi": 1.0
+   },
+   "after_noise": {
+    "yahi": 0.944,
+    "yhi": 0.056
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "yahi",
+   "human_dakshina_dev": {
+    "yahi": 0.944,
+    "yhan": 0.056
+   }
+  },
+  {
+   "word": "फिल्म",
+   "count": 4729,
+   "spelling": {
+    "film": 1.0
+   },
+   "after_noise": {
+    "film": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "philm",
+   "human_dakshina_dev": {
+    "film": 0.981,
+    "philma": 0.019
+   }
+  },
+  {
+   "word": "उसका",
+   "count": 4720,
+   "spelling": {
+    "uska": 0.791,
+    "usaka": 0.209
+   },
+   "after_noise": {
+    "uska": 0.791,
+    "usaka": 0.209
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "uska",
+   "human_dakshina_dev": {
+    "uska": 0.968,
+    "auka": 0.032
+   }
+  },
+  {
+   "word": "अन्य",
+   "count": 4717,
+   "spelling": {
+    "anya": 0.941,
+    "anay": 0.059
+   },
+   "after_noise": {
+    "anya": 0.941,
+    "anay": 0.059
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "anya",
+   "human_dakshina_dev": {
+    "anya": 0.87,
+    "any": 0.13
+   }
+  },
+  {
+   "word": "आपके",
+   "count": 4685,
+   "spelling": {
+    "aapke": 1.0
+   },
+   "after_noise": {
+    "aapke": 0.872,
+    "apke": 0.128
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "aapke",
+   "human_dakshina_dev": {
+    "apke": 0.571,
+    "aapke": 0.429
+   }
+  },
+  {
+   "word": "मैंने",
+   "count": 4671,
+   "spelling": {
+    "mainne": 1.0
+   },
+   "after_noise": {
+    "mainne": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "mainne",
+   "human_dakshina_dev": {
+    "maine": 0.667,
+    "mainne": 0.333
+   }
+  },
+  {
+   "word": "आगे",
+   "count": 4667,
+   "spelling": {
+    "aage": 0.896,
+    "age": 0.104
+   },
+   "after_noise": {
+    "aage": 0.779,
+    "age": 0.221
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "aage",
+   "human_dakshina_dev": {
+    "aage": 0.654,
+    "age": 0.308,
+    "aagae": 0.038
+   }
+  },
+  {
+   "word": "लगा",
+   "count": 4635,
+   "spelling": {
+    "laga": 1.0
+   },
+   "after_noise": {
+    "laga": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "laga",
+   "human_dakshina_dev": {
+    "laga": 0.909,
+    "lagaa": 0.091
+   }
+  },
+  {
+   "word": "जी",
+   "count": 4619,
+   "spelling": {
+    "ji": 1.0
+   },
+   "after_noise": {
+    "ji": 1.0
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "ji",
+   "human_dakshina_dev": {
+    "ji": 0.889,
+    "jee": 0.093,
+    "g": 0.019
+   }
+  },
+  {
+   "word": "उसने",
+   "count": 4608,
+   "spelling": {
+    "usne": 1.0
+   },
+   "after_noise": {
+    "usne": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "usne",
+   "human_dakshina_dev": {
+    "usne": 0.927,
+    "usane": 0.049,
+    "uske": 0.024
+   }
+  },
+  {
+   "word": "शुरू",
+   "count": 4545,
+   "spelling": {
+    "shuru": 0.814,
+    "shuruu": 0.186
+   },
+   "after_noise": {
+    "shuru": 0.707,
+    "shuruu": 0.163,
+    "suru": 0.107,
+    "suruu": 0.023
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "shuru",
+   "human_dakshina_dev": {
+    "shuru": 0.963,
+    "shut": 0.019,
+    "suru": 0.019
+   }
+  },
+  {
+   "word": "चाहते",
+   "count": 4493,
+   "spelling": {
+    "chahate": 0.343,
+    "chahte": 0.333,
+    "chahthe": 0.324
+   },
+   "after_noise": {
+    "chahate": 0.323,
+    "chahte": 0.311,
+    "chahthe": 0.304,
+    "chhte": 0.022,
+    "chhate": 0.02,
+    "chhthe": 0.02
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "chaahte",
+   "human_dakshina_dev": {
+    "chahte": 0.7,
+    "chahate": 0.3
+   }
+  },
+  {
+   "word": "हर",
+   "count": 4470,
+   "spelling": {
+    "har": 1.0
+   },
+   "after_noise": {
+    "har": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "har",
+   "human_dakshina_dev": {
+    "har": 1.0
+   }
+  },
+  {
+   "word": "ऐसी",
+   "count": 4438,
+   "spelling": {
+    "aisi": 1.0
+   },
+   "after_noise": {
+    "aisi": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "aisi",
+   "human_dakshina_dev": {
+    "aisi": 0.944,
+    "aise": 0.056
+   }
+  },
+  {
+   "word": "बिना",
+   "count": 4417,
+   "spelling": {
+    "bina": 0.796,
+    "binaa": 0.204
+   },
+   "after_noise": {
+    "bina": 0.823,
+    "binaa": 0.177
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "bina",
+   "human_dakshina_dev": {
+    "bina": 1.0
+   }
+  },
+  {
+   "word": "जाती",
+   "count": 4380,
+   "spelling": {
+    "jaatee": 0.257,
+    "jati": 0.252,
+    "jatee": 0.247,
+    "jaati": 0.245
+   },
+   "after_noise": {
+    "jati": 0.287,
+    "jaati": 0.233,
+    "jatee": 0.23,
+    "jaatee": 0.225,
+    "jti": 0.026
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "jaati",
+   "human_dakshina_dev": {
+    "jati": 0.772,
+    "jaati": 0.217,
+    "jatee": 0.011
+   }
+  },
+  {
+   "word": "मिल",
+   "count": 4339,
+   "spelling": {
+    "mil": 0.798,
+    "meal": 0.202
+   },
+   "after_noise": {
+    "mil": 0.798,
+    "meal": 0.202
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "mil",
+   "human_dakshina_dev": {
+    "mil": 0.85,
+    "mila": 0.05,
+    "mai": 0.05,
+    "il": 0.05
+   }
+  },
+  {
+   "word": "ओर",
+   "count": 4298,
+   "spelling": {
+    "or": 0.81,
+    "aur": 0.19
+   },
+   "after_noise": {
+    "or": 0.81,
+    "aur": 0.19
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "or",
+   "human_dakshina_dev": {
+    "or": 0.575,
+    "aur": 0.411,
+    "ora": 0.014
+   }
+  },
+  {
+   "word": "कहते",
+   "count": 4295,
+   "spelling": {
+    "kahate": 0.888,
+    "kehte": 0.059,
+    "kahte": 0.052
+   },
+   "after_noise": {
+    "kahate": 0.837,
+    "kehte": 0.059,
+    "khate": 0.052,
+    "kahte": 0.049,
+    "khte": 0.003
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kahte",
+   "human_dakshina_dev": {
+    "kahte": 0.571,
+    "kehte": 0.268,
+    "kahate": 0.161
+   }
+  },
+  {
+   "word": "काफी",
+   "count": 4294,
+   "spelling": {
+    "kafi": 1.0
+   },
+   "after_noise": {
+    "kafi": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kaaphi",
+   "human_dakshina_dev": {
+    "kafi": 0.705,
+    "kaafi": 0.25,
+    "kaavi": 0.023,
+    "kaft": 0.023
+   }
+  },
+  {
+   "word": "आया",
+   "count": 4282,
+   "spelling": {
+    "aaya": 0.8,
+    "aya": 0.2
+   },
+   "after_noise": {
+    "aaya": 0.692,
+    "aya": 0.308
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "aaya",
+   "human_dakshina_dev": {
+    "aaya": 0.571,
+    "aya": 0.429
+   }
+  },
+  {
+   "word": "हमारे",
+   "count": 4276,
+   "spelling": {
+    "hamare": 0.865,
+    "humare": 0.135
+   },
+   "after_noise": {
+    "hamare": 0.865,
+    "humare": 0.135
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "hamaare",
+   "human_dakshina_dev": {
+    "hamare": 0.923,
+    "hamaare": 0.077
+   }
+  },
+  {
+   "word": "इसी",
+   "count": 4271,
+   "spelling": {
+    "isi": 1.0
+   },
+   "after_noise": {
+    "isi": 1.0
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "isi",
+   "human_dakshina_dev": {
+    "isi": 0.867,
+    "is": 0.117,
+    "sisi": 0.017
+   }
+  },
+  {
+   "word": "कहना",
+   "count": 4271,
+   "spelling": {
+    "kahana": 0.795,
+    "kahna": 0.205
+   },
+   "after_noise": {
+    "kahana": 0.749,
+    "kahna": 0.192,
+    "khana": 0.046,
+    "khna": 0.013
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "kahna",
+   "human_dakshina_dev": {
+    "kehna": 0.636,
+    "kahna": 0.182,
+    "kahnaa": 0.091,
+    "kahana": 0.091
+   }
+  },
+  {
+   "word": "सामने",
+   "count": 4197,
+   "spelling": {
+    "samne": 0.791,
+    "samane": 0.209
+   },
+   "after_noise": {
+    "samne": 0.739,
+    "samane": 0.198,
+    "smne": 0.052,
+    "smane": 0.011
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "saamne",
+   "human_dakshina_dev": {
+    "samne": 0.562,
+    "saamne": 0.25,
+    "saamane": 0.062,
+    "samane": 0.062
+   }
+  },
+  {
+   "word": "पूरी",
+   "count": 4179,
+   "spelling": {
+    "puri": 0.899,
+    "poori": 0.101
+   },
+   "after_noise": {
+    "puri": 0.912,
+    "poori": 0.088
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "poori",
+   "human_dakshina_dev": {
+    "puri": 0.893,
+    "poori": 0.107
+   }
+  },
+  {
+   "word": "तथा",
+   "count": 4154,
+   "spelling": {
+    "tatha": 1.0
+   },
+   "after_noise": {
+    "tatha": 0.943,
+    "ttha": 0.057
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "tatha",
+   "human_dakshina_dev": {
+    "tatha": 0.969,
+    "tathaa": 0.008,
+    "tahe": 0.004,
+    "the": 0.004
+   }
+  },
+  {
+   "word": "मामले",
+   "count": 4149,
+   "spelling": {
+    "mamale": 0.815,
+    "mamle": 0.185
+   },
+   "after_noise": {
+    "mamale": 0.815,
+    "mamle": 0.185
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "maamle",
+   "human_dakshina_dev": {
+    "mamle": 0.8,
+    "maamle": 0.1,
+    "maamale": 0.1
+   }
+  },
+  {
+   "word": "अलग",
+   "count": 4142,
+   "spelling": {
+    "alag": 0.903,
+    "alg": 0.097
+   },
+   "after_noise": {
+    "alag": 0.903,
+    "alg": 0.097
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "alag",
+   "human_dakshina_dev": {
+    "alag": 0.943,
+    "alaga": 0.057
+   }
+  },
+  {
+   "word": "व",
+   "count": 4128,
+   "spelling": {
+    "va": 1.0
+   },
+   "after_noise": {
+    "va": 0.872,
+    "wa": 0.128
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "va",
+   "human_dakshina_dev": {
+    "va": 0.541,
+    "v": 0.413,
+    "aur": 0.028,
+    "ya": 0.009
+   }
+  },
+  {
+   "word": "वहीं",
+   "count": 4094,
+   "spelling": {
+    "wahin": 0.342,
+    "vahin": 0.33,
+    "vaheen": 0.329
+   },
+   "after_noise": {
+    "vahin": 0.348,
+    "wahin": 0.345,
+    "vaheen": 0.287,
+    "waheen": 0.019
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "vaheen",
+   "human_dakshina_dev": {
+    "vahin": 0.625,
+    "wahi": 0.125,
+    "wahin": 0.125,
+    "vahi": 0.125
+   }
+  },
+  {
+   "word": "दूसरे",
+   "count": 4061,
+   "spelling": {
+    "dusre": 0.659,
+    "doosre": 0.173,
+    "dusrey": 0.168
+   },
+   "after_noise": {
+    "dusre": 0.68,
+    "dusrey": 0.168,
+    "doosre": 0.152
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "doosre",
+   "human_dakshina_dev": {
+    "dusre": 0.73,
+    "dusare": 0.135,
+    "doosre": 0.108,
+    "doosare": 0.027
+   }
+  },
+  {
+   "word": "जानकारी",
+   "count": 4046,
+   "spelling": {
+    "jaankaari": 1.0
+   },
+   "after_noise": {
+    "jaankaari": 0.869,
+    "jankari": 0.131
+   },
+   "source": {
+    "rules": 1.0
+   },
+   "rules": "jaankaari",
+   "human_dakshina_dev": {
+    "jankari": 0.765,
+    "jaankari": 0.118,
+    "jaankaari": 0.059,
+    "jankar": 0.059
+   }
+  },
+  {
+   "word": "ध्यान",
+   "count": 4039,
+   "spelling": {
+    "dhyan": 0.798,
+    "dhyaan": 0.202
+   },
+   "after_noise": {
+    "dhyan": 0.822,
+    "dhyaan": 0.178
+   },
+   "source": {
+    "lexicon": 1.0
+   },
+   "rules": "dhyaan",
+   "human_dakshina_dev": {
+    "dhyan": 0.8,
+    "dhyaan": 0.15,
+    "dhyn": 0.05
+   }
+  }
+ ],
+ "samples_train": [
+  {
+   "rom": "uska apna swatantra astitva tha aur hai bhi .",
+   "dev": "उसका अपना स्वतंत्र अस्तित्व था और है भी ।",
+   "noise_level": "mild",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.375,
+    "lexicon": 0.5,
+    "rules": 0.125
+   }
+  },
+  {
+   "rom": "par aaj khushi is baat ki bhi hai ki aap sab mujh par bharosa karte h.",
+   "dev": "पर आज खुशी इस बात की भी है कि आप सब मुझ पर भरोसा करते हैं।",
+   "noise_level": "clean",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.3125,
+    "lexicon": 0.625,
+    "rules": 0.0625
+   }
+  },
+  {
+   "rom": "abhibhavakon ke mann se yeh baat mitani hai k sarkari schoolon mein padhai nai hoti.",
+   "dev": "अभिभावकों के मन से यह बात मिटानी है कि सरकारी स्कूलों में पढ़ाई नहीं होती।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.3333,
+    "lexicon": 0.6667,
+    "rules": 0.0
+   }
+  },
+  {
+   "rom": "apne bistar par murde ki tarah leta woh ajeeb-se in haaw-bhavon ko pataa nhi kab tak dekhta rhata h .",
+   "dev": "अपने बिस्तर पर मुर्दे की तरह लेटा वह अजीब-से इन हाव-भावों को पता नहीं कब तक देखता रहता है ।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.1429,
+    "lexicon": 0.7143,
+    "rules": 0.1429
+   }
+  },
+  {
+   "rom": "bhala yeh bhi koi baat hui.",
+   "dev": "भला ये भी कोई बात हुई।",
+   "noise_level": "clean",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.3333,
+    "lexicon": 0.6667,
+    "rules": 0.0
+   }
+  },
+  {
+   "rom": "jammu-kashmeer main parisamin kyu?",
+   "dev": "जम्मू-कश्मीर में परिसमीन क्यों?",
+   "noise_level": "heavy",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.4,
+    "lexicon": 0.4,
+    "rules": 0.2
+   }
+  },
+  {
+   "rom": "shanivaar ko chhatra ne ma ke sath nagar thane pahunchkar aapbeeti sunayi.",
+   "dev": "शनिवार को छात्रा ने मां के साथ नगर थाने पहुंचकर आपबीती सुनाई।",
+   "noise_level": "heavy",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.0,
+    "lexicon": 0.9167,
+    "rules": 0.0833
+   }
+  },
+  {
+   "rom": "lekin yeh tasvir sirf filmi nhi hai. sach hai. aur jharkhand me jagah-jagah dikhti he. khaaskar wahaa jahan koyla h.",
+   "dev": "लेकिन ये तस्वीर सिर्फ़ फ़िल्मी नहीं है. सच है. और झारखंड में जगह-जगह दिखती है. ख़ासकर वहाँ जहाँ कोयला है.",
+   "noise_level": "clean",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.381,
+    "lexicon": 0.4762,
+    "rules": 0.1429
+   }
+  },
+  {
+   "rom": "parantu samitiyon dwara vaanchit abhilekh uplabdh nai karaaye gaye.",
+   "dev": "परन्तु समितियों द्वारा वांछित अभिलेख उपलब्ध नहीं कराये गये।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.1111,
+    "lexicon": 0.5556,
+    "rules": 0.3333
+   }
+  },
+  {
+   "rom": "bata den, panchayat chunav ke liye bangal men 8 july ko matdan hua tha.",
+   "dev": "बता दें, पंचायत चुनाव के लिए बंगाल में 8 जुलाई को मतदान हुआ था।",
+   "noise_level": "clean",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.0769,
+    "lexicon": 0.8462,
+    "rules": 0.0769
+   }
+  },
+  {
+   "rom": "bhajpa kaaryakartaaon ko saunpi jimmedaariyan",
+   "dev": "भाजपा कार्यकर्ताओं को सौंपी जिम्मेदारियां",
+   "noise_level": "heavy",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.0,
+    "lexicon": 0.8,
+    "rules": 0.2
+   }
+  },
+  {
+   "rom": "tardi veg kile se utarkar niche aaya aur un logon se bhent ki.",
+   "dev": "तरदी वेग किले से उतरकर नीचे आया और उन लोगों से भेंट की।",
+   "noise_level": "mild",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.0769,
+    "lexicon": 0.7692,
+    "rules": 0.1538
+   }
+  },
+  {
+   "rom": "prerna kahati hai ki main tumhaare bacche ki maa banne wali hun.",
+   "dev": "प्रेरणा कहती है कि मैं तुम्हारे बच्चे की मां बनने वाली हूं।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.3333,
+    "lexicon": 0.5833,
+    "rules": 0.0833
+   }
+  },
+  {
+   "rom": "ye file ek trojan hoti hai, jo installation ke baad system ki windows registry men data store karti hai",
+   "dev": "यह फाइल एक ट्रोजन होती है, जो इंस्टॉलेशन के बाद सिस्टम की विंडोज रजिस्ट्री में डाटा स्टोर करती है।",
+   "noise_level": "mild",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.2105,
+    "lexicon": 0.7368,
+    "rules": 0.0526
+   }
+  },
+  {
+   "rom": "aise savaalon par kareena jhalla padi theen aur unhone gusse mein kaha tha ki, \"main pregnant hun, mari nai hun.",
+   "dev": "ऐसे सवालों पर करीना झल्ला पड़ी थीं और उन्होंने गुस्से में कहा था कि, \"मैं प्रेगनेंट हूं, मरी नहीं हूं।",
+   "noise_level": "clean",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.35,
+    "lexicon": 0.45,
+    "rules": 0.2
+   }
+  },
+  {
+   "rom": "\"bihari bol utha- \"aap phikra naa karen girana ya behosh ho jaane ki bhumika nhi.",
+   "dev": "\"बिहारी बोल उठा- \"आप फिक्र न करें गिरना या बेहोश हो जाने की भूमिका नहीं।",
+   "noise_level": "heavy",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.1333,
+    "lexicon": 0.8,
+    "rules": 0.0667
+   }
+  },
+  {
+   "rom": "palwal, 18 february (hapra)",
+   "dev": "पलवल, 18 फरवरी (हप्र)",
+   "noise_level": "heavy",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.0,
+    "lexicon": 0.6667,
+    "rules": 0.3333
+   }
+  },
+  {
+   "rom": "'pinglaa' bhi meri maigadleen ki tarah ek aisi ganika ki kahani thi, jisey mukti mili .",
+   "dev": "'पिंगला' भी मेरी मैगडलीन की तरह एक ऐसी गणिका की कहानी थी, जिसे मुक्ति मिली ।",
+   "noise_level": "clean",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.0667,
+    "lexicon": 0.8,
+    "rules": 0.1333
+   }
+  },
+  {
+   "rom": "trektar loan kahan milata he?",
+   "dev": "ट्रेक्टर लोन कहाँ मिलता है?",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.2,
+    "lexicon": 0.6,
+    "rules": 0.2
+   }
+  },
+  {
+   "rom": "investors ko inwest karke 70 himachaliyon ko rojgar dena he",
+   "dev": "इनवेस्टर्स को इनवेस्ट करके 70% हिमाचलियों को रोजगार देना है।",
+   "noise_level": "mild",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.1111,
+    "lexicon": 0.8889,
+    "rules": 0.0
+   }
+  },
+  {
+   "rom": "roos ka kahana hai ki japan ke uttar me vivadit deep kuril par abhyas nhi kiya jaega.",
+   "dev": "रूस का कहना है कि जापान के उत्तर में विवादित दीप कुरिल पर अभ्यास नहीं किया जाएगा.",
+   "noise_level": "clean",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.2353,
+    "lexicon": 0.6471,
+    "rules": 0.1176
+   }
+  },
+  {
+   "rom": "aam janata ki suraksha ki guarantee kese ho.",
+   "dev": "आम जनता की सुरक्षा की गारंटी कैसे हो।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.125,
+    "lexicon": 0.875,
+    "rules": 0.0
+   }
+  },
+  {
+   "rom": "she jinping: china ka sabse taaqatvar neta jisey takkar dene vala koi nai",
+   "dev": "शी जिनपिंग: चीन का सबसे ताक़तवर नेता जिसे टक्कर देने वाला कोई नहीं",
+   "noise_level": "clean",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.0769,
+    "lexicon": 0.7692,
+    "rules": 0.1538
+   }
+  },
+  {
+   "rom": "is sutra ka ye arth nhi h ki jo mila hai, usko maango.",
+   "dev": "इस सूत्र का यह अर्थ नहीं है कि जो मिला है, उसको मांगो।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.3846,
+    "lexicon": 0.3846,
+    "rules": 0.2308
+   }
+  },
+  {
+   "rom": "koi hindu pratimaako hi svay ishwar nhi maanata.",
+   "dev": "कोई हिन्दू प्रतिमाको ही स्वय ईश्वर नहीं मानता।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.125,
+    "lexicon": 0.5,
+    "rules": 0.375
+   }
+  },
+  {
+   "rom": "marij aur doktars donon sajag rahen to preemechyor delivery ko tala jaa sakta hai.",
+   "dev": "मरीज और डॉक्टर्स दोनों सजग रहें तो प्रीमेच्योर डिलीवरी को टाला जा सकता है।",
+   "noise_level": "clean",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.2143,
+    "lexicon": 0.4286,
+    "rules": 0.3571
+   }
+  },
+  {
+   "rom": "haikort ki gvalior khandpith ne bsc narsing ki parikshaon par lagai gayi rok ko hatane se inkar kar diya hai",
+   "dev": "हाईकोर्ट की ग्वालियर खंडपीठ ने बीएससी नर्सिंग की परीक्षाओं पर लगाई गई रोक को हटाने से इनकार कर दिया है।",
+   "noise_level": "heavy",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.15,
+    "lexicon": 0.85,
+    "rules": 0.0
+   }
+  },
+  {
+   "rom": "aap hafte men ek bar methi ke pani se balon ko dho bhi sakte hain.",
+   "dev": "आप हफ्ते में एक बार मेथी के पानी से बालों को धो भी सकते हैं।",
+   "noise_level": "mild",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.2667,
+    "lexicon": 0.7333,
+    "rules": 0.0
+   }
+  },
+  {
+   "rom": "guruwar ko tahsil prashaasan ko shikayat mili k naali ko band kar diya gaya hai.",
+   "dev": "गुरुवार को तहसील प्रशासन को शिकायत मिली कि नाली को बंद कर दिया गया है।",
+   "noise_level": "clean",
+   "conversational": false,
+   "rom_source_mix": {
+    "shortcut": 0.2667,
+    "lexicon": 0.6667,
+    "rules": 0.0667
+   }
+  },
+  {
+   "rom": "\"or jo vahaan rahenge, kya unka rishta taajamhal shreer jama masjid se tut jayega ?",
+   "dev": "\"और जो वहाँ रहेंगे, क्या उनका रिश्ता ताजमहल श्रीर जामा मस्जिद से टूट जायेगा ?",
+   "noise_level": "heavy",
+   "conversational": true,
+   "rom_source_mix": {
+    "shortcut": 0.1429,
+    "lexicon": 0.6429,
+    "rules": 0.2143
+   }
+  }
+ ],
+ "samples_dev_real": [
+  {
+   "rom": "Dada - Jean Arp, Marcel Duchamp, Max Ernst, Francis Picabio, Kurt Swithers",
+   "dev": "दादा - जीन आर्प, मार्सल डुचैम्प, मैक्स अर्नस्ट, फ्रांसिस पिकाबियो, कर्ट स्विटर्स"
+  },
+  {
+   "rom": "1920 tak trinon ki sandhi me, hungary ne romania ke paksh me transalvenia par austro-hungary rajtantr ke sabhi davo ko chod diya.",
+   "dev": "1920 तक ट्राईनोन की संधि में, हंगरी ने रोमानिया के पक्ष में ट्रांसिल्वेनिया पर ऑस्ट्रो-हंगरी राजतन्त्र के सभी दावों को छोड़ दिया."
+  },
+  {
+   "rom": "cherussheri namputiri malayalam kavi.",
+   "dev": "चेरुश्शेरि नंपूतिरि मलयालम कवि।"
+  },
+  {
+   "rom": "Sudesh Kumar Mahto.",
+   "dev": "सुदेश कुमार मह्तो"
+  },
+  {
+   "rom": "O'Connor, John; Robertson, Edmund, \"John von Neumann\", MacTutor History of Mathematics, University of Saint Andrew",
+   "dev": "ओ'कॉनर, जॉन; रॉबर्टसन, एडमण्ड, \"जॉन वाॅन न्यूमन\", मैक्ट्यूटर हिस्ट्री ऑफ़ मैथेमैटिक्स, युनिवर्सिटी ऑफ़ सैंट एण्ड्रूज़."
+  },
+  {
+   "rom": "rasayanik hathiyaar nishedh sangthan hai ne ghoshna ki hai ki uske dekhrekh mein \"Iraq ki sarkaar ne, sanyukta rashtra ke mahasachiv ke saath, 30 dino ke bhitar rasayanik hathiyaar convention ke parigrahan ke apne saadhan jamaa karne par sahamati pradaan ki hai , atah yah raashtra 12 February 2009 ko , convention ke liye 186vaa raajya \"ban jayega.",
+   "dev": "रासायनिक हथियार निषेध संगठन है ने घोषणा की है की उसके देखरेख में \"इराक की सरकार ने ,संयुक्त राष्ट्र के महासचिव के साथ ,30 दिनों के भीतर रासायनिक हथियार कन्वेंशन के परिग्रहण के अपने साधन जमा करने पर सहमति प्रदान की है , अतः यह राष्ट्र 12 फरवरी 2009 को , कन्वेंशन के लिए 186वा राज्य \"बन जाएगा।"
+  },
+  {
+   "rom": "19vin shatabdi tak vibhinn prakar ke manovikaar aise rog maane jaate the jinka sadharan chikitsk se koi sambandh nahin tha.",
+   "dev": "19वीं शताब्दी तक विभिन्न प्रकार के मनोविकार ऐसे रोग माने जाते थे जिनका साधारण चिकित्सक से कोई संबंध नहीं था।"
+  },
+  {
+   "rom": "dusre chhor par 'vruhad' vikalp pradan karne vali arthniti ko arthik azadi kahte hain.",
+   "dev": "दूसरे छोर पर 'वृहद' विकल्प प्रदान करने वाली अर्थनीति को आर्थिक आजादी कहते हैं।"
+  },
+  {
+   "rom": "Rajesh‍wari,Bharat ke Uttar Pradesh ki solahvin vidhansabha sabha mein vidhayak rahin.",
+   "dev": "राजेश्‍वरी,भारत के उत्तर प्रदेश की सोलहवीं विधानसभा सभा में विधायक रहीं।"
+  },
+  {
+   "rom": "Devataon ke chale jane ke baad Vishwamitra bhi brahman ka pad prapt karne ke liye purva disha men jakar kathor tapasya karne lage.",
+   "dev": "देवताओं के चले जाने के बाद विश्वामित्र भी ब्राह्मण का पद प्राप्त करने के लिये पूर्व दिशा में जाकर कठोर तपस्या करने लगे‌।"
+  }
+ ],
+ "upload": {
+  "repo": "Prateek-Tiwari10/hindi-lm-hinglish-pairs",
+  "path": "romanize-v2",
+  "revision": "f9e10dfb68bd824a89e0d256de7641826ee2ca88",
+  "bytes": 190396620
+ },
+ "finished": "2026-11-17 06:37:10"
+}

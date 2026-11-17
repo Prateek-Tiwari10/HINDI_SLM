@@ -41,12 +41,12 @@ def list_files(repo_id, prefix="", repo_type="dataset"):
     return sorted(f for f in files if f.startswith(prefix))
 
 
-def download(repo_id, path_in_repo, local_dir, repo_type="dataset"):
-    """Download one file and return its local path."""
+def download(repo_id, path_in_repo, local_dir, repo_type="dataset", revision=None):
+    """Download one file (at `revision`, default the main branch) and return its local path."""
     return _retry(
         lambda: hf_hub_download(
             repo_id, path_in_repo, repo_type=repo_type, local_dir=local_dir,
-            token=os.environ.get("HF_TOKEN"),
+            token=os.environ.get("HF_TOKEN"), revision=revision,
         ),
         f"download {path_in_repo}",
     )

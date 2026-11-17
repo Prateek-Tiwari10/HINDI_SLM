@@ -1,0 +1,69 @@
+# D7 Stage 7c (D10): Hinglish -> Devanagari pair dataset. data/hinglish/* read numbers from here only.
+
+seed: 1337
+
+sources:
+  dakshina_url: https://storage.googleapis.com/gresearch/dakshina/dakshina_dataset_v1.0.tar
+  dakshina_lang: hi
+  dakshina_license: CC BY-SA 4.0
+  aksharantar_repo: ai4bharat/Aksharantar
+  aksharantar_file: hin.zip
+  aksharantar_license: "CC-BY (manually collected part), CC0 (mined part); see the dataset card"
+  chat_test: data/hinglish/chat_test.tsv        # Prateek's chat set, rom<TAB>dev; optional, never committed
+
+lexicon:
+  min_len_ratio: 0.5          # drop pairs with latin length < 0.5x or > 3x the Devanagari char count
+  max_len_ratio: 3.0
+  # romanize-v2 (D10): Dakshina train words use only Dakshina spellings; Aksharantar only for words
+  # Dakshina lacks, and only if within max_rule_distance of the rule spelling, same first sound,
+  # same final vowel class, and not another word's spelling (inflection guard).
+  max_rule_distance: 0.34     # edit distance to rule_romanize(word) / longer length
+  weight_power: 2             # sampling p proportional to count^2
+  drop_singletons_if_top_ge: 5   # drop count-1 spellings of a word whose top spelling has count >= 5
+
+generator:
+  noise_levels: {clean: 0.35, mild: 0.45, heavy: 0.20}
+  mild_p: 0.15                # per word, one of aa->a, ee->i, oo->u, w<->v, sh->s
+  heavy_p: 0.30
+  heavy_verb_drop_p: 0.30     # raha -> rha, karna -> krna
+  danda_to_dot_p: 0.9         # '।' -> '.' on the Latin side, else dropped (Dakshina dev humans: 99%)
+
+sentences:
+  data_repo: Prateek-Tiwari10/hindi-lm-data
+  train_prefix: final_v2/train/
+  min_words: 4
+  max_words: 20
+  min_devanagari_ratio: 0.95  # of letters (digits, punctuation and symbols excluded)
+  conversational_words: [मैं, मुझे, मेरा, मेरी, हम, तुम, तुम्हारा, आप, तू, क्या, क्यों, कहाँ, कब, कैसे,
+                         हाँ, नहीं, चलो, यार, अरे, ठीक]
+  conversational_share: 0.70
+  per_shard_conversational: 6000   # sampled per v2 train shard (113 shards), before dedup/leakage
+  per_shard_general: 3000
+  workers: 4
+
+leakage:                      # MinHash near-dup against Dakshina dev/test natives and the chat set
+  shingle: 3                  # word 3-grams: sentences are only 4-20 words
+  num_perm: 128
+  bands: 16
+  rows_per_band: 8
+  threshold: 0.80
+  seed: 42
+  contamination_near_dup_sources: [wikipedia, manual]   # near-dup scan of pretraining; exact scan covers all
+
+splits:
+  train: 600000
+  val_syn: 5000
+  max_tokens: 256             # built <rom> ... <dev> ... </s> length; train/val_syn pairs above are dropped
+
+decode_cap:                   # greedy-decoding budget per prompt, written to meta.json for finetune/sft.py
+  quantile: 99.9              # of (Devanagari tokens incl. eos) / (romanized chars) over train
+  factor: 1.5
+  extra: 8
+  max_new_tokens: 256         # same hard cap as configs/sft.yaml eval.max_new_tokens (report only)
+
+gate:
+  min_coverage: 0.80          # shortcut + lexicon share of word tokens in train sentences
+  min_realism: 0.30           # word-level exact agreement with Dakshina dev human romanizations
+
+hf:
+  pairs_repo: Prateek-Tiwari10/hindi-lm-hinglish-pairs   # private dataset repo
