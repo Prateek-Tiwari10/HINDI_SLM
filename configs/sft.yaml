@@ -9,7 +9,7 @@ base:
 
 data:
   hf_repo: Prateek-Tiwari10/hindi-lm-hinglish-pairs
-  path: romanize-v2/
+  path: romanize-v2.1/
   revision: null              # set by --data-revision (Stage 7c upload revision) so runs are pinned
   local_dir: /kaggle/tmp/pairs/
   buckets: [64, 128, 192, 256]

@@ -80,6 +80,7 @@ class Hparams:
     save_every: int
     max_train_pairs: int | None
     compile: bool
+    stop_step: int | None = None     # train until here; the LR schedule still runs to total_steps
 
 
 # ---------------------------------------------------------------- data
@@ -272,6 +273,9 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("--peak-lr", type=float)
     p.add_argument("--total-steps", type=int)
     p.add_argument("--epochs", type=float, help="instead of --total-steps")
+    p.add_argument("--stop-after-epochs", type=float,
+                   help="stop (and finish the run) after this many epochs; the schedule still spans --epochs "
+                        "(7e ablations: same schedule as the main run, compared at its epoch-1 checkpoint)")
     p.add_argument("--warmup-steps", type=int)
     p.add_argument("--warmup-frac", type=float)
     p.add_argument("--eval-every", type=int)
@@ -282,6 +286,8 @@ def parse_args(argv=None) -> argparse.Namespace:
     p.add_argument("--seed", type=int, default=1337)
     p.add_argument("--compile", type=int, choices=[0, 1])
     p.add_argument("--budget-s", type=float)
+    p.add_argument("--skip-step0-eval", action="store_true",
+                   help="no step-0 evaluation (7e bracket: identical for every LR, already logged by phaseA)")
     return p.parse_args(argv)
 
 
@@ -359,7 +365,9 @@ def main(argv=None) -> None:
                  weight_decay=0.0 if args.phase == "A" else cfg["optim"]["weight_decay"], seed=args.seed,
                  eval_every=args.eval_every or cfg["eval"]["every_steps"],
                  save_every=args.save_every or ck["every_steps"], max_train_pairs=args.max_train_pairs,
-                 compile=bool(cfg["compile"] if args.compile is None else args.compile))
+                 compile=bool(cfg["compile"] if args.compile is None else args.compile),
+                 stop_step=min(total, round(args.stop_after_epochs * plan.steps_per_epoch))
+                 if args.stop_after_epochs else total)
 
     # ---------- model ----------
     tok = HinglishTokenizer.load(DEFAULT_EXT)
@@ -466,13 +474,13 @@ def main(argv=None) -> None:
             manager.upload_async(at, path, log_path)
         barrier()
 
-    if step == 0:
+    if step == 0 and not args.skip_step0_eval:
         evaluate(0)                                          # step-0 baseline
     model.train()
     t_log, since = time.time(), 0
     step_times = []
     saved_at = step
-    while step < hp.total_steps:
+    while step < hp.stop_step:
         t0 = time.time()
         lr = sched.get_last_lr()[0]
         loss_sum, n_targets, gnorm = train_step(train_model, model, opt, sched, scaler, train, plan, step, hp,
@@ -491,7 +499,7 @@ def main(argv=None) -> None:
                 log({"type": "event", "step": step, "event": "halt", "reason": "nan_loss"})
                 raise SystemExit("non-finite loss; the last good checkpoint stays on HF")
         epoch_end = step % plan.steps_per_epoch == 0 and step < hp.total_steps
-        if step % hp.eval_every == 0 or step == hp.total_steps or epoch_end:
+        if step % hp.eval_every == 0 or step in (hp.stop_step, hp.total_steps) or epoch_end:
             evaluate(step)
         if epoch_end:
             export(f"epoch{step // plan.steps_per_epoch}", None, {"step": step, **best, "epoch_end": True})
@@ -506,11 +514,11 @@ def main(argv=None) -> None:
         if step % hp.save_every == 0 or over.item() > 0:
             save(step)
             saved_at = step
-        if over.item() > 0 and step < hp.total_steps:
+        if over.item() > 0 and step < hp.stop_step:
             log({"type": "event", "step": step, "event": "stop_wall_clock", "elapsed_s": round(time.time() - t_start)})
             break
 
-    if step >= hp.total_steps:
+    if step >= hp.stop_step:
         if saved_at != step:
             save(step)
         if rank == 0:

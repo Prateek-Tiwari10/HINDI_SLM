@@ -102,6 +102,17 @@ def test_shortcuts_used_and_sampled(romanizer):
     assert seen["hai"] > seen["h"]                              # weighted, not uniform
 
 
+def test_v21_weak_spot_shortcuts():
+    """romanize-v2.1: the v2 lexicon's wrong spellings of frequent words can no longer be sampled."""
+    bad = {"करने": {"karane"}, "वे": {"way"}, "दी": {"the"}, "मिल": {"meal"}, "से": {"say"}, "को": {"co"}}
+    rom = Romanizer(build_sampler({normalize(w): {s: 100 for s in b} for w, b in bad.items()}), CFG)
+    for word, wrong in bad.items():
+        seen = {rom.sentence(normalize(word), seeded_rng(s), level="clean").rom for s in range(200)}
+        assert seen <= set(SHORTCUTS[word]) and not seen & wrong, (word, seen)
+    karne = Counter(rom.sentence(normalize("करने"), seeded_rng(s), level="clean").rom for s in range(500))
+    assert karne["karne"] > 0.8 * 500
+
+
 def test_lexicon_then_rules(romanizer):
     r = romanizer.sentence(normalize("कल बात घर"), seeded_rng(3), level="clean")
     assert [srcs for _, srcs in r.tokens] == [["lexicon"], ["lexicon"], ["rules"]]

@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 
 from tokenizer.hinglish import PUNCT
 
-GENERATOR_VERSION = "romanize-v2"
+GENERATOR_VERSION = "romanize-v2.1"
 SOURCES = ("shortcut", "lexicon", "rules")
 NOISE_LEVELS = ("clean", "mild", "heavy")
 
@@ -59,6 +59,17 @@ SHORTCUTS = {
     "बहुत": {"bahut": 6, "bohot": 3, "bhut": 2},
     "अच्छा": {"accha": 5, "acha": 4, "achha": 3},
     "यार": {"yaar": 6, "yar": 4},
+    # romanize-v2.1: frequent words whose lexicon spellings were wrong or over-weighted in v2
+    # (stage7c_RESULTS.md, "Known weak spots"). The lexicon gave करने -> karane 100% (that is कराने;
+    # Dakshina dev humans: karne 94%), वे -> way 89%, दी -> the 20% (थे), मिल -> meal 20%,
+    # से -> say 10%, को -> co 10%, के -> k 39% (humans: se / ko / ke >= 99%).
+    "करने": {"karne": 9, "krne": 1},
+    "वे": {"ve": 3, "we": 2},
+    "दी": {"di": 4, "dee": 1},
+    "मिल": {"mil": 1},
+    "से": {"se": 1},
+    "को": {"ko": 1},
+    "के": {"ke": 4, "k": 1},
 }
 
 # ------------------------------------------------------------------ rule fallback tables
