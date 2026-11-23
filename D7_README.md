@@ -1,8 +1,11 @@
 # D7 — Status and next steps
 
-_As of 2026-11-09_
+_As of 2026-11-23_
 
-**In short:** the 61M Hindi model has been resized for the new Hinglish tokens and has passed every check (Stage 7b, 9 Nov). Fine-tuning has not started. The next step is to get Hinglish → Devanagari training pairs.
+**In short:** the 61M Hindi model has been fine-tuned to turn Hinglish (Hindi in Latin letters) into Devanagari.
+- **Result:** the best checkpoint gets a **character error rate of 0.084** on human-written Dakshina dev sentences (Stage 7e, 22 Nov).
+- **Done:** Steps 3–5 (Stages 7c–7e).
+- **Next:** Step 6, the full evaluation on the untouched test sets.
 
 ## Where we are
 
@@ -11,8 +14,10 @@ _As of 2026-11-09_
 | Pretraining (D5/D6) | ✅ final checkpoint `step_007405`: test loss 2.816, perplexity 16.7 |
 | Stage 7a: tokenizer extension | ✅ done 2026-10-27 |
 | Stage 7b: model surgery | ✅ passed 2026-11-09 |
-| Git | ✅ committed and pushed (`a7a08fb`) |
-| D7 fine-tuning | ⬜ not started, needs data |
+| Stage 7c: pair dataset | ✅ 2026-11-17, rebuilt as `romanize-v2.1` 2026-11-22 |
+| Stage 7d: SFT harness + gates | ✅ all six gates pass, 2026-11-17 |
+| Stage 7e: training | ✅ done 2026-11-22: dev CER 0.084 |
+| Step 6: full evaluation | ⬜ next |
 
 ## What D7 is
 
@@ -23,6 +28,7 @@ The goal is to turn Hindi written in Latin letters (Hinglish) into Devanagari:
 ```
 
 Before training could start, two problems had to be solved:
+
 1. **The tokenizer:** it barely knows Latin. Its 463 English fragments split Hinglish words inconsistently.
 2. **The model:** it has no embeddings for the new tokens.
 
@@ -30,14 +36,14 @@ Before training could start, two problems had to be solved:
 
 The base `hi_unigram_10240` is **unchanged**, and new IDs are added after it. Code: [tokenizer/hinglish.py](tokenizer/hinglish.py). Config: [tokenizer/tokenizer_ext.json](tokenizer/tokenizer_ext.json).
 
-| added | count | IDs |
-| --- | --- | --- |
-| `<rom>`, `<dev>` | 2 | 10240–10241 |
-| letters a–z | 26 | 10242–10267 |
-| digits 0–9 | 10 | 10268–10277 |
-| punctuation `. , ? ! ' " - : ; ( ) /` | 12 | 10278–10289 |
-| `<lsp>` (Latin space), `<lunk>` (unknown char) | 2 | 10290–10291 |
-| reserved | 12 | 10292–10303 |
+| added                                              | count | IDs          |
+| -------------------------------------------------- | ----- | ------------ |
+| `<rom>`, `<dev>`                               | 2     | 10240–10241 |
+| letters a–z                                       | 26    | 10242–10267 |
+| digits 0–9                                        | 10    | 10268–10277 |
+| punctuation `. , ? ! ' " - : ; ( ) /`            | 12    | 10278–10289 |
+| `<lsp>` (Latin space), `<lunk>` (unknown char) | 2     | 10290–10291 |
+| reserved                                           | 12    | 10292–10303 |
 
 **New vocab: 10,304.**
 
@@ -52,21 +58,66 @@ The base `hi_unigram_10240` is **unchanged**, and new IDs are added after it. Co
 
 The embedding table goes from 10,240 to 10,304 rows. Old rows are copied exactly, and the output head stays tied to the embedding. Each new row starts as the **mean of the old rows** plus small noise (`mean` init). Code: [model/surgery.py](model/surgery.py) (`load_base_for_finetune`). The check script is [eval/stage7b.py](eval/stage7b.py), run on Kaggle T4 (version 3).
 
-| check | result |
-| --- | --- |
-| params | 61,128,320 → **61,169,280** (as expected) |
-| old rows / tied head (also after save → load) | identical ✅ |
-| Hindi logits on normal text | **exactly the same** as the base model (max diff 0.0) |
-| KL(base ‖ resized), 102,300 positions | `mean` init **2.7e-5**, `random` init 6.8e-4 (25× worse) |
-| KV cache vs no cache | identical tokens on GPU and CPU (CPU speedup 4.1×) |
-| output mask | all generated IDs are Devanagari ✅ |
-| unit tests | 104 passed, 1 skipped |
+| check                                          | result                                                              |
+| ---------------------------------------------- | ------------------------------------------------------------------- |
+| params                                         | 61,128,320 → **61,169,280** (as expected)                    |
+| old rows / tied head (also after save → load) | identical ✅                                                        |
+| Hindi logits on normal text                    | **exactly the same** as the base model (max diff 0.0)         |
+| KL(base ‖ resized), 102,300 positions         | `mean` init **2.7e-5**, `random` init 6.8e-4 (25× worse) |
+| KV cache vs no cache                           | identical tokens on GPU and CPU (CPU speedup 4.1×)                 |
+| output mask                                    | all generated IDs are Devanagari ✅                                 |
+| unit tests                                     | 104 passed, 1 skipped                                               |
 
 - **Init choice:** we keep `mean` init, because it barely affects the model's Hindi.
 - **Smoke probe:** before training, the model writes Hindi text but not a transliteration (for example "की वजह से 2010 में…"). This is expected: it has never seen `<rom>`/`<dev>` yet.
 - **Report:** [results/d7_hinglish/stage7b_RESULTS.md](results/d7_hinglish/stage7b_RESULTS.md)
 
+## Stage 7c — pair dataset (done)
+
+- **Training pairs are synthetic.** 600k of our own v2 Hindi sentences (70% conversational) were romanized by a generator:
+  - chat shortcuts for common words;
+  - human-attested spellings from the Dakshina and Aksharantar lexicons;
+  - rules only as a fallback;
+  - three noise levels.
+- **Evaluation data is human:** `dev_real` / `test_real` are Dakshina's human-romanized sentences, and `test_chat` is Prateek's chat set.
+- **`romanize-v2.1`** fixes seven mis-weighted frequent words (करने → `karane`, वे → `way`, …).
+  - Coverage 0.863; word agreement with humans 0.643 (rule-only 0.620); 0 leakage.
+- **About 75% of Dakshina dev/test** also appears in the pretraining corpus, so every result is split into clean and contaminated parts, and model selection uses the clean part.
+- **Report:** [results/d7_hinglish/stage7c_RESULTS.md](results/d7_hinglish/stage7c_RESULTS.md)
+
+## Stage 7d — SFT harness (done)
+
+- **Code:** [finetune/sft.py](finetune/sft.py) handles length-bucketed batches, loss on the Devanagari part only, AdamW + fp16, DDP on 2×T4, resume, and greedy decoding with the output mask and a decode budget.
+- **Gates:**
+  - G1 mask count, G2 padding invariance, G3 exact resume;
+  - G4 overfit 32/32 by step 35, G5 phase-A freeze, G6 eval sanity.
+- **Report:** [results/d7_hinglish/stage7d_RESULTS.md](results/d7_hinglish/stage7d_RESULTS.md)
+
+## Stage 7e — training (done)
+
+Run as one chained, resumable Kaggle kernel, `hindi-lm-d7e-train` ([finetune/stage7e.py](finetune/stage7e.py)). Total: 5.9 h wall, about 11 GPU-h.
+
+| model | dev CER (clean) | WER | exact match |
+| --- | --- | --- | --- |
+| before fine-tuning | 2.771 | 4.755 | 0.000 |
+| after Phase A (new rows only) | 1.105 | 1.533 | 0.000 |
+| main, epoch 1 | 0.110 | 0.251 | 0.114 |
+| **main, best (step 17,000)** | **0.084** | **0.212** | **0.148** |
+| A2: no Phase A, epoch 1 | 0.108 | 0.247 | 0.100 |
+| A1: random init (no pretraining), epoch 1 | 0.126 | 0.269 | 0.100 |
+
+- **LR bracket:** picked **6e-4** (1e-4 0.235, 3e-4 0.171, 6e-4 0.147, 1e-3 0.162 at 1,500 steps).
+- **Phase A did not help.** Skipping it (A2) gives the same result.
+- **Pretraining helps,** most of all early on. The gap to random init is 8 CER points at ~3k steps and 1.6 at epoch 1.
+- **Forgetting:** the model lost its plain-Hindi LM ability (loss 2.79 → 8.75). This does not matter for transliteration, but it is no longer a general Hindi LM.
+- **The errors that remain** are mostly rare names, singular vs plural (है/हैं), and badly misspelled input.
+  - About a third of strict mismatches are spelling variants that are both correct: nukta, ZWJ, परंपरा/परम्परा, a final `।`.
+- **Weights:** `hindi-lm-checkpoints/d7/main/best/`
+- **Report:** [results/d7_hinglish/stage7e_RESULTS.md](results/d7_hinglish/stage7e_RESULTS.md)
+
 ## Lessons from this round
+
+- **HF storage counts git history.** Pruned checkpoints keep using quota until the repo history is squashed **and** the orphaned LFS objects are deleted. The usedStorage counter updates 15–20 min later. Stage 7e's first attempt stopped on the cap at the last upload; the pipeline now does both after every run.
 
 - **Kaggle secrets:** an API-pushed notebook can't read `HF_TOKEN`, so it fails with a 401. To run one:
   1. Push with `EMBED_CODE=1 kaggle/push.sh ...`.
@@ -76,12 +127,14 @@ The embedding table goes from 10,240 to 10,304 rows. Old rows are copied exactly
 
 ## What to do next
 
-1. **Get training pairs (your decision).** We need Hinglish ↔ Devanagari sentence pairs; the D7 spec file is missing. Options:
-   - a public transliteration dataset (for example Aksharantar or Dakshina, both romanized Hindi)
-   - pairs generated by romanizing our own v2 Hindi text
-   - a mix of both
-2. **Build the pair dataset** with train/val/test splits, in the `<rom> … <dev> … </s>` format, and upload it to HF.
-3. **Phase A:** freeze the model and train only the 64 new embedding rows. Watch out for weight decay, which can move frozen rows; there is a test for this.
-4. **Phase B:** full fine-tune at a low learning rate, starting from Phase A's result.
-5. **Evaluate:** character error rate and word accuracy on the test pairs, plus samples from real Hinglish chat text. Also confirm the mask still holds.
-6. **Docs cleanup:** DECISIONS.md D1–D3 and the main README still describe the v1 data.
+1. **Step 6: full evaluation (needs a spec).** Run `d7/main/best/` once on:
+   - `test_real` (Dakshina test, reported as clean and contaminated parts);
+   - `test_chat` (your chat sentences).
+
+   Planned additions:
+   - **word-lookup baseline:** the most common Devanagari for each romanized word, from the lexicon;
+   - **ambiguous-word slices:** *ki* → कि/की, *main* → मैं/में, …;
+   - **normalized CER** that ignores nukta, ZWJ and final-punctuation differences.
+2. **Decide on forgetting:** is a transliteration-only model fine, or should plain-Hindi LM ability be kept (replay data during fine-tuning)?
+3. **Serve / demo.**
+4. **Docs cleanup:** DECISIONS.md D1–D3 and the main README still describe the v1 data.

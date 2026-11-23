@@ -1,6 +1,6 @@
 # Stage 7c — Hinglish → Devanagari pair dataset (D10), Kaggle CPU
 
-**Status:** done 2026-11-17. **Gate 7c: PASS** with `romanize-v2`.
+**Status:** done 2026-11-17. **Gate 7c: PASS** with `romanize-v2`. Stage 7e trained on **`romanize-v2.1`** (2026-11-22), which differs from v2 only by seven shortcut entries; see [romanize-v2.1](#romanize-v21-used-for-stage-7e).
 
 **Version history:**
 - `romanize-v1` (revision `cee750e`) passed the numeric gate but failed the 30-sample read: about 15 of ~400 words were wrong, most of them common words.
@@ -394,7 +394,43 @@ Columns:
 | मिल | `meal` 20% | — | an English word |
 | से / को / के | `say` 10% / `co` 10% / `k` 39% | `se` 99.6% / `ko` 99% / `ke` 99% | plausible chat spellings, but over-weighted |
 
-These are open and await Prateek's decision before Stage 7e. Everything else in the top 200 matches human usage or is a common variant.
+These were fixed in `romanize-v2.1` (below) before Stage 7e. Everything else in the top 200 matches human usage or is a common variant.
+
+## romanize-v2.1 (used for Stage 7e)
+
+**What changed:** seven frequent words from the weak-spot table moved to the shortcut table, which takes precedence over the lexicon. Nothing else changed: same lexicon, rules, noise, sentence pool, splits and seed.
+
+| word | v2.1 shortcut weights | train spelling, v2 → v2.1 | Dakshina dev humans |
+| --- | --- | --- | --- |
+| करने | karne 9, krne 1 | `karane` 100% → `karne` 90%, `krne` 10% | `karne` 94% |
+| वे | ve 3, we 2 | `way` 89% → `ve` 60%, `we` 40% | `ve` 82%, `we` 16% |
+| दी | di 4, dee 1 | `the` 20% → `di` 80%, `dee` 20% | `di` 91% |
+| मिल | mil | `meal` 20% → `mil` 100% | `mil` 85% |
+| से | se | `say` 10% → `se` 100% | `se` 99.5% |
+| को | ko | `co` 10% → `ko` 100% | `ko` 99% |
+| के | ke 4, k 1 | `k` 39% → `ke` 80%, `k` 20% | `ke` 99% |
+
+`tests/test_romanize.py::test_v21_weak_spot_shortcuts` checks that the wrong v2 spellings can no longer be sampled.
+
+**Build:** inside the Stage 7e kernel (`hindi-lm-d7e-train`), 2026-11-22 05:08 → 05:30 UTC. Uploaded to `hindi-lm-hinglish-pairs` at `romanize-v2.1/`, revision **`74e39da0eb3c1c50a60826b78c1689b08edbb326`** (190 MB). Full stats: [stage7c_v2.1.json](stage7c_v2.1.json).
+
+| metric | v2 | **v2.1** |
+| --- | --- | --- |
+| lexicon coverage, train (shortcut / lexicon / rules) | 0.8628 (0.212 / 0.651 / 0.137) | **0.8628** (0.276 / 0.587 / 0.137) |
+| leakage hits, train / val_syn | 0 / 0 | **0 / 0** |
+| realism word agreement, generator (rule-only 0.6201) | 0.6269 | **0.6427** |
+| shortcut-word agreement with humans | 0.519 | **0.650** |
+| char-bigram KL, human vs generator (rule-only 0.0684) | 0.0122 | **0.0108** |
+| train pairs dropped for > 256 tokens | 39 | 35 |
+
+**30-sample read (v2.1 `samples_train`, 2026-11-23): pass.**
+- 27 of 30 pairs read correctly as Hinglish a person might type.
+- Three have one bad word each:
+  - उस → `usa`: rule fallback, schwa kept;
+  - खाएंगे → `khanenge`: a lexicon entry for a different word;
+  - "jay sav" comes from an odd source sentence ("जय सव"), not the romanizer.
+- Stray quote characters and source-side typos (संद्धान्तिक) also come straight from the v2 text.
+- None of the seven fixed words is misspelt.
 
 ## Departures from the spec
 

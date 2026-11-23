@@ -1,6 +1,6 @@
 # Progress — Hindi SLM
 
-_Last updated: 2026-11-09_
+_Last updated: 2026-11-23_
 
 Goal: a ~60M-parameter decoder-only Hindi LM trained from scratch (data, tokenizer, model, training).
 This repo covers decisions D1–D4 so far: data collection, cleaning, dedup, splits, tokenizer and tokenized dataset.
@@ -26,9 +26,12 @@ This repo covers decisions D1–D4 so far: data collection, cleaning, dedup, spl
 | D6 Stage 6 — evaluation (val/test all windows, samples, repetition/Distinct) | ✅ done 2026-10-27: final `step_007405` val 2.805 / PPL 16.53 / BPB 0.435, test 2.816 / PPL 16.70 / BPB 0.438 (beats `best/` by 0.002) ([stage6](results/d5d6/stage6_RESULTS.md)) |
 | D7 Stage 7a — Hinglish tokenizer extension (D8) | ✅ done 2026-10-27: char-level Latin + `<rom>`/`<dev>`, Devanagari-only output mask ([stage7a](results/d7_hinglish/stage7a_RESULTS.md)) |
 | D7 Stage 7b — model surgery on 61M checkpoint (D9) | ✅ passed 2026-11-09: 61,169,280 params, base logits exact, KL 2.7e-5 with `mean` init, KV cache identical ([stage7b](results/d7_hinglish/stage7b_RESULTS.md)) |
-| D7 fine-tuning (phase A new rows, phase B full) | ⬜ next |
+| D7 Stage 7c — Hinglish pair dataset (D10) | ✅ 2026-11-17 (`romanize-v2`), rebuilt 2026-11-22 as `romanize-v2.1`: 600k synthetic train pairs, coverage 0.863, realism 0.643, 0 leakage ([stage7c](results/d7_hinglish/stage7c_RESULTS.md)) |
+| D7 Stage 7d — SFT harness + gates G1–G6 | ✅ 2026-11-17: all six gates pass ([stage7d](results/d7_hinglish/stage7d_RESULTS.md)) |
+| D7 Stage 7e — training (Phase A, LR bracket, main, ablations) (D11) | ✅ 2026-11-22: LR 6e-4; main `best/` clean dev CER **0.084**, WER 0.212, EM 0.148. Phase A adds nothing (A2 0.108 vs 0.110 at epoch 1); random init 0.126. Hindi LM loss 2.79 → 8.75 (forgotten) ([stage7e](results/d7_hinglish/stage7e_RESULTS.md)) |
+| D7 Step 6 — full evaluation (`test_real`, `test_chat`, word-lookup baseline, ambiguous-word slices) | ⬜ next; needs a spec |
 | Serve | ⬜ later |
-| Git: commit and push all work | ✅ pushed 2026-10-27 (9 commits by folder); Stage 6 write-up not yet committed |
+| Git: commit and push all work | ✅ through Stage 7e (2026-11-23) |
 
 ## v1 pipeline (Stages 0–5): done
 
@@ -97,10 +100,15 @@ Instructions: [CLAUDE_CODE_INSTRUCTIONS_D5_D6.md](CLAUDE_CODE_INSTRUCTIONS_D5_D6
 
 ## Next steps
 
-1. Update DECISIONS.md D1–D3 and README with the v2 numbers (they still describe v1).
-2. Commit the Stage 6 write-up (`results/d5d6/stage6*`, samples, plots, `eval/stage6.py` space fix, PROGRESS).
-3. Commit the D7 Stage 7a/7b work (tokenizer/hinglish.py, model/surgery.py, tests, kernels, results/d7_hinglish/).
-4. D7 fine-tuning: phase A (new rows only), then phase B (full), from `step_007405` with `mean` init.
+1. **D7 Step 6: full evaluation** of `d7/main/best/`. This is the first time `test_real` (Dakshina test, clean and contaminated parts) and `test_chat` (Prateek's chat set) are touched. Also planned:
+   - a word-lookup baseline;
+   - ambiguous-word slices (*ki* → कि/की, …);
+   - a normalized CER that ignores nukta, ZWJ and final-punctuation variants.
+
+   There is no spec for Step 6 on disk yet.
+2. Decide whether the near-total forgetting of plain-Hindi LM ability (loss 2.79 → 8.75) is acceptable (D11).
+3. Serve / demo.
+4. Update DECISIONS.md D1–D3 and README with the v2 numbers (they still describe v1).
 
 ## Open notes
 
@@ -109,3 +117,4 @@ Instructions: [CLAUDE_CODE_INSTRUCTIONS_D5_D6.md](CLAUDE_CODE_INSTRUCTIONS_D5_D6
 - v1 split dropped 1,901 extra Sangraha docs (0.05%) because some Sangraha `doc_id`s repeat; fix is to drop by (shard, row).
 - Kaggle runs that need `HF_TOKEN` must be started with **Save Version** in the Kaggle UI (API pushes can't read secrets).
 - Optional later upgrade: LLM-labelled quality classifier (FineWeb-Edu style) to replace the random web draw.
+- HF storage counts git history: squash and delete orphaned LFS objects after pruning checkpoints (Stage 7e v2 stopped on the cap at main step 18,750; the 7e pipeline now does this after every run).

@@ -1,0 +1,1788 @@
+{
+ "pipeline": {
+  "wall_s": {
+   "stage7c_data": 1335,
+   "forgetting_base": 16,
+   "forgetting_resized": 11,
+   "phaseA": 1851,
+   "g5check": 10,
+   "bracket_1e-4": 505,
+   "bracket_3e-4": 499,
+   "bracket_6e-4": 501,
+   "bracket_1e-3": 500,
+   "main": 8426,
+   "forgetting_main_best": 11,
+   "forgetting_main_final": 12,
+   "samples": 44,
+   "report": 6,
+   "A2_onephase": 2464,
+   "A1_scratch_6e-4": 2497,
+   "A1_scratch_1e-3": 2468
+  },
+  "data_revision": "74e39da0eb3c1c50a60826b78c1689b08edbb326",
+  "data_path": "romanize-v2.1",
+  "forgetting_base_done": true,
+  "ngpu": 2,
+  "g5_after_phaseA": true,
+  "bracket_lrs": [
+   0.0001,
+   0.0003,
+   0.0006,
+   0.001
+  ],
+  "bracket": {
+   "1e-4": {
+    "lr": 0.0001,
+    "dev_cer": 0.2353307304928422,
+    "dev_wer": 0.35846501128668173,
+    "dev_em": 0.074,
+    "val_syn_loss": 0.39964770432192864,
+    "dev_parts": {
+     "all": {
+      "cer": 0.221432,
+      "wer": 0.331622,
+      "exact_match": 0.082,
+      "n": 1000
+     },
+     "clean": {
+      "cer": 0.235331,
+      "wer": 0.358465,
+      "exact_match": 0.074,
+      "n": 500
+     },
+     "contaminated": {
+      "cer": 0.208796,
+      "wer": 0.307442,
+      "exact_match": 0.09,
+      "n": 500
+     }
+    }
+   },
+   "3e-4": {
+    "lr": 0.0003,
+    "dev_cer": 0.17059921914785264,
+    "dev_wer": 0.29887133182844244,
+    "dev_em": 0.102,
+    "val_syn_loss": 0.30067900993283025,
+    "dev_parts": {
+     "all": {
+      "cer": 0.160133,
+      "wer": 0.271359,
+      "exact_match": 0.13,
+      "n": 1000
+     },
+     "clean": {
+      "cer": 0.170599,
+      "wer": 0.298871,
+      "exact_match": 0.102,
+      "n": 500
+     },
+     "contaminated": {
+      "cer": 0.150617,
+      "wer": 0.246577,
+      "exact_match": 0.158,
+      "n": 500
+     }
+    }
+   },
+   "6e-4": {
+    "lr": 0.0006,
+    "dev_cer": 0.14663611158264017,
+    "dev_wer": 0.27659894657637324,
+    "dev_em": 0.098,
+    "val_syn_loss": 0.3106481430743948,
+    "dev_parts": {
+     "all": {
+      "cer": 0.142672,
+      "wer": 0.259378,
+      "exact_match": 0.13,
+      "n": 1000
+     },
+     "clean": {
+      "cer": 0.146636,
+      "wer": 0.276599,
+      "exact_match": 0.098,
+      "n": 500
+     },
+     "contaminated": {
+      "cer": 0.139069,
+      "wer": 0.243866,
+      "exact_match": 0.162,
+      "n": 500
+     }
+    }
+   },
+   "1e-3": {
+    "lr": 0.001,
+    "dev_cer": 0.16230973801844623,
+    "dev_wer": 0.29706546275395035,
+    "dev_em": 0.094,
+    "val_syn_loss": 0.3281819081038389,
+    "dev_parts": {
+     "all": {
+      "cer": 0.156212,
+      "wer": 0.27464,
+      "exact_match": 0.123,
+      "n": 1000
+     },
+     "clean": {
+      "cer": 0.16231,
+      "wer": 0.297065,
+      "exact_match": 0.094,
+      "n": 500
+     },
+     "contaminated": {
+      "cer": 0.150669,
+      "wer": 0.254439,
+      "exact_match": 0.152,
+      "n": 500
+     }
+    }
+   }
+  },
+  "lr": 0.0006,
+  "lr_rule": "lowest selection (clean) dev_real CER at step 1,500",
+  "main_post_done": true,
+  "ablation_runs": [
+   "A2_onephase",
+   "A1_scratch_6e-4",
+   "A1_scratch_1e-3"
+  ]
+ },
+ "runs": {
+  "phaseA": {
+   "done": {
+    "step": 1000,
+    "best": {
+     "dev_cer": 1.0258020709556952,
+     "step": 250,
+     "val_syn_loss": 3.4932699666916833,
+     "dev_wer": 1.3316779533483822,
+     "dev_em": 0.0,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.996012,
+       "wer": 1.272572,
+       "exact_match": 0.0,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 1.025802,
+       "wer": 1.331678,
+       "exact_match": 0.0,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.96893,
+       "wer": 1.21933,
+       "exact_match": 0.0,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "phaseA",
+     "phase": "A",
+     "init": "base",
+     "peak_lr": 0.001,
+     "warmup_steps": 50,
+     "total_steps": 1000,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.0,
+     "seed": 1337,
+     "eval_every": 250,
+     "save_every": 500,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 1000
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 0,
+     "val_syn_loss": 4.919204,
+     "select": "clean",
+     "dev_cer": 2.771091,
+     "dev_wer": 4.755455,
+     "dev_em": 0.0,
+     "dev_n": 500,
+     "dev_cer_all": 2.80003,
+     "dev_wer_all": 4.801312,
+     "dev_em_all": 0.0,
+     "dev_cer_clean": 2.771091,
+     "dev_wer_clean": 4.755455,
+     "dev_em_clean": 0.0,
+     "dev_cer_contaminated": 2.826337,
+     "dev_wer_contaminated": 4.842619,
+     "dev_em_contaminated": 0.0
+    },
+    {
+     "type": "val",
+     "step": 250,
+     "val_syn_loss": 3.49327,
+     "select": "clean",
+     "dev_cer": 1.025802,
+     "dev_wer": 1.331678,
+     "dev_em": 0.0,
+     "dev_n": 500,
+     "dev_cer_all": 0.996012,
+     "dev_wer_all": 1.272572,
+     "dev_em_all": 0.0,
+     "dev_cer_clean": 1.025802,
+     "dev_wer_clean": 1.331678,
+     "dev_em_clean": 0.0,
+     "dev_cer_contaminated": 0.96893,
+     "dev_wer_contaminated": 1.21933,
+     "dev_em_contaminated": 0.0
+    },
+    {
+     "type": "val",
+     "step": 500,
+     "val_syn_loss": 3.40461,
+     "select": "clean",
+     "dev_cer": 1.129265,
+     "dev_wer": 1.578179,
+     "dev_em": 0.0,
+     "dev_n": 500,
+     "dev_cer_all": 1.106998,
+     "dev_wer_all": 1.533804,
+     "dev_em_all": 0.0,
+     "dev_cer_clean": 1.129265,
+     "dev_wer_clean": 1.578179,
+     "dev_em_clean": 0.0,
+     "dev_cer_contaminated": 1.086754,
+     "dev_wer_contaminated": 1.493832,
+     "dev_em_contaminated": 0.0
+    },
+    {
+     "type": "val",
+     "step": 750,
+     "val_syn_loss": 3.356842,
+     "select": "clean",
+     "dev_cer": 1.105245,
+     "dev_wer": 1.522047,
+     "dev_em": 0.0,
+     "dev_n": 500,
+     "dev_cer_all": 1.082869,
+     "dev_wer_all": 1.460063,
+     "dev_em_all": 0.0,
+     "dev_cer_clean": 1.105245,
+     "dev_wer_clean": 1.522047,
+     "dev_em_clean": 0.0,
+     "dev_cer_contaminated": 1.062526,
+     "dev_wer_contaminated": 1.404229,
+     "dev_em_contaminated": 0.0
+    },
+    {
+     "type": "val",
+     "step": 1000,
+     "val_syn_loss": 3.336244,
+     "select": "clean",
+     "dev_cer": 1.105189,
+     "dev_wer": 1.533333,
+     "dev_em": 0.0,
+     "dev_n": 500,
+     "dev_cer_all": 1.092084,
+     "dev_wer_all": 1.503994,
+     "dev_em_all": 0.0,
+     "dev_cer_clean": 1.105189,
+     "dev_wer_clean": 1.533333,
+     "dev_em_clean": 0.0,
+     "dev_cer_contaminated": 1.08017,
+     "dev_wer_contaminated": 1.477565,
+     "dev_em_contaminated": 0.0
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "A",
+    "init": "base",
+    "peak_lr": 0.001,
+    "warmup_steps": 50,
+    "total_steps": 1000,
+    "stop_step": 1000,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "bracket_1e-4": {
+   "done": {
+    "step": 1500,
+    "best": {
+     "dev_cer": 0.2353307304928422,
+     "step": 1500,
+     "val_syn_loss": 0.39964770432192864,
+     "dev_wer": 0.35846501128668173,
+     "dev_em": 0.074,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.221432,
+       "wer": 0.331622,
+       "exact_match": 0.082,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.235331,
+       "wer": 0.358465,
+       "exact_match": 0.074,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.208796,
+       "wer": 0.307442,
+       "exact_match": 0.09,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "bracket_1e-4",
+     "phase": "B",
+     "init": "run:phaseA",
+     "peak_lr": 0.0001,
+     "warmup_steps": 100,
+     "total_steps": 1500,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 1500,
+     "save_every": 1500,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 1500
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 1500,
+     "val_syn_loss": 0.399648,
+     "select": "clean",
+     "dev_cer": 0.235331,
+     "dev_wer": 0.358465,
+     "dev_em": 0.074,
+     "dev_n": 500,
+     "dev_cer_all": 0.221432,
+     "dev_wer_all": 0.331622,
+     "dev_em_all": 0.082,
+     "dev_cer_clean": 0.235331,
+     "dev_wer_clean": 0.358465,
+     "dev_em_clean": 0.074,
+     "dev_cer_contaminated": 0.208796,
+     "dev_wer_contaminated": 0.307442,
+     "dev_em_contaminated": 0.09
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "run:phaseA",
+    "peak_lr": 0.0001,
+    "warmup_steps": 100,
+    "total_steps": 1500,
+    "stop_step": 1500,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "bracket_3e-4": {
+   "done": {
+    "step": 1500,
+    "best": {
+     "dev_cer": 0.17059921914785264,
+     "step": 1500,
+     "val_syn_loss": 0.30067900993283025,
+     "dev_wer": 0.29887133182844244,
+     "dev_em": 0.102,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.160133,
+       "wer": 0.271359,
+       "exact_match": 0.13,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.170599,
+       "wer": 0.298871,
+       "exact_match": 0.102,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.150617,
+       "wer": 0.246577,
+       "exact_match": 0.158,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "bracket_3e-4",
+     "phase": "B",
+     "init": "run:phaseA",
+     "peak_lr": 0.0003,
+     "warmup_steps": 100,
+     "total_steps": 1500,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 1500,
+     "save_every": 1500,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 1500
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 1500,
+     "val_syn_loss": 0.300679,
+     "select": "clean",
+     "dev_cer": 0.170599,
+     "dev_wer": 0.298871,
+     "dev_em": 0.102,
+     "dev_n": 500,
+     "dev_cer_all": 0.160133,
+     "dev_wer_all": 0.271359,
+     "dev_em_all": 0.13,
+     "dev_cer_clean": 0.170599,
+     "dev_wer_clean": 0.298871,
+     "dev_em_clean": 0.102,
+     "dev_cer_contaminated": 0.150617,
+     "dev_wer_contaminated": 0.246577,
+     "dev_em_contaminated": 0.158
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "run:phaseA",
+    "peak_lr": 0.0003,
+    "warmup_steps": 100,
+    "total_steps": 1500,
+    "stop_step": 1500,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "bracket_6e-4": {
+   "done": {
+    "step": 1500,
+    "best": {
+     "dev_cer": 0.14663611158264017,
+     "step": 1500,
+     "val_syn_loss": 0.3106481430743948,
+     "dev_wer": 0.27659894657637324,
+     "dev_em": 0.098,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.142672,
+       "wer": 0.259378,
+       "exact_match": 0.13,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.146636,
+       "wer": 0.276599,
+       "exact_match": 0.098,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.139069,
+       "wer": 0.243866,
+       "exact_match": 0.162,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "bracket_6e-4",
+     "phase": "B",
+     "init": "run:phaseA",
+     "peak_lr": 0.0006,
+     "warmup_steps": 100,
+     "total_steps": 1500,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 1500,
+     "save_every": 1500,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 1500
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 1500,
+     "val_syn_loss": 0.310648,
+     "select": "clean",
+     "dev_cer": 0.146636,
+     "dev_wer": 0.276599,
+     "dev_em": 0.098,
+     "dev_n": 500,
+     "dev_cer_all": 0.142672,
+     "dev_wer_all": 0.259378,
+     "dev_em_all": 0.13,
+     "dev_cer_clean": 0.146636,
+     "dev_wer_clean": 0.276599,
+     "dev_em_clean": 0.098,
+     "dev_cer_contaminated": 0.139069,
+     "dev_wer_contaminated": 0.243866,
+     "dev_em_contaminated": 0.162
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "run:phaseA",
+    "peak_lr": 0.0006,
+    "warmup_steps": 100,
+    "total_steps": 1500,
+    "stop_step": 1500,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "bracket_1e-3": {
+   "done": {
+    "step": 1500,
+    "best": {
+     "dev_cer": 0.16230973801844623,
+     "step": 1500,
+     "val_syn_loss": 0.3281819081038389,
+     "dev_wer": 0.29706546275395035,
+     "dev_em": 0.094,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.156212,
+       "wer": 0.27464,
+       "exact_match": 0.123,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.16231,
+       "wer": 0.297065,
+       "exact_match": 0.094,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.150669,
+       "wer": 0.254439,
+       "exact_match": 0.152,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "bracket_1e-3",
+     "phase": "B",
+     "init": "run:phaseA",
+     "peak_lr": 0.001,
+     "warmup_steps": 100,
+     "total_steps": 1500,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 1500,
+     "save_every": 1500,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 1500
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 1500,
+     "val_syn_loss": 0.328182,
+     "select": "clean",
+     "dev_cer": 0.16231,
+     "dev_wer": 0.297065,
+     "dev_em": 0.094,
+     "dev_n": 500,
+     "dev_cer_all": 0.156212,
+     "dev_wer_all": 0.27464,
+     "dev_em_all": 0.123,
+     "dev_cer_clean": 0.16231,
+     "dev_wer_clean": 0.297065,
+     "dev_em_clean": 0.094,
+     "dev_cer_contaminated": 0.150669,
+     "dev_wer_contaminated": 0.254439,
+     "dev_em_contaminated": 0.152
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "run:phaseA",
+    "peak_lr": 0.001,
+    "warmup_steps": 100,
+    "total_steps": 1500,
+    "stop_step": 1500,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "main": {
+   "done": {
+    "step": 18750,
+    "best": {
+     "dev_cer": 0.08371527188366434,
+     "step": 17000,
+     "val_syn_loss": 0.14494021044180083,
+     "dev_wer": 0.21203912716328066,
+     "dev_em": 0.148,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.083785,
+       "wer": 0.196905,
+       "exact_match": 0.187,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.083715,
+       "wer": 0.212039,
+       "exact_match": 0.148,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.083848,
+       "wer": 0.183272,
+       "exact_match": 0.226,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "main",
+     "phase": "B",
+     "init": "run:phaseA",
+     "peak_lr": 0.0006,
+     "warmup_steps": 562,
+     "total_steps": 18750,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 1000,
+     "save_every": 2000,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 18750
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 0,
+     "val_syn_loss": 3.336244,
+     "select": "clean",
+     "dev_cer": 1.105189,
+     "dev_wer": 1.533333,
+     "dev_em": 0.0,
+     "dev_n": 500,
+     "dev_cer_all": 1.092084,
+     "dev_wer_all": 1.503994,
+     "dev_em_all": 0.0,
+     "dev_cer_clean": 1.105189,
+     "dev_wer_clean": 1.533333,
+     "dev_em_clean": 0.0,
+     "dev_cer_contaminated": 1.08017,
+     "dev_wer_contaminated": 1.477565,
+     "dev_em_contaminated": 0.0
+    },
+    {
+     "type": "val",
+     "step": 1000,
+     "val_syn_loss": 0.701844,
+     "select": "clean",
+     "dev_cer": 0.372659,
+     "dev_wer": 0.517231,
+     "dev_em": 0.038,
+     "dev_n": 500,
+     "dev_cer_all": 0.323606,
+     "dev_wer_all": 0.450649,
+     "dev_em_all": 0.055,
+     "dev_cer_clean": 0.372659,
+     "dev_wer_clean": 0.517231,
+     "dev_em_clean": 0.038,
+     "dev_cer_contaminated": 0.279012,
+     "dev_wer_contaminated": 0.390674,
+     "dev_em_contaminated": 0.072
+    },
+    {
+     "type": "val",
+     "step": 2000,
+     "val_syn_loss": 0.507361,
+     "select": "clean",
+     "dev_cer": 0.236378,
+     "dev_wer": 0.384199,
+     "dev_em": 0.07,
+     "dev_n": 500,
+     "dev_cer_all": 0.230916,
+     "dev_wer_all": 0.359364,
+     "dev_em_all": 0.081,
+     "dev_cer_clean": 0.236378,
+     "dev_wer_clean": 0.384199,
+     "dev_em_clean": 0.07,
+     "dev_cer_contaminated": 0.225952,
+     "dev_wer_contaminated": 0.336993,
+     "dev_em_contaminated": 0.092
+    },
+    {
+     "type": "val",
+     "step": 3000,
+     "val_syn_loss": 0.418321,
+     "select": "clean",
+     "dev_cer": 0.19957,
+     "dev_wer": 0.338751,
+     "dev_em": 0.082,
+     "dev_n": 500,
+     "dev_cer_all": 0.199634,
+     "dev_wer_all": 0.319213,
+     "dev_em_all": 0.099,
+     "dev_cer_clean": 0.19957,
+     "dev_wer_clean": 0.338751,
+     "dev_em_clean": 0.082,
+     "dev_cer_contaminated": 0.199691,
+     "dev_wer_contaminated": 0.301613,
+     "dev_em_contaminated": 0.116
+    },
+    {
+     "type": "val",
+     "step": 4000,
+     "val_syn_loss": 0.371428,
+     "select": "clean",
+     "dev_cer": 0.159396,
+     "dev_wer": 0.312716,
+     "dev_em": 0.084,
+     "dev_n": 500,
+     "dev_cer_all": 0.152615,
+     "dev_wer_all": 0.28605,
+     "dev_em_all": 0.1,
+     "dev_cer_clean": 0.159396,
+     "dev_wer_clean": 0.312716,
+     "dev_em_clean": 0.084,
+     "dev_cer_contaminated": 0.146451,
+     "dev_wer_contaminated": 0.262031,
+     "dev_em_contaminated": 0.116
+    },
+    {
+     "type": "val",
+     "step": 5000,
+     "val_syn_loss": 0.345314,
+     "select": "clean",
+     "dev_cer": 0.139309,
+     "dev_wer": 0.277351,
+     "dev_em": 0.104,
+     "dev_n": 500,
+     "dev_cer_all": 0.135236,
+     "dev_wer_all": 0.255099,
+     "dev_em_all": 0.118,
+     "dev_cer_clean": 0.139309,
+     "dev_wer_clean": 0.277351,
+     "dev_em_clean": 0.104,
+     "dev_cer_contaminated": 0.131533,
+     "dev_wer_contaminated": 0.235055,
+     "dev_em_contaminated": 0.132
+    },
+    {
+     "type": "val",
+     "step": 6000,
+     "val_syn_loss": 0.322481,
+     "select": "clean",
+     "dev_cer": 0.143411,
+     "dev_wer": 0.284274,
+     "dev_em": 0.1,
+     "dev_n": 500,
+     "dev_cer_all": 0.134805,
+     "dev_wer_all": 0.259735,
+     "dev_em_all": 0.131,
+     "dev_cer_clean": 0.143411,
+     "dev_wer_clean": 0.284274,
+     "dev_em_clean": 0.1,
+     "dev_cer_contaminated": 0.12698,
+     "dev_wer_contaminated": 0.23763,
+     "dev_em_contaminated": 0.162
+    },
+    {
+     "type": "val",
+     "step": 7000,
+     "val_syn_loss": 0.310901,
+     "select": "clean",
+     "dev_cer": 0.160725,
+     "dev_wer": 0.299624,
+     "dev_em": 0.098,
+     "dev_n": 500,
+     "dev_cer_all": 0.164147,
+     "dev_wer_all": 0.283697,
+     "dev_em_all": 0.126,
+     "dev_cer_clean": 0.160725,
+     "dev_wer_clean": 0.299624,
+     "dev_em_clean": 0.098,
+     "dev_cer_contaminated": 0.167258,
+     "dev_wer_contaminated": 0.269351,
+     "dev_em_contaminated": 0.154
+    },
+    {
+     "type": "val",
+     "step": 8000,
+     "val_syn_loss": 0.278489,
+     "select": "clean",
+     "dev_cer": 0.14822,
+     "dev_wer": 0.284575,
+     "dev_em": 0.096,
+     "dev_n": 500,
+     "dev_cer_all": 0.148344,
+     "dev_wer_all": 0.265297,
+     "dev_em_all": 0.127,
+     "dev_cer_clean": 0.14822,
+     "dev_wer_clean": 0.284575,
+     "dev_em_clean": 0.096,
+     "dev_cer_contaminated": 0.148457,
+     "dev_wer_contaminated": 0.247933,
+     "dev_em_contaminated": 0.158
+    },
+    {
+     "type": "val",
+     "step": 9000,
+     "val_syn_loss": 0.259484,
+     "select": "clean",
+     "dev_cer": 0.120523,
+     "dev_wer": 0.257938,
+     "dev_em": 0.106,
+     "dev_n": 500,
+     "dev_cer_all": 0.12435,
+     "dev_wer_all": 0.244972,
+     "dev_em_all": 0.136,
+     "dev_cer_clean": 0.120523,
+     "dev_wer_clean": 0.257938,
+     "dev_em_clean": 0.106,
+     "dev_cer_contaminated": 0.127829,
+     "dev_wer_contaminated": 0.233293,
+     "dev_em_contaminated": 0.166
+    },
+    {
+     "type": "val",
+     "step": 9375,
+     "val_syn_loss": 0.247011,
+     "select": "clean",
+     "dev_cer": 0.110111,
+     "dev_wer": 0.250865,
+     "dev_em": 0.114,
+     "dev_n": 500,
+     "dev_cer_all": 0.103454,
+     "dev_wer_all": 0.225931,
+     "dev_em_all": 0.143,
+     "dev_cer_clean": 0.110111,
+     "dev_wer_clean": 0.250865,
+     "dev_em_clean": 0.114,
+     "dev_cer_contaminated": 0.097402,
+     "dev_wer_contaminated": 0.20347,
+     "dev_em_contaminated": 0.172
+    },
+    {
+     "type": "val",
+     "step": 10000,
+     "val_syn_loss": 0.232231,
+     "select": "clean",
+     "dev_cer": 0.12338,
+     "dev_wer": 0.26155,
+     "dev_em": 0.12,
+     "dev_n": 500,
+     "dev_cer_all": 0.117627,
+     "dev_wer_all": 0.237341,
+     "dev_em_all": 0.153,
+     "dev_cer_clean": 0.12338,
+     "dev_wer_clean": 0.26155,
+     "dev_em_clean": 0.12,
+     "dev_cer_contaminated": 0.112397,
+     "dev_wer_contaminated": 0.215535,
+     "dev_em_contaminated": 0.186
+    },
+    {
+     "type": "val",
+     "step": 11000,
+     "val_syn_loss": 0.221393,
+     "select": "clean",
+     "dev_cer": 0.108697,
+     "dev_wer": 0.24319,
+     "dev_em": 0.116,
+     "dev_n": 500,
+     "dev_cer_all": 0.105772,
+     "dev_wer_all": 0.221295,
+     "dev_em_all": 0.154,
+     "dev_cer_clean": 0.108697,
+     "dev_wer_clean": 0.24319,
+     "dev_em_clean": 0.116,
+     "dev_cer_contaminated": 0.103112,
+     "dev_wer_contaminated": 0.201572,
+     "dev_em_contaminated": 0.192
+    },
+    {
+     "type": "val",
+     "step": 12000,
+     "val_syn_loss": 0.196269,
+     "select": "clean",
+     "dev_cer": 0.091071,
+     "dev_wer": 0.217156,
+     "dev_em": 0.116,
+     "dev_n": 500,
+     "dev_cer_all": 0.0904,
+     "dev_wer_all": 0.202682,
+     "dev_em_all": 0.155,
+     "dev_cer_clean": 0.091071,
+     "dev_wer_clean": 0.217156,
+     "dev_em_clean": 0.116,
+     "dev_cer_contaminated": 0.089789,
+     "dev_wer_contaminated": 0.189643,
+     "dev_em_contaminated": 0.194
+    },
+    {
+     "type": "val",
+     "step": 13000,
+     "val_syn_loss": 0.184141,
+     "select": "clean",
+     "dev_cer": 0.098144,
+     "dev_wer": 0.225734,
+     "dev_em": 0.156,
+     "dev_n": 500,
+     "dev_cer_all": 0.101622,
+     "dev_wer_all": 0.21452,
+     "dev_em_all": 0.182,
+     "dev_cer_clean": 0.098144,
+     "dev_wer_clean": 0.225734,
+     "dev_em_clean": 0.156,
+     "dev_cer_contaminated": 0.104784,
+     "dev_wer_contaminated": 0.204419,
+     "dev_em_contaminated": 0.208
+    },
+    {
+     "type": "val",
+     "step": 14000,
+     "val_syn_loss": 0.174202,
+     "select": "clean",
+     "dev_cer": 0.091184,
+     "dev_wer": 0.220918,
+     "dev_em": 0.138,
+     "dev_n": 500,
+     "dev_cer_all": 0.088567,
+     "dev_wer_all": 0.200899,
+     "dev_em_all": 0.169,
+     "dev_cer_clean": 0.091184,
+     "dev_wer_clean": 0.220918,
+     "dev_em_clean": 0.138,
+     "dev_cer_contaminated": 0.086188,
+     "dev_wer_contaminated": 0.182866,
+     "dev_em_contaminated": 0.2
+    },
+    {
+     "type": "val",
+     "step": 15000,
+     "val_syn_loss": 0.162881,
+     "select": "clean",
+     "dev_cer": 0.0997,
+     "dev_wer": 0.231753,
+     "dev_em": 0.136,
+     "dev_n": 500,
+     "dev_cer_all": 0.093444,
+     "dev_wer_all": 0.207745,
+     "dev_em_all": 0.168,
+     "dev_cer_clean": 0.0997,
+     "dev_wer_clean": 0.231753,
+     "dev_em_clean": 0.136,
+     "dev_cer_contaminated": 0.087757,
+     "dev_wer_contaminated": 0.186119,
+     "dev_em_contaminated": 0.2
+    },
+    {
+     "type": "val",
+     "step": 16000,
+     "val_syn_loss": 0.152025,
+     "select": "clean",
+     "dev_cer": 0.088327,
+     "dev_wer": 0.218209,
+     "dev_em": 0.158,
+     "dev_n": 500,
+     "dev_cer_all": 0.085294,
+     "dev_wer_all": 0.197975,
+     "dev_em_all": 0.183,
+     "dev_cer_clean": 0.088327,
+     "dev_wer_clean": 0.218209,
+     "dev_em_clean": 0.158,
+     "dev_cer_contaminated": 0.082536,
+     "dev_wer_contaminated": 0.179748,
+     "dev_em_contaminated": 0.208
+    },
+    {
+     "type": "val",
+     "step": 17000,
+     "val_syn_loss": 0.14494,
+     "select": "clean",
+     "dev_cer": 0.083715,
+     "dev_wer": 0.212039,
+     "dev_em": 0.148,
+     "dev_n": 500,
+     "dev_cer_all": 0.083785,
+     "dev_wer_all": 0.196905,
+     "dev_em_all": 0.187,
+     "dev_cer_clean": 0.083715,
+     "dev_wer_clean": 0.212039,
+     "dev_em_clean": 0.148,
+     "dev_cer_contaminated": 0.083848,
+     "dev_wer_contaminated": 0.183272,
+     "dev_em_contaminated": 0.226
+    },
+    {
+     "type": "val",
+     "step": 18000,
+     "val_syn_loss": 0.142098,
+     "select": "clean",
+     "dev_cer": 0.085752,
+     "dev_wer": 0.213544,
+     "dev_em": 0.136,
+     "dev_n": 500,
+     "dev_cer_all": 0.080511,
+     "dev_wer_all": 0.192483,
+     "dev_em_all": 0.176,
+     "dev_cer_clean": 0.085752,
+     "dev_wer_clean": 0.213544,
+     "dev_em_clean": 0.136,
+     "dev_cer_contaminated": 0.075746,
+     "dev_wer_contaminated": 0.173512,
+     "dev_em_contaminated": 0.216
+    },
+    {
+     "type": "val",
+     "step": 18750,
+     "val_syn_loss": 0.138029,
+     "select": "clean",
+     "dev_cer": 0.083744,
+     "dev_wer": 0.212792,
+     "dev_em": 0.14,
+     "dev_n": 500,
+     "dev_cer_all": 0.080565,
+     "dev_wer_all": 0.192697,
+     "dev_em_all": 0.168,
+     "dev_cer_clean": 0.083744,
+     "dev_wer_clean": 0.212792,
+     "dev_em_clean": 0.14,
+     "dev_cer_contaminated": 0.077675,
+     "dev_wer_contaminated": 0.174597,
+     "dev_em_contaminated": 0.196
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "run:phaseA",
+    "peak_lr": 0.0006,
+    "warmup_steps": 562,
+    "total_steps": 18750,
+    "stop_step": 18750,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "A2_onephase": {
+   "done": {
+    "step": 9375,
+    "best": {
+     "dev_cer": 0.10813104736038025,
+     "step": 9375,
+     "val_syn_loss": 0.24624622925664758,
+     "dev_wer": 0.2472535741158766,
+     "dev_em": 0.1,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.104882,
+       "wer": 0.224076,
+       "exact_match": 0.138,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.108131,
+       "wer": 0.247254,
+       "exact_match": 0.1,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.101929,
+       "wer": 0.203199,
+       "exact_match": 0.176,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "A2_onephase",
+     "phase": "B",
+     "init": "base",
+     "peak_lr": 0.0006,
+     "warmup_steps": 562,
+     "total_steps": 18750,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 3125,
+     "save_every": 5000,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 9375
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 3125,
+     "val_syn_loss": 0.462035,
+     "select": "clean",
+     "dev_cer": 0.199174,
+     "dev_wer": 0.34462,
+     "dev_em": 0.07,
+     "dev_n": 500,
+     "dev_cer_all": 0.203312,
+     "dev_wer_all": 0.328127,
+     "dev_em_all": 0.096,
+     "dev_cer_clean": 0.199174,
+     "dev_wer_clean": 0.34462,
+     "dev_em_clean": 0.07,
+     "dev_cer_contaminated": 0.207073,
+     "dev_wer_contaminated": 0.313271,
+     "dev_em_contaminated": 0.122
+    },
+    {
+     "type": "val",
+     "step": 6250,
+     "val_syn_loss": 0.32,
+     "select": "clean",
+     "dev_cer": 0.139676,
+     "dev_wer": 0.27991,
+     "dev_em": 0.096,
+     "dev_n": 500,
+     "dev_cer_all": 0.135923,
+     "dev_wer_all": 0.256811,
+     "dev_em_all": 0.122,
+     "dev_cer_clean": 0.139676,
+     "dev_wer_clean": 0.27991,
+     "dev_em_clean": 0.096,
+     "dev_cer_contaminated": 0.13251,
+     "dev_wer_contaminated": 0.236004,
+     "dev_em_contaminated": 0.148
+    },
+    {
+     "type": "val",
+     "step": 9375,
+     "val_syn_loss": 0.246246,
+     "select": "clean",
+     "dev_cer": 0.108131,
+     "dev_wer": 0.247254,
+     "dev_em": 0.1,
+     "dev_n": 500,
+     "dev_cer_all": 0.104882,
+     "dev_wer_all": 0.224076,
+     "dev_em_all": 0.138,
+     "dev_cer_clean": 0.108131,
+     "dev_wer_clean": 0.247254,
+     "dev_em_clean": 0.1,
+     "dev_cer_contaminated": 0.101929,
+     "dev_wer_contaminated": 0.203199,
+     "dev_em_contaminated": 0.176
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "base",
+    "peak_lr": 0.0006,
+    "warmup_steps": 562,
+    "total_steps": 18750,
+    "stop_step": 9375,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "A1_scratch_6e-4": {
+   "done": {
+    "step": 9375,
+    "best": {
+     "dev_cer": 0.12555876195326204,
+     "step": 9375,
+     "val_syn_loss": 0.28823509065259756,
+     "dev_wer": 0.2687735139202408,
+     "dev_em": 0.1,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.12633,
+       "wer": 0.253744,
+       "exact_match": 0.123,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.125559,
+       "wer": 0.268774,
+       "exact_match": 0.1,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.127032,
+       "wer": 0.240206,
+       "exact_match": 0.146,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "A1_scratch_6e-4",
+     "phase": "B",
+     "init": "random",
+     "peak_lr": 0.0006,
+     "warmup_steps": 562,
+     "total_steps": 18750,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 3125,
+     "save_every": 5000,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 9375
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 3125,
+     "val_syn_loss": 0.79633,
+     "select": "clean",
+     "dev_cer": 0.281333,
+     "dev_wer": 0.441836,
+     "dev_em": 0.042,
+     "dev_n": 500,
+     "dev_cer_all": 0.266955,
+     "dev_wer_all": 0.413136,
+     "dev_em_all": 0.053,
+     "dev_cer_clean": 0.281333,
+     "dev_wer_clean": 0.441836,
+     "dev_em_clean": 0.042,
+     "dev_cer_contaminated": 0.253884,
+     "dev_wer_contaminated": 0.387285,
+     "dev_em_contaminated": 0.064
+    },
+    {
+     "type": "val",
+     "step": 6250,
+     "val_syn_loss": 0.39129,
+     "select": "clean",
+     "dev_cer": 0.178493,
+     "dev_wer": 0.326411,
+     "dev_em": 0.084,
+     "dev_n": 500,
+     "dev_cer_all": 0.171948,
+     "dev_wer_all": 0.307089,
+     "dev_em_all": 0.109,
+     "dev_cer_clean": 0.178493,
+     "dev_wer_clean": 0.326411,
+     "dev_em_clean": 0.084,
+     "dev_cer_contaminated": 0.165998,
+     "dev_wer_contaminated": 0.289684,
+     "dev_em_contaminated": 0.134
+    },
+    {
+     "type": "val",
+     "step": 9375,
+     "val_syn_loss": 0.288235,
+     "select": "clean",
+     "dev_cer": 0.125559,
+     "dev_wer": 0.268774,
+     "dev_em": 0.1,
+     "dev_n": 500,
+     "dev_cer_all": 0.12633,
+     "dev_wer_all": 0.253744,
+     "dev_em_all": 0.123,
+     "dev_cer_clean": 0.125559,
+     "dev_wer_clean": 0.268774,
+     "dev_em_clean": 0.1,
+     "dev_cer_contaminated": 0.127032,
+     "dev_wer_contaminated": 0.240206,
+     "dev_em_contaminated": 0.146
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "random",
+    "peak_lr": 0.0006,
+    "warmup_steps": 562,
+    "total_steps": 18750,
+    "stop_step": 9375,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  },
+  "A1_scratch_1e-3": {
+   "done": {
+    "step": 9375,
+    "best": {
+     "dev_cer": 0.38244780173145476,
+     "step": 9375,
+     "val_syn_loss": 1.396695865185358,
+     "dev_wer": 0.5355906696764484,
+     "dev_em": 0.026,
+     "select": "clean",
+     "dev_parts": {
+      "all": {
+       "cer": 0.375421,
+       "wer": 0.50813,
+       "exact_match": 0.031,
+       "n": 1000
+      },
+      "clean": {
+       "cer": 0.382448,
+       "wer": 0.535591,
+       "exact_match": 0.026,
+       "n": 500
+      },
+      "contaminated": {
+       "cer": 0.369033,
+       "wer": 0.483394,
+       "exact_match": 0.036,
+       "n": 500
+      }
+     }
+    },
+    "hparams": {
+     "run": "A1_scratch_1e-3",
+     "phase": "B",
+     "init": "random",
+     "peak_lr": 0.001,
+     "warmup_steps": 562,
+     "total_steps": 18750,
+     "global_pairs": 64,
+     "micro_batch": 32,
+     "accum": 1,
+     "world": 2,
+     "weight_decay": 0.1,
+     "seed": 1337,
+     "eval_every": 3125,
+     "save_every": 5000,
+     "max_train_pairs": null,
+     "compile": false,
+     "stop_step": 9375
+    }
+   },
+   "val": [
+    {
+     "type": "val",
+     "step": 3125,
+     "val_syn_loss": 1.471878,
+     "select": "clean",
+     "dev_cer": 0.45943,
+     "dev_wer": 0.670128,
+     "dev_em": 0.016,
+     "dev_n": 500,
+     "dev_cer_all": 0.441355,
+     "dev_wer_all": 0.633861,
+     "dev_em_all": 0.019,
+     "dev_cer_clean": 0.45943,
+     "dev_wer_clean": 0.670128,
+     "dev_em_clean": 0.016,
+     "dev_cer_contaminated": 0.424923,
+     "dev_wer_contaminated": 0.601193,
+     "dev_em_contaminated": 0.022
+    },
+    {
+     "type": "val",
+     "step": 6250,
+     "val_syn_loss": 2.033087,
+     "select": "clean",
+     "dev_cer": 0.471312,
+     "dev_wer": 0.639579,
+     "dev_em": 0.018,
+     "dev_n": 500,
+     "dev_cer_all": 0.461482,
+     "dev_wer_all": 0.614178,
+     "dev_em_all": 0.017,
+     "dev_cer_clean": 0.471312,
+     "dev_wer_clean": 0.639579,
+     "dev_em_clean": 0.018,
+     "dev_cer_contaminated": 0.452546,
+     "dev_wer_contaminated": 0.591297,
+     "dev_em_contaminated": 0.016
+    },
+    {
+     "type": "val",
+     "step": 9375,
+     "val_syn_loss": 1.396696,
+     "select": "clean",
+     "dev_cer": 0.382448,
+     "dev_wer": 0.535591,
+     "dev_em": 0.026,
+     "dev_n": 500,
+     "dev_cer_all": 0.375421,
+     "dev_wer_all": 0.50813,
+     "dev_em_all": 0.031,
+     "dev_cer_clean": 0.382448,
+     "dev_wer_clean": 0.535591,
+     "dev_em_clean": 0.026,
+     "dev_cer_contaminated": 0.369033,
+     "dev_wer_contaminated": 0.483394,
+     "dev_em_contaminated": 0.036
+    }
+   ],
+   "steps_per_epoch": 9375,
+   "hparams": {
+    "phase": "B",
+    "init": "random",
+    "peak_lr": 0.001,
+    "warmup_steps": 562,
+    "total_steps": 18750,
+    "stop_step": 9375,
+    "micro_batch": 32,
+    "accum": 1,
+    "world": 2
+   }
+  }
+ },
+ "forgetting": {
+  "main_best": {
+   "model": "main/best",
+   "windows": 200,
+   "seq_len": 1024,
+   "target_tokens": 204600,
+   "loss_full": 8.754815,
+   "loss_base_vocab": 8.744204,
+   "bpb_full": 1.361378,
+   "ppl_full": 6341.149
+  },
+  "main_final": {
+   "model": "main/final",
+   "windows": 200,
+   "seq_len": 1024,
+   "target_tokens": 204600,
+   "loss_full": 8.737161,
+   "loss_base_vocab": 8.721159,
+   "bpb_full": 1.358633,
+   "ppl_full": 6230.183
+  }
+ },
+ "samples_dev_real": {
+  "model": "main/best",
+  "n_decoded": 120,
+  "exact_rate_of_decoded": 0.2333,
+  "examples": [
+   {
+    "i": 187,
+    "contamination": "clean",
+    "rom": "Tol Tamil bhsha ke vikhyat sahityakar D.",
+    "ref": "तोल तमिल भाषा के विख्यात साहित्यकार डी.",
+    "hyp": "तोल तमिल भाषा के विख्यात साहित्यकार डी।",
+    "exact": false,
+    "cer": 0.0256
+   },
+   {
+    "i": 320,
+    "contamination": "clean",
+    "rom": "yahan ham aapko batate chalen ki Magadh ke sabse Prachin Vansh ke Sansthapak ka naam bhi",
+    "ref": "यहां हम आपको बताते चलें कि मगध के सबसे प्राचीन वंश के संस्थापक का नाम भी",
+    "hyp": "यहां हम आपको बताते चलें कि मगध के सबसे प्राचीन वंश के संस्थापक का नाम भी।",
+    "exact": false,
+    "cer": 0.0139
+   },
+   {
+    "i": 388,
+    "contamination": "exact",
+    "rom": "ya ho sakta hai.",
+    "ref": "या हो सकता है।",
+    "hyp": "या हो सकता है।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 449,
+    "contamination": "clean",
+    "rom": "Raj Mehra",
+    "ref": "राज मेहरा",
+    "hyp": "राज मेहरा ।",
+    "exact": false,
+    "cer": 0.2222
+   },
+   {
+    "i": 672,
+    "contamination": "exact",
+    "rom": "Kaii American Expres credit card ke vigyapanon men 'C F Frost\" naam likha hua ek namuna American Express card dikhya gaya hai.",
+    "ref": "कई अमेरिकन एक्सप्रेस क्रेडिट कार्ड के विज्ञापनों में ’सी एफ़ फ़्रोस्ट\" नाम लिखा हुआ एक नमूना अमेरिकन एक्सप्रेस कार्ड दिखाया गया है।",
+    "hyp": "कई एमेरिकन एक्सप्रेस क्रेडिट कार्ड के विज्ञापनों में 'सीएफ फ्रॉस्ट\" नाम लिखा हुआ एक नमूना अमेरिकान एक्सप्रेस कार्ड दिखया गया है।",
+    "exact": false,
+    "cer": 0.0611
+   },
+   {
+    "i": 762,
+    "contamination": "clean",
+    "rom": "ansu ban gaye phul - vasanta kanetakar",
+    "ref": "आंसू बन गये फूल - वसंत कानेटकर",
+    "hyp": "आंसू बन गए फूल - वसंता कनेटक",
+    "exact": false,
+    "cer": 0.1667
+   },
+   {
+    "i": 944,
+    "contamination": "clean",
+    "rom": "mein samapt ho gaya.",
+    "ref": "में समाप्त हो गया।",
+    "hyp": "में समाप्त हो गया।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 958,
+    "contamination": "exact",
+    "rom": "yeh thailand ka sabse bada, sabse adhik aabadi vala dvip hai.",
+    "ref": "यह थाइलैंड का सबसे बड़ा, सबसे अधिक आबादी वाला द्वीप है।",
+    "hyp": "यह थाईलैंड का सबसे बड़ा, सबसे अधिक आबादी वाला द्वीप है।",
+    "exact": false,
+    "cer": 0.0182
+   },
+   {
+    "i": 983,
+    "contamination": "clean",
+    "rom": "mula saag ek odiya vyanjan hai.",
+    "ref": "मूला साग एक उड़िया व्यंजन है।",
+    "hyp": "मूला साग एक ओड़िया व्यंजन है।",
+    "exact": false,
+    "cer": 0.0345
+   },
+   {
+    "i": 1002,
+    "contamination": "exact",
+    "rom": "makka ke mufti ali bin hasan maliki ne khan ko sabhi dharmik vigyano ka vishvkosh kaha.",
+    "ref": "मक्का के मुफ्ती अली बिन हसन मलिकी ने खान को सभी धार्मिक विज्ञानों का विश्वकोष कहा।",
+    "hyp": "मक्का के मुफ़्ती अली बिन हसन मालिकी ने खान को सभी धार्मिक विज्ञानो का विश्वकोश कहा.",
+    "exact": false,
+    "cer": 0.061
+   },
+   {
+    "i": 1462,
+    "contamination": "exact",
+    "rom": "unke nana-nani holocaust uttarjivi the.",
+    "ref": "उनके नाना-नानी होलोकौस्ट उत्तरजीवी थे।",
+    "hyp": "उनके नाना-नानी होलोकौस्ट उत्तरजीवी थे।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 1744,
+    "contamination": "exact",
+    "rom": "sahitya men ek prachin viswaas, kavisamay ya kaviprasiddh ke roop men iska ullekh milta hai jahan vruksh ke sath prayukt hokar yah shabdh 'Pushpodgam' arth deta hai.",
+    "ref": "साहित्य में एक प्राचीन विश्वास, कविसमय या कविप्रसिद्धि के रूप में इसका उल्लेख मिलता है जहाँ वृक्ष के साथ प्रयुक्त होकर यह शब्द 'पुष्पोद्गम' अर्थ देता है।",
+    "hyp": "साहित्य में एक प्राचीन विश्वास, कविसमय या कविप्रसिद्ध के रूप में इसका उल्लेख मिलता है जहाँ वृक्ष के साथ प्रयुक्त होकर यह शब्द 'पुष्पोद्गम' अर्थ देता है।",
+    "exact": false,
+    "cer": 0.0065
+   },
+   {
+    "i": 1789,
+    "contamination": "clean",
+    "rom": "Radhamma ke ghar men hua tha.",
+    "ref": "राधाम्मा के घर में हुआ था।",
+    "hyp": "राधाम्मा के घर में हुआ था।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 2023,
+    "contamination": "clean",
+    "rom": "teesri sahastrabdi se anek chhote chhote sthaniy devtaon ki puja prachlit thi aur Sumeri, Babuli tatha akkadi sabhyata ke antargat kramash: viksit dharm ki pradhan baat thi.",
+    "ref": "तीसरी सहस्त्राब्दी से अनेक छोटे छोटे स्थानीय देवताओं की पूजा प्रचलित थी और सुमेरी, बाबुली तथा अक्कादी सभ्यता के अंतर्गत क्रमश: विकसित धर्म की प्रधान बात थी।",
+    "hyp": "तीसरी सहस्राब्दी से अनेक छोटे छोटे स्थानीय देवताओं की पूजा प्रचलित थी और सुमेरी, बबुली तथा अक्कड़ी सभ्यता के अंतर्गत क्रमश: विकसित धर्म की प्रधान बात थी।",
+    "exact": false,
+    "cer": 0.0321
+   },
+   {
+    "i": 2340,
+    "contamination": "exact",
+    "rom": "sathi janvar naidanik model ke rup me kargar hai kyonki ve manav rogo ki nikat'ta aur unki nakal me prasangik hai.",
+    "ref": "साथी जानवर नैदानिक मॉडल के रूप में कारगर हैं क्योंकि वे मानव रोगों की निकटता और उनकी नकल में प्रासंगिक हैं।",
+    "hyp": "साथी जानवर नैदानिक मॉडल के रूप में कारगर है क्योंकि वे मानव रोगो की निकट'ता और उनकी नकल में प्रासंगिक हैं।",
+    "exact": false,
+    "cer": 0.028
+   },
+   {
+    "i": 2348,
+    "contamination": "exact",
+    "rom": "bhartiya samaj mein Valmiki ya bhangee ko sabse nichi jaati samjha jaata raha hai aur uska paramparik pesha manav mal ki safai karna raha hai.",
+    "ref": "भारतीय समाज में वाल्‍मीकि या भंगी को सबसे नीची जाति समझा जाता रहा है और उसका पारंपरिक पेशा मानव मल की सफाई करना रहा है।",
+    "hyp": "भारतीय समाज में वाल्मीकि या भंगी को सबसे नीची जाति समझा जाता रहा है और उसका पारम्परिक पेशा मानव माल की सफाई करना रहा है।",
+    "exact": false,
+    "cer": 0.0336
+   },
+   {
+    "i": 2396,
+    "contamination": "exact",
+    "rom": "Yah yuvavastha ka sahi samay hota hai.",
+    "ref": "यह युवावस्था का सही समय होता है।",
+    "hyp": "यह युवावस्था का सही समय होता है।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 2536,
+    "contamination": "exact",
+    "rom": "iske paschim me albama aur dakshin me florida rajya sthita hai.",
+    "ref": "इसके पश्चिम में अलबामा और दक्षिण में फ्लोरिडा राज्य स्थित हैं।",
+    "hyp": "इसके पश्चिम में अल्बामा और दक्षिण में फ्लोरिडा राज्य स्थिता है।",
+    "exact": false,
+    "cer": 0.0484
+   },
+   {
+    "i": 3128,
+    "contamination": "exact",
+    "rom": "mein hogaa.",
+    "ref": "में होगा।",
+    "hyp": "में होगा।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 3251,
+    "contamination": "exact",
+    "rom": "Devnarayan Fad parmpara",
+    "ref": "देवनारायण फड़ परम्परा",
+    "hyp": "देवनारायण फाड़ परम्परा",
+    "exact": false,
+    "cer": 0.0476
+   },
+   {
+    "i": 3484,
+    "contamination": "exact",
+    "rom": "Nai kavita men keval Sanskrut shabdon ko hi adhar nahi banaya hai, balki vibhinna bhashaon ke prachalit shabdon ko swikar kiya gaya hai.",
+    "ref": "नई कविता में केवल संस्कृत शब्दों को ही आधार नहीं बनाया है, बल्कि विभिन्न भाषाओं के प्रचलित शब्दों को स्वीकार किया गया है।",
+    "hyp": "नई कविता में केवल संस्कृत शब्दों को ही आधार नहीं बनाया है, बल्कि विभिन्न भाषाओं के प्रचलित शब्दों को स्वीकार किया गया है।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 3531,
+    "contamination": "exact",
+    "rom": "imarat Saint Mary Nationa School ke upyog ke liye unnisvin sadi mein kaafi had tak punarviksit ki gayi thi aur ab isme ek samudaayik kendra hai.",
+    "ref": "इमारत सेंट मेरी नेशनल स्कूल के उपयोग के लिए उन्नीसवीं सदी में काफी हद तक पुनर्विकसित की गई थी और अब इसमें एक सामुदायिक केंद्र है।",
+    "hyp": "इमारत सेंट मैरी नाटीओना स्कूल के उपयोग के लिए उन्नीसवीं सदी में काफी हद तक पुनर्विक्षित की गई थी और अब इसमे एक सामुदायिक केंद्र हैं।",
+    "exact": false,
+    "cer": 0.0775
+   },
+   {
+    "i": 3853,
+    "contamination": "exact",
+    "rom": "san 2000 men yah dekha gaya ki kuchh rajyon men Hindi aur Angreji ke atirikt icchhanusaar Sanskrut, Arbi, French, tatha Potugij bhi padhai jati hain.",
+    "ref": "सन् 2000 में यह देखा गया कि कुछ राज्यों में हिन्दी और अंग्रेजी के अतिरिक्त इच्छानुसार संस्कृत, अरबी, फ्रेंच, तथा पोर्चुगीज भी पढ़ाई जाती हैं।",
+    "hyp": "सन 2000 में यह देखा गया कि कुछ राज्यों में हिंदी और अंग्रेजी के अतिरिक्त इच्छानुसार संस्कृत, अरबी, फ्रेंच, तथा पोटुगीज भी पढ़ाई जाती हैं।",
+    "exact": false,
+    "cer": 0.0426
+   },
+   {
+    "i": 4052,
+    "contamination": "exact",
+    "rom": "sanyukt pariwaar men sanbdhiyon ka dayra pati, patni tatha unki avivahit santanon se bhi adhik vyapak hota hai.",
+    "ref": "संयुक्त परिवार में संबंधियों का दायरा पति, पत्नी तथा उनकी अविवाहित संतानों से भी अधिक व्यापक होता है।",
+    "hyp": "संयुक्त परिवार में सनब्धियों का दायरा पति, पत्नी तथा उनकी अविवाहित संतानों से भी अधिक व्यापक होता है।",
+    "exact": false,
+    "cer": 0.0198
+   },
+   {
+    "i": 4058,
+    "contamination": "clean",
+    "rom": "Europe aur america ke kai vishvavidyalayo me unke vyakhyan ho chuke hai.",
+    "ref": "यूरोप और अमेरिका के कई विश्वविद्यालयों में उनके व्याख्यान हो चुके हैं।",
+    "hyp": "यूरोप और अमेरिका के कई विश्वविद्यालयों में उनके व्याख्यान हो चुके हैं।",
+    "exact": true,
+    "cer": 0.0
+   },
+   {
+    "i": 4238,
+    "contamination": "clean",
+    "rom": "Aathave dashak ke log - Balram Manish Rai",
+    "ref": "आठवें दशक के लोग - बलराम मनीष राय",
+    "hyp": "आठवे दशक के लोग - बलराम मनीष राय",
+    "exact": false,
+    "cer": 0.0303
+   },
+   {
+    "i": 4441,
+    "contamination": "clean",
+    "rom": "sambhvat: yah Sanskrut 'Dauhrad' shabd ka prakritik roop hai jo Sanskrut men gruhit any prakrut shabdon ke saman swikrut ho gaya hai.",
+    "ref": "संभवत: यह संस्कृत 'दौहृद' शब्द का प्राकृत रूप है जो संस्कृत में गृहीत अन्य प्राकृत शब्दों के समान स्वीकृत हो गया है।",
+    "hyp": "संभवत: यह संस्कृत 'दौहराद' शब्द का प्राकृतिक रूप है जो संस्कृत में गृहीत अन्य प्राकृत शब्दों के समान स्वीकृत हो गया है।",
+    "exact": false,
+    "cer": 0.0345
+   },
+   {
+    "i": 4482,
+    "contamination": "exact",
+    "rom": "Vidnyan avn prodyogiki vibhak ke avlamb se sanchalit yah Sansthan aaj Desh main Khagol avn Bhautiki men shodh avn shiksha ka ek pramukh kendra ban gaya hai.",
+    "ref": "विज्ञान एवं प्रौद्योगिकी विभाग के अवलंब से संचालित यह संस्थान आज देश में खगोल एवं भौतिकी में शोध एवं शिक्षा का एक प्रमुख केन्द्र बन गया है।",
+    "hyp": "विदन एवं प्रोद्योगिकी विभक के अवलम्ब से संचालित यह संस्थान आज देश में खगोल एवं भौतिकी में शोध एवं शिक्षा का एक प्रमुख केन्द्र बन गया है।",
+    "exact": false,
+    "cer": 0.0647
+   },
+   {
+    "i": 4567,
+    "contamination": "exact",
+    "rom": "nawvarsh, ateet par drushti dalne aur aane wale jivan ko utsah v khushiyon se bhar anubhav se jari rakhne ka naam hai.",
+    "ref": "नववर्ष, अतीत पर दृष्टि डालने और आने वाले जीवन को उत्साह व ख़ुशियों से भर अनुभव से जारी रखने का नाम है।",
+    "hyp": "नववर्ष, अतीत पर दृष्टि डालने और आने वाले जीवन को उत्साह व खुशियों से भर अनुभव से जारी रखने का नाम है।",
+    "exact": false,
+    "cer": 0.0098
+   },
+   {
+    "i": 4959,
+    "contamination": "clean",
+    "rom": "yuva katha lekhan ke vikassheel prantar me ujjaval upalabdhi ki tarah upasthit pankaj subir ka pratham upanyas hai.",
+    "ref": "युवा कथा लेखन के विकासशील प्रान्‍तर में उज्‍जवल उपलब्धि की तरह उपस्थित पंकज सुबीर का प्रथम उपन्‍यास है।",
+    "hyp": "युवा कथा लेखन के विकासशील प्रांतर में उज्ज्वल उपलब्धि की तरह उपस्थित पंकज सुबीर का प्रथम उपन्यास है।",
+    "exact": false,
+    "cer": 0.0583
+   }
+  ]
+ }
+}
