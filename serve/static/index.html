@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hinglish → Devanagari</title>
+<meta name="description" content="Type Hindi in English letters, get Devanagari. A 61M-parameter model trained from scratch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f7f5; --card: #ffffff; --ink: #1c1c1a; --muted: #6b6b66; --line: #e3e3de;
+    --accent: #c2410c; --accent-ink: #ffffff; --chip: #f1efe9; --err: #b42318;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141413; --card: #1d1d1b; --ink: #ecebe6; --muted: #9b9a93; --line: #2e2e2b;
+            --accent: #f97316; --accent-ink: #141413; --chip: #262624; --err: #f97066; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.5 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 56px; }
+  h1 { font-size: 1.6rem; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 28px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  label { display: block; font-size: .85rem; font-weight: 500; color: var(--muted); margin-bottom: 8px; }
+  textarea { width: 100%; min-height: 96px; resize: vertical; border: 1px solid var(--line); border-radius: 10px;
+             background: transparent; color: var(--ink); font: inherit; padding: 12px; }
+  textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .row { display: flex; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+  button.go { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 10px;
+              font: inherit; font-weight: 600; padding: 10px 18px; cursor: pointer; }
+  button.go:disabled { opacity: .6; cursor: progress; }
+  .hint { color: var(--muted); font-size: .85rem; }
+  .count { margin-left: auto; color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+  .out { margin-top: 16px; min-height: 72px; font: 1.45rem/1.6 "Noto Sans Devanagari", sans-serif;
+         white-space: pre-wrap; word-break: break-word; }
+  .out.placeholder { color: var(--muted); font: 1rem/1.5 Inter, system-ui, sans-serif; }
+  .meta { display: flex; gap: 14px; align-items: center; color: var(--muted); font-size: .85rem; margin-top: 8px; }
+  .meta button { background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 8px;
+                 padding: 3px 10px; font: inherit; cursor: pointer; }
+  .err { color: var(--err); }
+  h2 { font-size: .85rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+       margin: 28px 0 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--chip); border: 1px solid var(--line); color: var(--ink); border-radius: 999px;
+          padding: 6px 12px; font: inherit; font-size: .9rem; cursor: pointer; text-align: left; max-width: 100%; }
+  .chip:hover { border-color: var(--accent); }
+  .chip small { color: var(--accent); font-weight: 600; margin-right: 6px; }
+  footer { margin-top: 36px; color: var(--muted); font-size: .85rem; }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Hinglish → Devanagari</h1>
+  <p class="sub">Type Hindi in English letters and get it back in Devanagari. A 61M-parameter model trained from scratch, running on half a CPU core.</p>
+
+  <div class="card">
+    <label for="text">Hinglish</label>
+    <textarea id="text" maxlength="500" placeholder="kal meeting cancel ho gayi kya" autofocus></textarea>
+    <div class="row">
+      <button class="go" id="go">Transliterate</button>
+      <span class="hint">Ctrl / ⌘ + Enter</span>
+      <span class="count" id="count">0 / 500</span>
+    </div>
+    <div class="out placeholder" id="out" aria-live="polite">The Devanagari will appear here.</div>
+    <div class="meta" id="meta" hidden>
+      <span id="lat"></span>
+      <button id="copy" type="button">Copy</button>
+    </div>
+  </div>
+
+  <h2>Try a test sentence</h2>
+  <div class="chips" id="chips"></div>
+
+  <footer>
+    Greedy decoding with a KV cache. The output is restricted to Devanagari.
+    Inputs over 160 characters are split into pieces. ·
+    <a href="https://github.com/Prateek-Tiwari10/HINDI_SLM">Code</a> ·
+    <a href="https://huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m">Model</a> ·
+    <a href="/docs">API</a>
+  </footer>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const text = $("text"), out = $("out"), go = $("go"), meta = $("meta"), lat = $("lat");
+
+  text.addEventListener("input", () => { $("count").textContent = `${text.value.length} / 500`; });
+  text.addEventListener("keydown", (e) => { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") run(); });
+  go.addEventListener("click", run);
+  $("copy").addEventListener("click", () => navigator.clipboard && navigator.clipboard.writeText(out.textContent));
+
+  async function run() {
+    const value = text.value.trim();
+    if (!value) { text.focus(); return; }
+    go.disabled = true; go.textContent = "Working…";
+    try {
+      const res = await fetch("/api/transliterate", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: value }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const d = body.detail;
+        const msg = Array.isArray(d) ? d.map((x) => x.msg).join("; ") : (d || `HTTP ${res.status}`);
+        show(msg, true);
+        return;
+      }
+      out.className = "out"; out.textContent = body.output || "—";
+      lat.textContent = `${Math.round(body.latency_ms)} ms on the server`; meta.hidden = false;
+    } catch (e) {
+      show("Could not reach the server. If the demo was idle, it may be starting up — try again in a few seconds.", true);
+    } finally {
+      go.disabled = false; go.textContent = "Transliterate";
+    }
+  }
+
+  function show(msg, isErr) {
+    out.className = "out placeholder" + (isErr ? " err" : ""); out.textContent = msg; meta.hidden = true;
+  }
+
+  fetch("/api/examples").then((r) => r.json()).then((list) => {
+    const chips = $("chips");
+    for (const ex of list) {
+      const b = document.createElement("button");
+      b.className = "chip"; b.type = "button";
+      const tag = document.createElement("small");
+      tag.textContent = ex.category === "ambiguous" ? "ambiguous" : "test";
+      b.append(tag, document.createTextNode(ex.rom));
+      b.addEventListener("click", () => { text.value = ex.rom; text.dispatchEvent(new Event("input")); run(); });
+      chips.append(b);
+    }
+  }).catch(() => {});
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Build context for serve/Dockerfile: only the code the server imports.
+*
+!data/__init__.py
+!data/normalize.py
+!tokenizer/__init__.py
+!tokenizer/hinglish.py
+!model/*.py
+!finetune/__init__.py
+!finetune/data.py
+!finetune/translit.py
+!serve/
+serve/tests/
+serve/Dockerfile
+**/__pycache__

@@ -1,0 +1,53 @@
+# Manual load test of the live demo with hey (runs on a GitHub runner, not a laptop).
+# Actions -> loadtest-demo -> Run workflow. Results land in the run summary.
+name: loadtest-demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Live base URL, e.g. https://<app>.<env>.<region>.azurecontainerapps.io"
+        required: true
+      requests:
+        description: "Total requests per run"
+        default: "200"
+      concurrency:
+        description: "Concurrent clients"
+        default: "4"
+
+permissions:
+  contents: read
+
+jobs:
+  hey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache: false
+      - run: go install github.com/rakyll/hey@v0.1.4
+      - name: Warm up (scale from zero)
+        run: |
+          for i in $(seq 1 20); do curl -fsS --max-time 60 "${{ inputs.url }}/health" && break; sleep 10; done
+          curl -fsS -X POST "${{ inputs.url }}/api/transliterate" -H 'Content-Type: application/json' -d '{"text": "namaste"}'
+      - name: Short chat sentence
+        run: |
+          {
+            echo "### Short chat sentence (30 chars), n=${{ inputs.requests }}, c=${{ inputs.concurrency }}"
+            echo '```'
+            ~/go/bin/hey -n ${{ inputs.requests }} -c ${{ inputs.concurrency }} -t 120 -m POST -T application/json \
+              -d '{"text": "kal meeting cancel ho gayi kya"}' "${{ inputs.url }}/api/transliterate"
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Wikipedia-length sentence
+        run: |
+          {
+            echo "### Longer sentence (~110 chars), n=${{ inputs.requests }}, c=${{ inputs.concurrency }}"
+            echo '```'
+            ~/go/bin/hey -n ${{ inputs.requests }} -c ${{ inputs.concurrency }} -t 120 -m POST -T application/json \
+              -d '{"text": "bharat ki rajdhani nai dilli hai aur yahan ki aabadi do karod se zyada hai, jo har saal badh rahi hai"}' \
+              "${{ inputs.url }}/api/transliterate"
+            echo '```'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
