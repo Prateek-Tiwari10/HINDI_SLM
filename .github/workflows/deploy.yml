@@ -10,10 +10,13 @@ on:
     branches: [main]
     paths:
       - "serve/**"
+      - "finetune/__init__.py"
       - "finetune/translit.py"
       - "finetune/data.py"
       - "model/**"
+      - "tokenizer/__init__.py"
       - "tokenizer/hinglish.py"
+      - "data/__init__.py"
       - "data/normalize.py"
       - ".dockerignore"
       - ".github/workflows/deploy.yml"
