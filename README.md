@@ -1,6 +1,6 @@
 # HINDI_SLM: Hinglish → Devanagari with a 61M model trained from scratch
 
-**Live demo: _pending first Azure deploy ([DEPLOY.md](DEPLOY.md))_** · model weights: [huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m](https://huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m) · API docs: `<live URL>/docs`
+**Live demo: [hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io](https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io)** · API docs: [/docs](https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io/docs) · model weights: [huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m](https://huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m)
 
 Type Hindi the way people type it in chats, in Latin letters, and get it back in Devanagari:
 
@@ -15,18 +15,18 @@ Everything is built from scratch: the data pipeline (10B raw tokens cleaned down
 - **Dakshina test** (5,000 human-romanized sentences): character error rate **5.8%** vs 21.3% for a word-lookup baseline.
 - **Real chat messages** (180): **4.0%** vs 12.6%.
 - **Ambiguous words** such as *ki* (कि/की) and *main* (मैं/में): the right word **84%** of the time vs 78%.
-- **Speed:** about 0.3 s per chat-length sentence on half a CPU core.
+- **Speed:** about 0.3 s per chat-length sentence on the live URL, on half a CPU core.
 
 ## Try it
 
 ```bash
-curl -s -X POST https://<live URL>/api/transliterate \
+curl -s -X POST https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io/api/transliterate \
   -H 'Content-Type: application/json' \
   -d '{"text": "kya haal hai"}'
-# {"output":"क्या हाल है","latency_ms":233.2}
+# {"output":"क्या हाल है","latency_ms":123.3}
 ```
 
-`GET /health` reports the model revision and the deployed git commit. Inputs are capped at 500 characters. Longer texts are split at sentence ends and then at word boundaries, and each piece is transliterated separately. The public URL is rate-limited to 30 requests per minute per IP. If the app has scaled to zero, the first request waits for a cold start (about 7 s for the container at 0.5 CPU, plus the time Azure takes to schedule it).
+`GET /health` reports the model revision and the deployed git commit. Inputs are capped at 500 characters. Longer texts are split at sentence ends and then at word boundaries, and each piece is transliterated separately. The public URL is rate-limited to 30 requests per minute per IP. The app scales to zero when idle, so the first request after a quiet period waits for a cold start. Measured from zero replicas on Azure, the first `/health` answered in **10.1 s**. After that, requests take the times below.
 
 ## Architecture
 
@@ -73,7 +73,7 @@ Full report: [results/d7_hinglish/step6_RESULTS.md](results/d7_hinglish/step6_RE
 
 ### Speed
 
-The container is the one deployed, run with Azure's limits (`docker run --cpus 0.5 --memory 1g`, 1 torch thread, greedy + KV cache):
+**Local gate before deploying:** the same image, run with Azure's limits (`docker run --cpus 0.5 --memory 1g`, 1 torch thread, greedy + KV cache):
 
 | | result |
 | --- | --- |
@@ -82,9 +82,25 @@ The container is the one deployed, run with Azure's limits (`docker run --cpus 0
 | memory | ~550 MiB of 1 GiB |
 | chat-length sentence (3–8 words) | p50 **302 ms**, p95 508 ms |
 | Dakshina-length sentence (4–17 words) | p50 810 ms, p95 1,418 ms |
-| live URL load test (Azure, 0.5 vCPU) | _pending the first deploy: p50 / p95 / requests per second_ |
 
 Throughput is about 25 generated tokens/s on one core. Latency grows with input length, at roughly 1.3 s per 100 characters.
+
+**Load test of the live URL** (2026-11-26, [`hey`](https://github.com/rakyll/hey) from a laptop in India to Azure UAE North):
+- **Setup:** one replica at 0.5 vCPU / 1 GiB (max replicas pinned to 1 for the test, rate limit raised for it).
+- **Latency:** times include the network round trip.
+- **Result:** all 450 requests returned 200.
+
+| input | concurrency | requests | p50 | p95 | requests/s |
+| --- | --- | --- | --- | --- | --- |
+| chat sentence, 30 chars (`main kal office nahi aa paunga`) | 1 | 100 | **301 ms** | 658 ms | **2.3** |
+| chat sentence, 30 chars | 4 | 200 | 1.88 s | 2.22 s | 2.2 |
+| Dakshina sentence, 95 chars | 1 | 50 | 1.11 s | 1.91 s | 0.8 |
+| Dakshina sentence, 95 chars | 4 | 100 | 4.94 s | 5.24 s | 0.8 |
+
+- **One replica runs one inference at a time** (1 thread, 0.5 vCPU). So throughput is fixed at about 2.2 chat sentences per second, and extra concurrency only adds queueing.
+- **Scaling:** the HTTP scale rule adds a second replica above 4 requests in flight, which doubles capacity.
+- **Inference time on the server** for a short sentence is about 120 ms, as reported in `latency_ms`.
+- **Cold start on Azure:** from zero replicas (confirmed with `az containerapp replica list`), the first `/health` answered in **10.1 s**. That includes scheduling, pulling the cached image and loading the model. Use min replicas 1 to avoid it (DEPLOY.md).
 
 ### Examples
 
@@ -120,7 +136,7 @@ The worst cases are scholarly romanizations that write the inherent *a* (`kara`,
 | Pair data (D10) | 600k synthetic Hinglish pairs: our v2 sentences romanized with chat shortcuts and human-attested spellings (Dakshina, Aksharantar); evaluation on human data only | word agreement with humans 0.643 |
 | Fine-tune (D11) | full fine-tune, LR 6e-4 from a bracket, 2 epochs; selection by clean dev CER, not loss | dev CER **0.084** |
 | Evaluation (D12) | Step 6, run once: `test_real` (Dakshina) + `test_chat` (180 real chat sentences), word-lookup baseline, ambiguous-word slices | this page |
-| Serving (D13) | FastAPI + Docker → GHCR → Azure Container Apps via GitHub Actions | live URL above |
+| Serving (D13) | FastAPI + Docker → GHCR → Azure Container Apps (UAE North, 0.5 vCPU, scale to zero) via GitHub Actions | live URL above; p50 301 ms, 2.3 requests/s per replica |
 
 Stage reports are in [results/](results/): data and tokenizer v1 (`stage*_RESULTS.md`), tokenizer v2 ([results/tokenizer_v2/](results/tokenizer_v2/)), pretraining ([results/d5d6/](results/d5d6/)) and fine-tuning ([results/d7_hinglish/](results/d7_hinglish/)). Data sources and licences: [data/SOURCES.md](data/SOURCES.md).
 

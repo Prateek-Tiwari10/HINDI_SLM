@@ -18,7 +18,7 @@ _As of 2026-11-26_
 | Stage 7d: SFT harness + gates | ✅ all six gates pass, 2026-11-17 |
 | Stage 7e: training | ✅ done 2026-11-22: dev CER 0.084 |
 | Step 6: full evaluation | ✅ 2026-11-26: CER 0.058 / 0.040; ambiguity 0.843 vs baseline 0.785; no retrain |
-| Release + demo | ✅ public weights; ⬜ live URL after the Azure setup |
+| Release + demo | ✅ public weights; ✅ live at https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io |
 
 ## What D7 is
 
@@ -128,5 +128,5 @@ Run as one chained, resumable Kaggle kernel, `hindi-lm-d7e-train` ([finetune/sta
 
 ## What to do next
 
-1. **One-time Azure setup** ([DEPLOY.md](DEPLOY.md)), then the load test on the live URL.
+1. **GitHub repo variables** for automatic deploys ([DEPLOY.md](DEPLOY.md) step 5).
 2. **Future work:** plain-Hindi replay during fine-tuning, to keep LM ability alongside transliteration (the forgetting: 2.79 → 8.75).

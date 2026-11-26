@@ -31,7 +31,7 @@ Hinglish → Devanagari transliterator and served as a live demo. Decisions D1�
 | D7 Stage 7e — training (Phase A, LR bracket, main, ablations) (D11) | ✅ 2026-11-22: LR 6e-4; main `best/` clean dev CER **0.084**, WER 0.212, EM 0.148. Phase A adds nothing (A2 0.108 vs 0.110 at epoch 1); random init 0.126. Hindi LM loss 2.79 → 8.75 (forgotten) ([stage7e](results/d7_hinglish/stage7e_RESULTS.md)) |
 | D7 Step 6 — full evaluation (`test_real`, `test_chat`, word-lookup baseline, ambiguous-word slices) (D12) | ✅ 2026-11-26, run once: normalized CER `test_real` **0.058** (clean 0.062) vs lookup baseline 0.213; `test_chat` **0.040** vs 0.126; ambiguity 0.843 vs 0.785, so no retrain ([step6](results/d7_hinglish/step6_RESULTS.md)) |
 | Public weights — `Prateek-Tiwari10/hinglish-to-devanagari-61m` | ✅ 2026-11-26: `@7cf31e65`, safetensors + tokenizer + model card; logits identical to the checkpoint |
-| Serve — FastAPI + Docker → GHCR → Azure Container Apps via GitHub Actions (D13) | 🟡 code, Docker and CI done; local gate passed 2026-11-26 (744 MB image, 7.1 s cold start, 302 ms p50 per chat sentence at 0.5 CPU). Waiting on Prateek's one-time Azure setup ([DEPLOY.md](DEPLOY.md)), then the live load test |
+| Serve — FastAPI + Docker → GHCR → Azure Container Apps via GitHub Actions (D13) | ✅ live 2026-11-26: https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io (UAE North, 0.5 vCPU / 1 GiB, 0–2 replicas). Local gate: 744 MB image, 7.1 s cold start. Load test: p50 301 ms, 2.3 requests/s per replica for chat sentences. $10/month budget alert |
 | Git: commit and push all work | ✅ through Step 6 + serve (2026-11-26) |
 
 ## v1 pipeline (Stages 0–5): done
@@ -101,18 +101,9 @@ Instructions: [CLAUDE_CODE_INSTRUCTIONS_D5_D6.md](CLAUDE_CODE_INSTRUCTIONS_D5_D6
 
 ## Next steps
 
-1. **Prateek:** one-time Azure setup in [DEPLOY.md](DEPLOY.md):
-   - push, then make the GHCR package public;
-   - `az` commands for the resource group, environment and app;
-   - the OIDC app;
-   - the repo variables;
-   - run **deploy-demo**.
-2. **Then:**
-   - run **loadtest-demo** against the live URL, with the rate limit temporarily raised;
-   - put p50/p95 and requests per second into the README and step6_RESULTS.md;
-   - put the live URL at the top of the README.
-3. **Optional:** pick a licence for the public model card.
-4. **Future work:** plain-Hindi replay during fine-tuning to undo the forgetting (D11/D12).
+1. **Prateek:** add the five GitHub repo **Variables** (DEPLOY.md step 5). After that, every push that touches the server code redeploys and smoke-tests the live URL automatically. Until then, the CI tests and builds but skips the deploy.
+2. **Optional:** pick a licence for the public model card.
+3. **Future work:** plain-Hindi replay during fine-tuning to undo the forgetting (D11/D12).
 
 ## Open notes
 

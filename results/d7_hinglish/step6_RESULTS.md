@@ -201,7 +201,22 @@ These 15 come from `test_real` clean, with inputs of at most 120 characters, cho
 | oversize (501 chars), empty, Devanagari-only, missing field, wrong type | 422 for all five |
 | Docker HEALTHCHECK | healthy |
 
-**Live URL load test** (Azure Container Apps, 0.5 vCPU): _pending the first deploy_.
+**Live URL load test** (https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io, 2026-11-26):
+- **Setup:** `hey` from a laptop in India to Azure UAE North; one replica at 0.5 vCPU / 1 GiB, with max replicas pinned to 1 and the rate limit raised for the test.
+- **Latency:** times include the network round trip.
+
+| input | concurrency | requests | p50 | p95 | requests/s | non-200 |
+| --- | --- | --- | --- | --- | --- | --- |
+| chat sentence, 30 chars | 1 | 100 | 301 ms | 658 ms | 2.27 | 0 |
+| chat sentence, 30 chars | 4 | 200 | 1.88 s | 2.22 s | 2.23 | 0 |
+| Dakshina sentence, 95 chars (example #10) | 1 | 50 | 1.11 s | 1.91 s | 0.81 | 0 |
+| Dakshina sentence, 95 chars | 4 | 100 | 4.94 s | 5.24 s | 0.81 | 0 |
+
+- **Throughput doesn't grow with concurrency.** The server runs one inference at a time (a lock, 1 torch thread), so extra concurrent requests queue.
+- **Scaling:** the HTTP scale rule (4 concurrent requests per replica, max 2 replicas) doubles capacity under load.
+- **Server-side inference time** for a short sentence on an idle replica is about 120 ms.
+- **Cold start on Azure:** from zero replicas (confirmed with `az containerapp replica list`), the first `/health` answered in 10.1 s, and the first transliteration after it took 529 ms on the server. Locally the container needs 7.1 s at 0.5 CPU.
+- **Rate limit on the live URL** (30/min per IP): request 31 gets a 429 with `Retry-After`, and a spoofed `X-Forwarded-For` does not get around it.
 
 ## Known limitation: forgetting
 
