@@ -1,9 +1,9 @@
 # Progress — Hindi SLM
 
-_Last updated: 2026-11-23_
+_Last updated: 2026-11-26_
 
-Goal: a ~60M-parameter decoder-only Hindi LM trained from scratch (data, tokenizer, model, training).
-This repo covers decisions D1–D4 so far: data collection, cleaning, dedup, splits, tokenizer and tokenized dataset.
+Goal: a ~60M-parameter decoder-only Hindi LM trained from scratch (data, tokenizer, model, training), fine-tuned into a
+Hinglish → Devanagari transliterator and served as a live demo. Decisions D1–D13 are in DECISIONS.md (local-only).
 
 ## Summary
 
@@ -29,9 +29,10 @@ This repo covers decisions D1–D4 so far: data collection, cleaning, dedup, spl
 | D7 Stage 7c — Hinglish pair dataset (D10) | ✅ 2026-11-17 (`romanize-v2`), rebuilt 2026-11-22 as `romanize-v2.1`: 600k synthetic train pairs, coverage 0.863, realism 0.643, 0 leakage ([stage7c](results/d7_hinglish/stage7c_RESULTS.md)) |
 | D7 Stage 7d — SFT harness + gates G1–G6 | ✅ 2026-11-17: all six gates pass ([stage7d](results/d7_hinglish/stage7d_RESULTS.md)) |
 | D7 Stage 7e — training (Phase A, LR bracket, main, ablations) (D11) | ✅ 2026-11-22: LR 6e-4; main `best/` clean dev CER **0.084**, WER 0.212, EM 0.148. Phase A adds nothing (A2 0.108 vs 0.110 at epoch 1); random init 0.126. Hindi LM loss 2.79 → 8.75 (forgotten) ([stage7e](results/d7_hinglish/stage7e_RESULTS.md)) |
-| D7 Step 6 — full evaluation (`test_real`, `test_chat`, word-lookup baseline, ambiguous-word slices) | ⬜ next; needs a spec |
-| Serve | ⬜ later |
-| Git: commit and push all work | ✅ through Stage 7e (2026-11-23) |
+| D7 Step 6 — full evaluation (`test_real`, `test_chat`, word-lookup baseline, ambiguous-word slices) (D12) | ✅ 2026-11-26, run once: normalized CER `test_real` **0.058** (clean 0.062) vs lookup baseline 0.213; `test_chat` **0.040** vs 0.126; ambiguity 0.843 vs 0.785, so no retrain ([step6](results/d7_hinglish/step6_RESULTS.md)) |
+| Public weights — `Prateek-Tiwari10/hinglish-to-devanagari-61m` | ✅ 2026-11-26: `@7cf31e65`, safetensors + tokenizer + model card; logits identical to the checkpoint |
+| Serve — FastAPI + Docker → GHCR → Azure Container Apps via GitHub Actions (D13) | 🟡 code, Docker and CI done; local gate passed 2026-11-26 (744 MB image, 7.1 s cold start, 302 ms p50 per chat sentence at 0.5 CPU). Waiting on Prateek's one-time Azure setup ([DEPLOY.md](DEPLOY.md)), then the live load test |
+| Git: commit and push all work | ✅ through Step 6 + serve (2026-11-26) |
 
 ## v1 pipeline (Stages 0–5): done
 
@@ -100,15 +101,18 @@ Instructions: [CLAUDE_CODE_INSTRUCTIONS_D5_D6.md](CLAUDE_CODE_INSTRUCTIONS_D5_D6
 
 ## Next steps
 
-1. **D7 Step 6: full evaluation** of `d7/main/best/`. This is the first time `test_real` (Dakshina test, clean and contaminated parts) and `test_chat` (Prateek's chat set) are touched. Also planned:
-   - a word-lookup baseline;
-   - ambiguous-word slices (*ki* → कि/की, …);
-   - a normalized CER that ignores nukta, ZWJ and final-punctuation variants.
-
-   There is no spec for Step 6 on disk yet.
-2. Decide whether the near-total forgetting of plain-Hindi LM ability (loss 2.79 → 8.75) is acceptable (D11).
-3. Serve / demo.
-4. Update DECISIONS.md D1–D3 and README with the v2 numbers (they still describe v1).
+1. **Prateek:** one-time Azure setup in [DEPLOY.md](DEPLOY.md):
+   - push, then make the GHCR package public;
+   - `az` commands for the resource group, environment and app;
+   - the OIDC app;
+   - the repo variables;
+   - run **deploy-demo**.
+2. **Then:**
+   - run **loadtest-demo** against the live URL, with the rate limit temporarily raised;
+   - put p50/p95 and requests per second into the README and step6_RESULTS.md;
+   - put the live URL at the top of the README.
+3. **Optional:** pick a licence for the public model card.
+4. **Future work:** plain-Hindi replay during fine-tuning to undo the forgetting (D11/D12).
 
 ## Open notes
 

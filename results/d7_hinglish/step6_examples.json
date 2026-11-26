@@ -1,0 +1,271 @@
+[
+ {
+  "category": "best",
+  "id": "test_real-001207",
+  "rom": "vidyalay ke baare mein samanya jaankari is prakar hai:-",
+  "ref": "विद्यालय के बारे में सामान्य जानकारी इस प्रकार है:-",
+  "hyp": "विद्यालय के बारे में सामान्य जानकारी इस प्रकार है:-",
+  "baseline": "विद्यालय के baare में सामान्य jaankari इस प्रकार है:-",
+  "cer_norm": 0.0,
+  "exact_norm": true,
+  "ambiguous_words": [
+   {
+    "word": "hai",
+    "model": true,
+    "baseline": true
+   }
+  ],
+  "hyp_cpu": "विद्यालय के बारे में सामान्य जानकारी इस प्रकार है:-",
+  "cpu_ms_1_thread": 486.0
+ },
+ {
+  "category": "best",
+  "id": "test_real-002775",
+  "rom": "Ve Shivaji ke ashtapradhanon men se ek the.",
+  "ref": "वे शिवाजी के अष्टप्रधानों में से एक थे।",
+  "hyp": "वे शिवाजी के अष्टप्रधानों में से एक थे।",
+  "baseline": "वे शिवाजी के ashtapradhanon में से एक थे।",
+  "cer_norm": 0.0,
+  "exact_norm": true,
+  "ambiguous_words": [],
+  "hyp_cpu": "वे शिवाजी के अष्टप्रधानों में से एक थे।",
+  "cpu_ms_1_thread": 461.3
+ },
+ {
+  "category": "best",
+  "id": "test_real-003547",
+  "rom": "aisa hai hamara sharir - Harish yadav",
+  "ref": "ऐसा है हमारा शरीर - हरीश यादव",
+  "hyp": "ऐसा है हमारा शरीर - हरीश यादव",
+  "baseline": "ऐसा है हमारा शरीर - हरीश यादव",
+  "cer_norm": 0.0,
+  "exact_norm": true,
+  "ambiguous_words": [
+   {
+    "word": "hai",
+    "model": true,
+    "baseline": true
+   }
+  ],
+  "hyp_cpu": "ऐसा है हमारा शरीर - हरीश यादव",
+  "cpu_ms_1_thread": 319.1
+ },
+ {
+  "category": "best",
+  "id": "test_real-004228",
+  "rom": "antriksh men ghoomte shikshak - Durga Prasad Shukl",
+  "ref": "अंतरिक्ष में घूमते शिक्षक - दुर्गा प्रसाद शुक्ल",
+  "hyp": "अंतरिक्ष में घूमते शिक्षक - दुर्गा प्रसाद शुक्ल",
+  "baseline": "अंतरिक्ष में घूमते शिक्षक - दुर्गा प्रसाद शुक्ल",
+  "cer_norm": 0.0,
+  "exact_norm": true,
+  "ambiguous_words": [],
+  "hyp_cpu": "अंतरिक्ष में घूमते शिक्षक - दुर्गा प्रसाद शुक्ल",
+  "cpu_ms_1_thread": 413.6
+ },
+ {
+  "category": "best",
+  "id": "test_real-002794",
+  "rom": "Jayshakti ke baad Vijayshakti gaddi par baitha.",
+  "ref": "जयशक्ति के बाद विजयशक्ति गद्दी पर बैठा।",
+  "hyp": "जयशक्ति के बाद विजयशक्ति गद्दी पर बैठा।",
+  "baseline": "jayshakti के बाद vijayshakti गद्दी पर बैठा।",
+  "cer_norm": 0.0,
+  "exact_norm": true,
+  "ambiguous_words": [],
+  "hyp_cpu": "जयशक्ति के बाद विजयशक्ति गद्दी पर बैठा।",
+  "cpu_ms_1_thread": 447.0
+ },
+ {
+  "category": "ambiguous",
+  "id": "test_real-000487",
+  "rom": "S.S. alluvaliya bharat ki solahavi loksabha me sansad hai.",
+  "ref": "एस॰एस॰ अहलूवालिया भारत की सोलहवीं लोकसभा में सांसद हैं।",
+  "hyp": "स.एस. अल्लूवालिया भारत की सोलहवी लोकसभा में सांसद हैं।",
+  "baseline": "एसएस. alluvaliya भारत की solahavi लोकसभा में संसद है।",
+  "cer_norm": 0.1111,
+  "exact_norm": false,
+  "ambiguous_words": [
+   {
+    "word": "ki",
+    "model": true,
+    "baseline": true
+   },
+   {
+    "word": "me",
+    "model": true,
+    "baseline": true
+   },
+   {
+    "word": "sansad",
+    "model": true,
+    "baseline": false
+   },
+   {
+    "word": "hai",
+    "model": true,
+    "baseline": false
+   }
+  ],
+  "hyp_cpu": "स.एस. अल्लूवालिया भारत की सोलहवी लोकसभा में सांसद हैं।",
+  "cpu_ms_1_thread": 667.8
+ },
+ {
+  "category": "ambiguous",
+  "id": "test_real-000683",
+  "rom": "ye pahari loga kauna the?",
+  "ref": "ये पहाड़ी लोग कौन थे?",
+  "hyp": "ये पहाड़ी लोगा कौना थे?",
+  "baseline": "यह पहाड़ी लोगा कौना थे?",
+  "cer_norm": 0.1,
+  "exact_norm": false,
+  "ambiguous_words": [
+   {
+    "word": "ye",
+    "model": true,
+    "baseline": false
+   }
+  ],
+  "hyp_cpu": "ये पहाड़ी लोगा कौना थे?",
+  "cpu_ms_1_thread": 342.8
+ },
+ {
+  "category": "ambiguous",
+  "id": "test_real-001108",
+  "rom": "Kannojiya shabd men kisi jati vishesh ka aagrah nahin balki sthan vishesh ka aagrah antnirhit hai.",
+  "ref": "कन्नौजिया शब्द में किसी जाति विशेष का आग्रह नहीं बल्कि स्थान विशेष का आग्रह अंतर्निहित है।",
+  "hyp": "कन्नोजिया शब्द में किसी जाति विशेष का आग्रह नहीं बल्कि स्थान विशेष का आग्रह अंतर्निहित है।",
+  "baseline": "kannojiya शब्द में किसी जाती विशेष का आग्रह नहीं बल्कि स्थान विशेष का आग्रह अंतर्निहित है।",
+  "cer_norm": 0.0112,
+  "exact_norm": false,
+  "ambiguous_words": [
+   {
+    "word": "jati",
+    "model": true,
+    "baseline": false
+   },
+   {
+    "word": "hai",
+    "model": true,
+    "baseline": true
+   }
+  ],
+  "hyp_cpu": "कन्नोजिया शब्द में किसी जाति विशेष का आग्रह नहीं बल्कि स्थान विशेष का आग्रह अंतर्निहित है।",
+  "cpu_ms_1_thread": 859.2
+ },
+ {
+  "category": "ambiguous",
+  "id": "test_real-002366",
+  "rom": "Ve Sonam Kapoor ke liye bhi ek poshakh design kar chuke hai.",
+  "ref": "वे सोनम कपूर के लिये भी एक पोशाक डिज़ाइन कर चुके हैं।",
+  "hyp": "वे सोनम कपूर के लिए भी एक पोषक डिजाइन कर चुके हैं।",
+  "baseline": "वे सोनम कपूर के लिए भी एक poshakh डिजाइन कर चुके है।",
+  "cer_norm": 0.0784,
+  "exact_norm": false,
+  "ambiguous_words": [
+   {
+    "word": "hai",
+    "model": true,
+    "baseline": false
+   }
+  ],
+  "hyp_cpu": "वे सोनम कपूर के लिए भी एक पोषक डिजाइन कर चुके हैं।",
+  "cpu_ms_1_thread": 531.7
+ },
+ {
+  "category": "ambiguous",
+  "id": "test_real-004279",
+  "rom": "logon ke ye daastaa ka samay rahaa ho lekin daliton ke liye kai maayanon mein svarnakaal tha.",
+  "ref": "लोगों के ये दासता का समय रहा हो लेकिन दलितों के लिए कई मायनों में स्वर्णकाल था।",
+  "hyp": "लोगों के ये दासता का समय रहा हो लेकिन दलितों के लिए कई मायनों में स्वर्णकाल था।",
+  "baseline": "लोगों के यह daastaa का समय rahaa हो लेकिन दलितों के लिए कई maayanon में स्वर्णकाल था।",
+  "cer_norm": 0.0,
+  "exact_norm": true,
+  "ambiguous_words": [
+   {
+    "word": "ye",
+    "model": true,
+    "baseline": false
+   }
+  ],
+  "hyp_cpu": "लोगों के ये दासता का समय रहा हो लेकिन दलितों के लिए कई मायनों में स्वर्णकाल था।",
+  "cpu_ms_1_thread": 909.8
+ },
+ {
+  "category": "worst",
+  "id": "test_real-002323",
+  "rom": "Kitivarma ke pautra Madanvarma ne bhi dekhi ja sakti hai.",
+  "ref": "कीतिवर्मा के पौत्र मदनवर्मा ने भी अच्छी ख्याति प्राप्त की।",
+  "hyp": "किटीवर्मा के पौत्र मदनवर्मा ने भी देखी जा सकती है।",
+  "baseline": "kitivarma के पौत्र madanvarma ने भी देखी जा सकती है।",
+  "cer_norm": 0.3684,
+  "exact_norm": false,
+  "ambiguous_words": [
+   {
+    "word": "hai",
+    "model": false,
+    "baseline": false
+   }
+  ],
+  "hyp_cpu": "किटीवर्मा के पौत्र मदनवर्मा ने भी देखी जा सकती है।",
+  "cpu_ms_1_thread": 639.8
+ },
+ {
+  "category": "worst",
+  "id": "test_real-004689",
+  "rom": "eka dala ke ka'i phula - vyathita hrdaya",
+  "ref": "एक डाल के कई फूल - व्यथित हृदय",
+  "hyp": "एका दला के का'ई फुला - व्यथिता हरदया",
+  "baseline": "एका डाला के कई फुला - vyathita hrdaya",
+  "cer_norm": 0.3667,
+  "exact_norm": false,
+  "ambiguous_words": [],
+  "hyp_cpu": "एका दला के का'ई फुला - व्यथिता हरदया",
+  "cpu_ms_1_thread": 615.1
+ },
+ {
+  "category": "worst",
+  "id": "test_real-002534",
+  "rom": "eka avasara para, ra'ita, bainda chora dene ki dhamaki dete hu'e inglainda lauta a'e.",
+  "ref": "एक अवसर पर, राइट, बैंड छोड़ देने की धमकी देते हुए इंग्लैंड लौट आए।",
+  "hyp": "एका अवसरा पारा, रा'इता, बैंदा चोरी देने की धमकी देते हूं'ए इंग्लैंडा लौटा आ'ए।",
+  "baseline": "एका avasara पारा, ra'ita, बइिंडा चोरा देने की dhamaki देते हुए inglainda लौटा आए।",
+  "cer_norm": 0.2812,
+  "exact_norm": false,
+  "ambiguous_words": [
+   {
+    "word": "ki",
+    "model": true,
+    "baseline": true
+   }
+  ],
+  "hyp_cpu": "एका अवसरा पारा, रा'इता, बैंदा चोरी देने की धमकी देते हूं'ए इंग्लैंडा लौटा आ'ए।",
+  "cpu_ms_1_thread": 1091.3
+ },
+ {
+  "category": "worst",
+  "id": "test_real-001992",
+  "rom": "mem campa para akramana kara vijaya para adhikara kara liya.",
+  "ref": "में चंपा पर आक्रमण कर विजय पर अधिकार कर लिया।",
+  "hyp": "मेम कैंपा पारा आक्रमणा करा विजया पारा अधिकारा करा लिया।",
+  "baseline": "मेम campa पारा akramana करा विजया पारा adhikara करा लिया।",
+  "cer_norm": 0.2727,
+  "exact_norm": false,
+  "ambiguous_words": [],
+  "hyp_cpu": "मेम कैंपा पारा आक्रमणा करा विजया पारा अधिकारा करा लिया।",
+  "cpu_ms_1_thread": 679.9
+ },
+ {
+  "category": "worst",
+  "id": "test_real-003605",
+  "rom": "ismein chaar ikaiyan hain. Chauthi ikai 20 November 2010 ko kraantik (kritical) huyi thi.",
+  "ref": "इसमें चार इकाइयाँ हैं। चौथी ईकाई २० नवम्बर २०१० को क्रांतिक (क्रिटिकल) हुई थी।",
+  "hyp": "इसमें चार इकाइयां हैं. चौथी इकाई 20 नोवेंबर 2010 को क्रान्तिक (कृतिकाल) हुयी थी।",
+  "baseline": "इसमें चार इकाइयां हैं. चौथी इकाई 20 november 2010 को kraantik (kritical) हुयी थी।",
+  "cer_norm": 0.2727,
+  "exact_norm": false,
+  "ambiguous_words": [],
+  "hyp_cpu": "इसमें चार इकाइयां हैं. चौथी इकाई 20 नोवेंबर 2010 को क्रान्तिक (कृतिकाल) हुयी थी।",
+  "cpu_ms_1_thread": 1158.1
+ }
+]

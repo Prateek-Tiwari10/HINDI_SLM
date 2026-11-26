@@ -1,96 +1,161 @@
-# HINDI_SLM — a Hindi language model from scratch
+# HINDI_SLM: Hinglish → Devanagari with a 61M model trained from scratch
 
-## What it is
+**Live demo: _pending first Azure deploy ([DEPLOY.md](DEPLOY.md))_** · model weights: [huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m](https://huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m) · API docs: `<live URL>/docs`
 
-A ~60M-parameter decoder-only language model for Hindi. Everything is trained from scratch: the data pipeline, the tokenizer, the model and the training code.
-- No pretrained models or tokenizers are used anywhere.
-- This repo currently covers decisions D1–D4: data collection, cleaning, dedup, splits, tokenizer selection and the final tokenized dataset.
+Type Hindi the way people type it in chats, in Latin letters, and get it back in Devanagari:
 
-## Results
+```
+kya haal hai                                    →  क्या हाल है
+Ve Shivaji ke ashtapradhanon men se ek the.     →  वे शिवाजी के अष्टप्रधानों में से एक थे।
+```
 
-_To be filled after pretraining._
+Everything is built from scratch: the data pipeline (10B raw tokens cleaned down to 1.94B), the tokenizer, a 61M-parameter LLaMA-style decoder pretrained on Hindi, and the fine-tune that turns it into a transliterator. No pretrained models or tokenizers are used anywhere. The model runs on half a CPU core behind a FastAPI service on Azure Container Apps.
 
-## Data
+**Results on held-out human data** (run once, [details](results/d7_hinglish/step6_RESULTS.md)):
+- **Dakshina test** (5,000 human-romanized sentences): character error rate **5.8%** vs 21.3% for a word-lookup baseline.
+- **Real chat messages** (180): **4.0%** vs 12.6%.
+- **Ambiguous words** such as *ki* (कि/की) and *main* (मैं/में): the right word **84%** of the time vs 78%.
+- **Speed:** about 0.3 s per chat-length sentence on half a CPU core.
 
-**Sources** (details and licences in [data/SOURCES.md](data/SOURCES.md)):
-- **Sangraha Verified, Hindi** (AI4Bharat, CC-BY-4.0): the bulk; 25 of its 100 files were enough.
-- **Hindi Wikipedia** `20231101.hi` (CC-BY-SA): all of it, upsampled 2× in train.
-- **Our own crawl of Hindi news sites:** private research use only.
-- **FineWeb-2 Hindi:** not needed.
-- **Sangraha Synthetic** (machine-translated): excluded by design.
+## Try it
 
-**Pipeline** ([data/](data/); runs as Kaggle CPU kernels, every step resumable through done-markers on the Hub):
-1. `normalize()`: NFC (not NFKC); ZWJ/ZWNJ kept only between Devanagari letters; `|` after Devanagari becomes `।`; control characters removed; whitespace collapsed. Idempotent.
-2. Six heuristic filters, cheapest first:
-   - at least 50 words;
-   - Devanagari ≥ 80% of letters;
-   - unique lines ≥ 70%;
-   - symbols/words ≤ 0.30;
-   - mean word length 2–15;
-   - boilerplate phrases.
-   Emails and Indian phone numbers are masked.
-3. Exact dedup (xxh64), then MinHash near-dedup:
-   - word 5-grams, 128 permutations;
-   - LSH with 16 bands × 8 rows;
-   - verified at Jaccard ≥ 0.8;
-   - union-find; the kept copy is the one from the preferred source.
-4. Document-level split by `xxh64(id) mod 10,000`: 99.5 / 0.25 / 0.25. Near-dedup runs before the split, so val/test hold no near-duplicates of train.
+```bash
+curl -s -X POST https://<live URL>/api/transliterate \
+  -H 'Content-Type: application/json' \
+  -d '{"text": "kya haal hai"}'
+# {"output":"क्या हाल है","latency_ms":233.2}
+```
 
-**Funnel** (docs / GB of text; full report in [results/stage3_RESULTS.md](results/stage3_RESULTS.md)):
+`GET /health` reports the model revision and the deployed git commit. Inputs are capped at 500 characters. Longer texts are split at sentence ends and then at word boundaries, and each piece is transliterated separately. The public URL is rate-limited to 30 requests per minute per IP. If the app has scaled to zero, the first request waits for a cold start (about 7 s for the container at 0.5 CPU, plus the time Azure takes to schedule it).
 
-| source | raw | after filters | after exact dedup | after near-dedup | final |
-| --- | --- | --- | --- | --- | --- |
-| Wikipedia | 163,093 / 0.63 | 93,146 / 0.57 | 93,054 / 0.57 | 86,499 / 0.56 | 86,499 / 0.56 |
-| Manual news crawl | 377,324 / 2.59 | 286,741 / 1.68 | 285,503 / 1.68 | 284,508 / 1.67 | 284,508 / 1.67 |
-| Sangraha Verified | 4,355,234 / 24.22 | 4,182,186 / 23.24 | 4,097,801 / 22.77 | 4,084,777 / 22.67 | 4,082,876 / 22.66 |
+## Architecture
 
-**Final tokenized dataset** (`hi_unigram_8192`, `uint16`, `bos + doc + eos`, shuffled with seed 1337):
+```
+ browser / curl
+      │  HTTPS
+      ▼
+ Azure Container Apps ingress (Consumption plan, 0–2 replicas, HTTP scale rule)
+      │
+      ▼
+ container: uvicorn (1 worker) ──▶ FastAPI  (serve/app.py)
+      │                              ├─ GET  /                    one static page (serve/static/index.html)
+      │                              ├─ POST /api/transliterate   {text} → {output, latency_ms}
+      │                              ├─ GET  /health, /docs
+      │                              └─ per-IP rate limit, JSON logs with latency_ms
+      ▼
+ model: 61M decoder on CPU (0.5 vCPU, 1 thread), greedy + KV cache, Devanagari-only output mask
+        weights baked into the image at build time from a pinned HF revision (serve/MODEL_ID)
 
-| split | docs | tokens |
+ git push (serve/, model/, finetune/translit.py) ──▶ GitHub Actions:
+        pytest ▶ docker build ▶ ghcr.io/…/hinglish-translit:<sha> ▶ az containerapp update (OIDC) ▶ live smoke test
+```
+
+The server and the evaluation share one inference module, [finetune/translit.py](finetune/translit.py), so the demo behaves exactly as evaluated. Deployment steps are in [DEPLOY.md](DEPLOY.md).
+
+## Results (D7 Step 6, run once on held-out test sets)
+
+Normalized scores (NFC, nukta ignored, one final `।` ignored; exact rules in the report), 95% bootstrap CIs:
+
+| test set | n | model CER | lookup-baseline CER | model WER | baseline WER | model exact match | baseline exact match |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Dakshina test, all | 5,000 | **0.058** [0.056, 0.060] | 0.213 | **0.164** | 0.226 | **0.170** | 0.083 |
+| Dakshina test, clean (not in pretraining) | 1,247 | **0.062** [0.058, 0.066] | 0.220 | **0.182** | 0.245 | **0.157** | 0.074 |
+| chat messages | 180 | **0.040** [0.029, 0.055] | 0.126 | **0.109** | 0.174 | **0.589** | 0.356 |
+
+- **Lookup baseline:** for each Roman word, the most frequent Devanagari spelling in the 600k training pairs. Unknown words stay in Latin.
+- **Ambiguous words** (649 Roman words with two common spellings, found automatically): 10,436 occurrences in test. Accuracy is **0.843** for the model vs 0.785 for the baseline:
+  - *ki*: 0.968 vs 0.818;
+  - *main*: 0.923 vs 0.423;
+  - *or* (ओर in Dakshina, not और): 0.828 vs 0.000.
+- **Contamination:** 75% of Dakshina test also appears in the pretraining web data. The clean part scores almost the same, so memorization does not explain the result.
+
+Full report: [results/d7_hinglish/step6_RESULTS.md](results/d7_hinglish/step6_RESULTS.md) · metrics: [step6.json](results/d7_hinglish/step6.json).
+
+### Speed
+
+The container is the one deployed, run with Azure's limits (`docker run --cpus 0.5 --memory 1g`, 1 torch thread, greedy + KV cache):
+
+| | result |
+| --- | --- |
+| image | 744 MB compressed (2.33 GB unpacked); CPU-only torch, weights baked in |
+| cold start: container start → first `/health` 200 (model load + warm-up) | **7.1 s** |
+| memory | ~550 MiB of 1 GiB |
+| chat-length sentence (3–8 words) | p50 **302 ms**, p95 508 ms |
+| Dakshina-length sentence (4–17 words) | p50 810 ms, p95 1,418 ms |
+| live URL load test (Azure, 0.5 vCPU) | _pending the first deploy: p50 / p95 / requests per second_ |
+
+Throughput is about 25 generated tokens/s on one core. Latency grows with input length, at roughly 1.3 s per 100 characters.
+
+### Examples
+
+From Dakshina test (clean part), chosen by a fixed rule before looking at the outputs. All 15 are in the [report](results/d7_hinglish/step6_RESULTS.md#examples).
+
+| kind | Hinglish | model | lookup baseline |
+| --- | --- | --- | --- |
+| best | Jayshakti ke baad Vijayshakti gaddi par baitha. | जयशक्ति के बाद विजयशक्ति गद्दी पर बैठा। | jayshakti के बाद vijayshakti गद्दी पर बैठा। |
+| best | vidyalay ke baare mein samanya jaankari is prakar hai:- | विद्यालय के बारे में सामान्य जानकारी इस प्रकार है:- | विद्यालय के baare में सामान्य jaankari इस प्रकार है:- |
+| ambiguous | logon ke ye daastaa ka samay rahaa ho lekin daliton ke liye kai maayanon mein svarnakaal tha. | लोगों के ये दासता का समय रहा हो लेकिन दलितों के लिए कई मायनों में स्वर्णकाल था। | लोगों के यह daastaa का समय rahaa हो … |
+| ambiguous | Kannojiya shabd men kisi jati vishesh ka aagrah nahin … | कन्नोजिया शब्द में किसी जाति विशेष का आग्रह नहीं … | kannojiya शब्द में किसी जाती विशेष … |
+| worst | eka dala ke ka'i phula - vyathita hrdaya | एका दला के का'ई फुला - व्यथिता हरदया (ref: एक डाल के कई फूल - व्यथित हृदय) | एका डाला के कई फुला - vyathita hrdaya |
+| worst | mem campa para akramana kara vijaya para adhikara kara liya. | मेम कैंपा पारा आक्रमणा करा विजया पारा अधिकारा करा लिया। (ref: में चंपा पर आक्रमण कर …) | मेम campa पारा akramana … |
+
+The worst cases are scholarly romanizations that write the inherent *a* (`kara`, `para`), a style the chat-trained model never saw.
+
+### Known limitations
+
+- **It is a transliterator now, not a Hindi LM.** Fine-tuning erased the plain-Hindi language-modelling ability: loss on Hindi text went from 2.79 to 8.75. This was accepted for this release. The fix is to mix plain-Hindi batches back in during fine-tuning (replay), and it is future work.
+- **Chat-style input only.** It handles chat-style Hinglish (`kya`, `hai`, `nahi`). Scholarly romanization with a written inherent *a* or diacritics comes out poorly.
+- **Long input:** inputs over 160 characters are transliterated in independent chunks, and the API caps input at 500 characters.
+- **Spelling variants:** where two spellings are both correct (हिंदी/हिन्दी, किए/किये), the model writes the modern form. Strict scoring counts the other as an error.
+
+## How it was built
+
+| step | what | result |
 | --- | --- | --- |
-| train (Wikipedia ×2) | 4,517,509 | **2.824B** |
-| val | 11,157 | 6.84M |
-| test | 11,280 | 7.02M |
+| Data v2 (D1–D3) | all 100 Sangraha Verified Hindi files, Hindi Wikipedia and our own news crawl (~10B raw tokens). Cleaning: NFC normalization, line-level boilerplate removal, heuristic + Gopher/FineWeb-style doc filters, exact + MinHash near-dedup (Jaccard ≥ 0.8), document-level split. A fastText quality ranker was tried and rejected (it learned source style, not quality). | **1.937B** train tokens (Sangraha 86%, news 7%, Wikipedia 6% ×2) |
+| Tokenizer (D4) | SentencePiece Unigram picked from an 8-candidate grid by an intrinsic rule (fertility knee + morphology) | `hi_unigram_10240`, 9.31 bytes/token |
+| Model (D5) | LLaMA-style decoder: d_model 640, 12 layers, GQA 10/5 heads, SwiGLU, RoPE, RMSNorm, tied embeddings, context 1024 | 61,128,320 params |
+| Pretraining (D6) | one epoch on 2×T4 (DDP, fp16, `torch.compile`), peak LR 1e-3 from a sweep, bit-exact resume tested | test loss 2.816, perplexity 16.7 |
+| Tokenizer extension (D8) | char-level Latin tokens + `<rom>`/`<dev>` added after the base vocab; output mask allows Devanagari only | vocab 10,304 |
+| Pair data (D10) | 600k synthetic Hinglish pairs: our v2 sentences romanized with chat shortcuts and human-attested spellings (Dakshina, Aksharantar); evaluation on human data only | word agreement with humans 0.643 |
+| Fine-tune (D11) | full fine-tune, LR 6e-4 from a bracket, 2 epochs; selection by clean dev CER, not loss | dev CER **0.084** |
+| Evaluation (D12) | Step 6, run once: `test_real` (Dakshina) + `test_chat` (180 real chat sentences), word-lookup baseline, ambiguous-word slices | this page |
+| Serving (D13) | FastAPI + Docker → GHCR → Azure Container Apps via GitHub Actions | live URL above |
 
-- Measured compression: **8.99 UTF-8 bytes per token**.
-- Train is 88.5% Sangraha, 6.7% manual news and 4.8% Wikipedia.
-- Shards: `tokenized/hi_unigram_8192/train_000.bin … train_005.bin`, `val.bin`, `test.bin`, `meta.json` in the HF data repo.
+Stage reports are in [results/](results/): data and tokenizer v1 (`stage*_RESULTS.md`), tokenizer v2 ([results/tokenizer_v2/](results/tokenizer_v2/)), pretraining ([results/d5d6/](results/d5d6/)) and fine-tuning ([results/d7_hinglish/](results/d7_hinglish/)). Data sources and licences: [data/SOURCES.md](data/SOURCES.md).
 
-## Tokenizer
+## Repo layout
 
-**`hi_unigram_8192`**: SentencePiece Unigram with an 8,192-token vocab.
-- **Settings:** byte fallback, split digits, identity normalization (our `normalize()` already ran).
-- **Special tokens:** pad/unk/bos/eos = 0/1/2/3, plus chat tokens `<|system|>`, `<|user|>`, `<|assistant|>` and 16 reserved tokens.
-- **Selection:** chosen from 8 candidates ({BPE, Unigram} × {8K, 10K, 12K, 16K}, trained on a 946 MB train sample) by an intrinsic-only rule:
-  - **Vocab size:** the smallest size after which fertility improves by less than 3%. For both algorithms that is 8,192, and the embedding share there is 7.0%.
-  - **Algorithm:** at that size BPE and Unigram are within 2% on fertility (1.447 vs 1.474 tokens/word), so the tie goes to Unigram. Unigram also scores better on the morphology check, landing on the stem/suffix boundary for 47.4% of test words vs BPE's 42.9%.
-- **Example:** Unigram splits `जाएँगे` as `जा|एँ|गे`; BPE splits it as `जाए|ँ|गे`.
-
-Full sweep: [results/stage4_RESULTS.md](results/stage4_RESULTS.md), [results/tokenizer_sweep.csv](results/tokenizer_sweep.csv), [results/plots/](results/plots/).
+| path | contents |
+| --- | --- |
+| [data/](data/) | normalization, filters, dedup, splits, tokenization, Hinglish pair generation |
+| [tokenizer/](tokenizer/) | tokenizer sweep and the Hinglish extension |
+| [model/](model/) | the decoder, KV cache, vocab surgery |
+| [train/](train/) | pretraining loop (DDP, resume) |
+| [finetune/](finetune/) | SFT harness, Stage 7e pipeline, shared inference (`translit.py`), Step 6 (`step6.py`) |
+| [eval/](eval/) | evaluation scripts; Step 6 scoring (`translit_eval.py`) |
+| [serve/](serve/) | FastAPI app, static page, Dockerfile, tests |
+| [kaggle/](kaggle/) | kernel metadata and the push script |
+| [.github/workflows/](.github/workflows/) | deploy and load-test workflows |
 
 ## Reproduce
 
-Heavy work runs on Kaggle CPU kernels (account `prateek99491`), never on the laptop.
+All training and evaluation ran as Kaggle kernels (CPU, 2×T4, TPU VM), never on a laptop. Every stage is resumable through markers on the HF Hub.
 
 ```bash
 # laptop: thin CLI env for pushing kernels and reading the Hub
 python -m venv .venv && .venv/bin/pip install kaggle huggingface_hub
 
-# push one stage (uploads code to the HF repo's code/ folder, then pushes the kernel);
-# then press "Save Version" in the Kaggle editor so the run can read the HF_TOKEN secret
-kaggle/push.sh "python -m data.pipeline stage1"
-kaggle/push.sh "python -m data.pipeline stage2"
-kaggle/push.sh "python -m data.pipeline stage3a && python -m data.pipeline stage3b && python -m tokenizer.sweep && python -m tokenizer.encode"
+# push a stage: the code goes into the kernel, then press "Save Version" in the Kaggle editor
+# with the HF_TOKEN secret ticked (API-pushed versions can't read secrets)
+EMBED_CODE=1 kaggle/push.sh "python -m finetune.step6" kaggle/d7_step6
 ```
 
-All thresholds and seeds are in [configs/data.yaml](configs/data.yaml) and [configs/tokenizer.yaml](configs/tokenizer.yaml). Tests (`pytest`) run inside every kernel before the stage starts.
+Run the demo locally:
 
-## Links
+```bash
+docker build -f serve/Dockerfile -t hinglish-translit .
+docker run --rm -p 8000:8000 --cpus 0.5 --memory 1g hinglish-translit   # then open http://localhost:8000
+```
 
-- Data (private): https://huggingface.co/datasets/Prateek-Tiwari10/hindi-lm-data
-  - final text splits: `final/{train,val,test}/`
-  - tokenized: `tokenized/hi_unigram_8192/`
-- Tokenizers (private): https://huggingface.co/Prateek-Tiwari10/hindi-lm-tokenizer
-  - all 8 sweep models: `sweep/`
-  - the chosen one: `sweep/hi_unigram_8192.model`, also committed as `tokenizer/hi_unigram_8192.model`
-- Stage reports: [results/](results/)
+Thresholds and seeds are in [configs/](configs/). The test suite (`pytest`) runs inside every kernel before the stage starts, and `serve/tests` runs in CI against the real released model.

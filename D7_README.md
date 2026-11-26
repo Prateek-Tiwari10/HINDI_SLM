@@ -1,11 +1,11 @@
 # D7 — Status and next steps
 
-_As of 2026-11-23_
+_As of 2026-11-26_
 
 **In short:** the 61M Hindi model has been fine-tuned to turn Hinglish (Hindi in Latin letters) into Devanagari.
 - **Result:** the best checkpoint gets a **character error rate of 0.084** on human-written Dakshina dev sentences (Stage 7e, 22 Nov).
-- **Done:** Steps 3–5 (Stages 7c–7e).
-- **Next:** Step 6, the full evaluation on the untouched test sets.
+- **Done:** Steps 3–5 (Stages 7c–7e) and Step 6, run once on the held-out test sets. Normalized CER is **0.058** on Dakshina test and **0.040** on chat, vs 0.213 / 0.126 for a word-lookup baseline ([step6](results/d7_hinglish/step6_RESULTS.md)).
+- **Released:** public weights at [Prateek-Tiwari10/hinglish-to-devanagari-61m](https://huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m), and a FastAPI demo for Azure Container Apps ([DEPLOY.md](DEPLOY.md)).
 
 ## Where we are
 
@@ -17,7 +17,8 @@ _As of 2026-11-23_
 | Stage 7c: pair dataset | ✅ 2026-11-17, rebuilt as `romanize-v2.1` 2026-11-22 |
 | Stage 7d: SFT harness + gates | ✅ all six gates pass, 2026-11-17 |
 | Stage 7e: training | ✅ done 2026-11-22: dev CER 0.084 |
-| Step 6: full evaluation | ⬜ next |
+| Step 6: full evaluation | ✅ 2026-11-26: CER 0.058 / 0.040; ambiguity 0.843 vs baseline 0.785; no retrain |
+| Release + demo | ✅ public weights; ⬜ live URL after the Azure setup |
 
 ## What D7 is
 
@@ -127,14 +128,5 @@ Run as one chained, resumable Kaggle kernel, `hindi-lm-d7e-train` ([finetune/sta
 
 ## What to do next
 
-1. **Step 6: full evaluation (needs a spec).** Run `d7/main/best/` once on:
-   - `test_real` (Dakshina test, reported as clean and contaminated parts);
-   - `test_chat` (your chat sentences).
-
-   Planned additions:
-   - **word-lookup baseline:** the most common Devanagari for each romanized word, from the lexicon;
-   - **ambiguous-word slices:** *ki* → कि/की, *main* → मैं/में, …;
-   - **normalized CER** that ignores nukta, ZWJ and final-punctuation differences.
-2. **Decide on forgetting:** is a transliteration-only model fine, or should plain-Hindi LM ability be kept (replay data during fine-tuning)?
-3. **Serve / demo.**
-4. **Docs cleanup:** DECISIONS.md D1–D3 and the main README still describe the v1 data.
+1. **One-time Azure setup** ([DEPLOY.md](DEPLOY.md)), then the load test on the live URL.
+2. **Future work:** plain-Hindi replay during fine-tuning, to keep LM ability alongside transliteration (the forgetting: 2.79 → 8.75).
