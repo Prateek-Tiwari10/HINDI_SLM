@@ -201,7 +201,7 @@ These 15 come from `test_real` clean, with inputs of at most 120 characters, cho
 | oversize (501 chars), empty, Devanagari-only, missing field, wrong type | 422 for all five |
 | Docker HEALTHCHECK | healthy |
 
-**Live URL load test** (Azure Container Apps, 0.5 vCPU): ⟪LOADTEST⟫
+**Live URL load test** (Azure Container Apps, 0.5 vCPU): _pending the first deploy_.
 
 ## Known limitation: forgetting
 
