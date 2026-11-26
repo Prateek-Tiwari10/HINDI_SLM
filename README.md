@@ -1,6 +1,10 @@
 # HINDI_SLM: Hinglish → Devanagari with a 61M model trained from scratch
 
-**Live demo: [hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io](https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io)** · API docs: [/docs](https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io/docs) · model weights: [huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m](https://huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m)
+### ▶ Try it live: **https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io**
+
+API docs (Swagger): [/docs](https://hinglish-translit.gentleground-e8984580.uaenorth.azurecontainerapps.io/docs) · model weights: [huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m](https://huggingface.co/Prateek-Tiwari10/hinglish-to-devanagari-61m)
+
+_The demo scales to zero when idle, so the first request after a quiet period can take about 10 s._
 
 Type Hindi the way people type it in chats, in Latin letters, and get it back in Devanagari:
 
